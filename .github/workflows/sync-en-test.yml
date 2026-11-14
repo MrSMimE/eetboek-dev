@@ -1,0 +1,94 @@
+name: Sync en test
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+env:
+  SOURCE_REPO: JOUW-GEBRUIKERSNAAM/Mijn-eetboek-app-
+  SOURCE_DIR: /tmp/eetboek-app
+
+jobs:
+  sync-en-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out publieke repository
+        uses: actions/checkout@v4
+
+      - name: Clone prive-repository met SYNC_TOKEN
+        run: |
+          git clone --depth 1 \
+            "https://x-access-token:${{ secrets.SYNC_TOKEN }}@github.com/${{ env.SOURCE_REPO }}.git" \
+            "${{ env.SOURCE_DIR }}"
+          git -C "${{ env.SOURCE_DIR }}" config --unset-all http.https://github.com/.extraheader || true
+
+      - name: Bepaal nieuwste app-test map
+        id: newest
+        run: |
+          newest=$(find "${{ env.SOURCE_DIR }}" -maxdepth 1 -type d -name 'app-test*' | sort -V | tail -n 1)
+          if [ -z "$newest" ]; then
+            echo "Geen app-test map gevonden in ${SOURCE_REPO}" >&2
+            exit 1
+          fi
+          name=$(basename "$newest")
+          echo "path=$name" >> "$GITHUB_OUTPUT"
+          echo "Nieuwste app-test map: $name"
+
+      - name: Verwijder oude app-test mappen uit publieke repo
+        run: |
+          find . -maxdepth 1 -name .git -prune -o -type d -name 'app-test*' -exec rm -rf {} +
+
+      - name: Kopieer alleen nieuwste app-test map en README (strikte uitsluitingen)
+        run: |
+          rsync -a \
+            --exclude='.git' \
+            --exclude='.env*' \
+            --exclude='*.pem' --exclude='*.key' --exclude='*.p12' --exclude='*.pfx' \
+            --exclude='secrets' --exclude='secrets.*' --exclude='credentials*' \
+            --exclude='server/' --exclude='backend/' --exclude='api/' \
+            --exclude='node_modules/' \
+            "${{ env.SOURCE_DIR }}/${{ steps.newest.outputs.path }}/" \
+            "./${{ steps.newest.outputs.path }}/"
+          rsync -a \
+            --exclude='.git' --exclude='.env*' \
+            "${{ env.SOURCE_DIR }}/README.md" \
+            ./README.md
+
+      - name: Commit en push veilige bestanden naar publieke repo
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Geen wijzigingen, niets te pushen."
+          else
+            git commit -m "Sync: nieuwste app-test map (${{ steps.newest.outputs.path }}) + README"
+            git push
+          fi
+
+      - name: Start klikbot-test
+        working-directory: ${{ steps.newest.outputs.path }}
+        run: |
+          if [ -f package.json ]; then
+            npm ci --ignore-scripts || npm install --ignore-scripts
+            if npm run 2>/dev/null | grep -qi 'klikbot\|clickbot'; then
+              npm run $(npm run 2>/dev/null | grep -i 'klikbot\|clickbot' | head -n 1 | cut -d: -f1 | tr -d ' ')
+            else
+              npm test
+            fi
+          elif compgen -G 'test_*.py' > /dev/null || compgen -G '*_test.py' > /dev/null; then
+            python -m pytest -v
+          elif compgen -G '*klikbot*' > /dev/null || compgen -G '*clickbot*' > /dev/null; then
+            f=$(ls *klikbot* *clickbot* 2>/dev/null | head -n 1)
+            case "$f" in
+              *.js) node "$f" ;;
+              *.py) python "$f" ;;
+              *.sh) bash "$f" ;;
+              *) echo "Onbekend testformaat: $f" >&2; exit 1 ;;
+            esac
+          else
+            echo "Geen klikbot-test gevonden in ${{ steps.newest.outputs.path }}" >&2
+            exit 1
+          fi
