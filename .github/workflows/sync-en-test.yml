@@ -2,6 +2,8 @@ name: Sync en test
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '0 * * * *'
 
 permissions:
   contents: write
@@ -17,37 +19,58 @@ jobs:
       - name: Check out publieke repository
         uses: actions/checkout@v4
 
+      - name: Check of er een nieuwe commit op main staat
+        id: check
+        run: |
+          url="https://x-access-token:${{ secrets.SYNC_TOKEN }}@github.com/${{ env.SOURCE_REPO }}.git"
+          new_sha=$(git ls-remote "$url" refs/heads/main | awk '{print $1}')
+          if [ -z "$new_sha" ]; then
+            echo "Kon refs/heads/main niet ophalen uit ${SOURCE_REPO}" >&2
+            exit 1
+          fi
+          old_sha=$(cat .sync-sha 2>/dev/null || true)
+          echo "new_sha=$new_sha" >> "$GITHUB_OUTPUT"
+          if [ -n "$old_sha" ] && [ "$old_sha" = "$new_sha" ]; then
+            echo "should_sync=false" >> "$GITHUB_OUTPUT"
+            echo "Geen nieuwe commit op main (${new_sha:0:7}); kopiëren en testen worden overgeslagen."
+          else
+            echo "should_sync=true" >> "$GITHUB_OUTPUT"
+            echo "Nieuwe commit op main: ${new_sha:0:7} (vorige: ${old_sha:-geen})"
+          fi
+
       - name: Clone prive-repository met SYNC_TOKEN
+        if: steps.check.outputs.should_sync == 'true'
         run: |
           git clone --depth 1 \
             "https://x-access-token:${{ secrets.SYNC_TOKEN }}@github.com/${{ env.SOURCE_REPO }}.git" \
             "${{ env.SOURCE_DIR }}"
           git -C "${{ env.SOURCE_DIR }}" config --unset-all http.https://github.com/.extraheader || true
 
-      - name: Controleer bronmappen tests/ en versies/
+      - name: Controleer bronmap versies/
+        if: steps.check.outputs.should_sync == 'true'
         run: |
-          for d in tests versies; do
-            if [ ! -d "${{ env.SOURCE_DIR }}/$d" ]; then
-              echo "Map '$d' niet gevonden in ${SOURCE_REPO}" >&2
-              exit 1
-            fi
-          done
+          if [ ! -d "${{ env.SOURCE_DIR }}/versies" ]; then
+            echo "Map 'versies' niet gevonden in ${SOURCE_REPO}" >&2
+            exit 1
+          fi
 
-      - name: Verwijder oude tests/ en versies/ uit publieke repo
+      - name: Verwijder oude versies/ uit publieke repo
+        if: steps.check.outputs.should_sync == 'true'
         run: |
-          rm -rf ./tests ./versies
+          rm -rf ./versies
 
-      - name: Kopieer tests/, versies/, README.md en .gitignore (strikte uitsluitingen)
+      - name: Kopieer versies/, README.md en .gitignore (strikte uitsluitingen)
+        if: steps.check.outputs.should_sync == 'true'
         run: |
           EXCLUDES=(
             --exclude='.git'
             --exclude='.env*'
             --exclude='*.pem' --exclude='*.key' --exclude='*.p12' --exclude='*.pfx'
             --exclude='secrets' --exclude='secrets.*' --exclude='credentials*'
+            --exclude='app-test/' --exclude='actueel/' --exclude='app/'
             --exclude='server/' --exclude='backend/' --exclude='api/'
             --exclude='node_modules/'
           )
-          rsync -a "${EXCLUDES[@]}" "${{ env.SOURCE_DIR }}/tests/" ./tests/
           rsync -a "${EXCLUDES[@]}" "${{ env.SOURCE_DIR }}/versies/" ./versies/
           if [ -f "${{ env.SOURCE_DIR }}/README.md" ]; then
             rsync -a --exclude='.git' --exclude='.env*' "${{ env.SOURCE_DIR }}/README.md" ./README.md
@@ -57,20 +80,30 @@ jobs:
           fi
 
       - name: Commit en push veilige bestanden naar publieke repo
+        if: steps.check.outputs.should_sync == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+          echo "${{ steps.check.outputs.new_sha }}" > .sync-sha
           git add -A
           if git diff --cached --quiet; then
             echo "Geen wijzigingen, niets te pushen."
           else
-            git commit -m "Sync: tests/ + versies/ (+ README/.gitignore) uit prive-repo"
+            git commit -m "Sync: versies/ (+ README/.gitignore) @ ${{ steps.check.outputs.new_sha }}"
             git push
           fi
 
-      - name: Start klikbot vanuit tests/
-        working-directory: tests
+      - name: Start klikbot-test
+        if: steps.check.outputs.should_sync == 'true'
         run: |
+          if [ -d "${{ env.SOURCE_DIR }}/tests" ]; then
+            cd "${{ env.SOURCE_DIR }}/tests"
+          elif [ -d ./versies ]; then
+            cd ./versies
+          else
+            echo "Geen tests/ (bron) of versies/ gevonden om de klikbot te starten" >&2
+            exit 1
+          fi
           if [ -f package.json ]; then
             npm ci --ignore-scripts || npm install --ignore-scripts
             script=$(npm run 2>/dev/null | grep -io 'kliktest[a-z0-9-]*\|clickbot[a-z0-9-]*' | head -n 1)
@@ -94,7 +127,7 @@ jobs:
             elif compgen -G 'test_*.py' > /dev/null || compgen -G '*_test.py' > /dev/null; then
               python -m pytest -v
             else
-              echo "Geen klikbot-test gevonden in tests/" >&2
+              echo "Geen klikbot-test gevonden" >&2
               exit 1
             fi
           fi
