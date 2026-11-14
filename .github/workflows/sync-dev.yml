@@ -103,12 +103,14 @@ jobs:
       - name: Start klikbot-test
         if: steps.check.outputs.should_sync == 'true'
         run: |
-          if [ -d "${{ env.SOURCE_DIR }}/tests" ]; then
+          if [ -d ./versies/tests ]; then
+            cd ./versies/tests
+          elif [ -d "${{ env.SOURCE_DIR }}/tests" ]; then
             cd "${{ env.SOURCE_DIR }}/tests"
           elif [ -d ./versies ]; then
             cd ./versies
           else
-            echo "Geen tests/ (bron) of versies/ gevonden om de klikbot te starten" >&2
+            echo "Geen versies/tests of tests/ gevonden om de klikbot te starten" >&2
             exit 1
           fi
           if [ -f package.json ]; then
@@ -120,7 +122,10 @@ jobs:
               npm test
             fi
           else
-            f=$(ls *kliktest* *clickbot* 2>/dev/null | head -n 1)
+            f=$(ls *draai*.sh *kliktest*.sh *clickbot*.sh *bot*.sh 2>/dev/null | head -n 1)
+            if [ -z "$f" ]; then
+              f=$(ls *kliktest* *clickbot* 2>/dev/null | head -n 1)
+            fi
             if [ -z "$f" ]; then
               f=$(ls *bot* 2>/dev/null | head -n 1)
             fi
