@@ -1,4 +1,4 @@
-name: Sync dev naar main
+name: Sync dev naar default branch
 
 on:
   workflow_dispatch:
