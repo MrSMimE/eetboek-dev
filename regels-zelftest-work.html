@@ -27,7 +27,7 @@
     ok.push(t.indexOf('href="index.html"') !== -1);
     t = t.split('href="index.html"').join('href="index-zelftest-work.html#testen"');
     ok.push(t.indexOf('<nav class="bottomnav">') !== -1);
-    // v58.10: de tabbalk met de 6 iconen blijft ZICHTBAAR op de Regels-pagina (net als op de andere pagina's)
+    t = t.replace('<nav class="bottomnav">', '<nav class="bottomnav" style="display:none">'); /* v58.10: tabbalk weer verborgen — de pagina's van het mapje bestaan niet in de root, de links gaven 404 */
     ok.push(t.indexOf('href="testen.html"') !== -1);
     t = t.replace('href="testen.html"', 'href="index-zelftest-work.html#testen"');
     // Eigen test-kaartje voor het Regels-testpunt (zelfde opslag als de werk-app)
@@ -42,8 +42,8 @@
       '#rgltest button.ok { background: #3E6B4F; }' +
       '#rgltest button.fout { background: #A95042; }' +
       '#rgltest.klaar button.ok, #rgltest.klaar button.fout { opacity: .55; }' +
-      '#rgltest #rglx { position: absolute; top: 4px; right: 6px; margin-left: 0; min-width: 28px; min-height: 28px; }' +
-      '#rgltest #rglmin { margin-left: auto; } /* v58.10: min-pijltje staat rechts in de knoppenrij, net als het kruisje rechtsboven */' +
+      '#rgltest #rglmin { margin-left: auto; } /* v58.10: pijltje duwt zichzelf + kruisje naar de rechterkant van de knoppenrij */' +
+      '#rgltest #rglx { min-width: 28px; min-height: 28px; } /* v58.10: kruisje netjes in de rij, rechts naast het pijltje */' +
       ':root[data-theme="dark"] #rgltest, :root[data-theme="contrast"] #rgltest { background: var(--surface); color: var(--fg); border: 1px solid var(--line); box-shadow: none; }' +
       ':root[data-theme="dark"] #rgltest button, :root[data-theme="contrast"] #rgltest button { background: var(--soft); color: var(--fg); }' +
       ':root[data-theme="dark"] #rgltest button.ok, :root[data-theme="contrast"] #rgltest button.ok { background: var(--accent); color: var(--on-accent); }' +
@@ -56,13 +56,13 @@
       '</style>' +
       '<div id="rgltest">' +
       '<div class="rglmain"><b>Regels-test · Deel 6 (v58.10)</b>' +
-      'Eigen Regels-pagina met bovenaan de tabbalk met 6 iconen (zoals op de andere pagina\'s): moment toevoegen, hernoemen, kcal invullen, totaalregel en ← Terug naar de app.</div>' +
+      'Eigen Regels-pagina: moment toevoegen, hernoem het, vul kcal in, kijk of de totaalregel meedoet en ← Terug naar de app.</div>' +
       '<div class="rknoppen">' +
-      '<button type="button" id="rglmin" data-rglvt="min" aria-label="Balktje inklappen" title="Inklappen naar pilletje">▾</button>' +
       '<button type="button" id="rglgoed" data-rglvt="goed" class="ok" title="Doet het">✓</button>' +
       '<button type="button" id="rglfout" data-rglvt="fout" class="fout" title="Gaat fout">✗</button>' +
       '<span id="rglstatus">nog niet nagekeken</span>' +
       '<button type="button" id="rglterug" data-rglvt="terug" title="Terug naar het Testen-overzicht in de werk-app">Terug</button>' +
+      '<button type="button" id="rglmin" data-rglvt="min" aria-label="Balktje inklappen" title="Inklappen naar pilletje">▾</button>' +
       '<button type="button" id="rglx" data-rglvt="verberg" aria-label="Testbalkje helemaal verbergen" title="Helemaal verbergen — uitslagen blijven bewaard — pilletje onderin brengt het terug">✕</button>' +
       '</div>' +
       '</div>' +
