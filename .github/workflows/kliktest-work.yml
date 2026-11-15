@@ -47,6 +47,10 @@ jobs:
         timeout-minutes: 50
         run: |
           cd versies/tests
+          if [ ! -f kliktest-work.js ]; then
+            echo "kliktest-work.js staat (nog) niet in de publieke repo (komt via de sync) — werk-kliktest overgeslagen."
+            exit 0
+          fi
           node kliktest-work.js
 
       - name: Rapport tonen in de log
