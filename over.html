@@ -27,9 +27,19 @@
   </ul>
   <p class="ov-tekst"><strong>💬 Vragen, ideeën of een foutje gezien?</strong><br>Laat een berichtje achter op de GitHub-pagina van Mijn Eetboek, of stuur gerust een mailtje. Wil je de verdere ontwikkeling steunen? Dat kan via GitHub Sponsors. 🙏</p>
   <a class="ov-btn" href="https://github.com/MrSMimE/eetboek-dev" target="_blank" rel="noopener">💬 Feedback achterlaten op GitHub</a>
-  <button type="button" class="ov-btn" style="background:#5b5a52" data-mail="1">✉️ Liever een mailtje? Tik hier</button>
+  <button type="button" class="ov-btn" style="background:#5b5a52" data-mail="1">✉️ Liever een mailtje? Tik hier = adres kopiëren</button>
 <script>
-  (function(){var d=document.querySelector('[data-mail]');if(d)d.addEventListener('click',function(){location.href='mailto:'+'MrSMimE'+String.fromCharCode(64)+'gmail.com';});})();
+  (function(){
+    var b = document.querySelector('[data-mail]');
+    if (!b) return;
+    var A = 'mrsmime' + '1' + String.fromCharCode(64) + 'gmail' + '.com';
+    function klaar() { b.textContent = '✓ Gekopieerd: plak het in je mail-app'; setTimeout(function(){ b.textContent = '✉️ Liever een mailtje? Tik hier = adres kopiëren'; }, 4000); }
+    b.addEventListener('click', function() {
+      var done = false;
+      try { navigator.clipboard.writeText(A).then(klaar, function(){}); done = true; } catch (e) {}
+      if (!done) { var i = document.createElement('input'); i.value = A; document.body.appendChild(i); i.select(); try { document.execCommand('copy'); klaar(); } catch (e2) {} i.remove(); }
+    });
+  })();
 </script>
   <a class="ov-btn" style="background:#824f4d" href="https://github.com/sponsors/MrSMimE" target="_blank" rel="noopener">🙏 Steun de ontwikkeling (Sponsors)</a>
   <footer class="appfoot"><a href="index.html">← Terug naar de app</a></footer>
