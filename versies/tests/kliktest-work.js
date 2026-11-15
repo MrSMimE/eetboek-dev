@@ -1,3 +1,8 @@
+// v6 (15 nov 2026, wens van de gebruiker): de werk-set is v60-v62 flink gegroeid — vijf nieuwe stappen:
+//   W16 werk-brug (Week volgt Mijn regels: eigen momenten + Nacht, lege dag met linkje), W17 prullenbak bij
+//   Recepten (↩︎ Terugzetten echt werken), W18 andere AI-aanbieder (scherm + overschakelen + terug zonder
+//   één echte aanroep), W19 Testen-blokje in Instellingen (v61.2), W20 werk-uiterlijk v61.3/v62 (Boodschappen
+//   verborgen, 5 kolommen, footer Week+Instellingen, versieregel v62). W0-versie-check nu v6x.
 // v5 (15 nov 2026, wens van de gebruiker): werk-set is verhuisd naar app.html (v61.2/v61.3) — WERK-doel,
 //   W0-versie-check (v61.x) en W3-URL-check omgezet naar app.html; W4 checkt nu óók de Over & Feedback-
 //   footer-link (app-test-work/over.html) en de verborgen Testen-knop; nieuw W15 voor de Over-pagina
@@ -2521,14 +2526,14 @@ async function openTerugzetten(p) {
   });
 
   // ===================== RONDE W — de nieuwe aanpassingen (v58.10 + v59.0), overgenomen uit de kliktest-work v2 =====================
-  await stap(pagina, 'W0 Werk-app (app.html) laadt; VERSION v61.x; TESTVERSIE aan (aparte opslag)', async () => {
+  await stap(pagina, 'W0 Werk-app (app.html) laadt; VERSION v6x (v61/v62); TESTVERSIE aan (aparte opslag)', async () => {
     await pagina.goto(basisUrl + WERK, { waitUntil: 'load' });
     await pagina.waitForTimeout(1800);
     const st = await pagina.evaluate(() => ({
       v: (typeof VERSION === 'undefined') ? '' : String(VERSION),
       testversie: (typeof TESTVERSIE === 'undefined') ? null : !!TESTVERSIE
     }));
-    if (!/v61\./.test(st.v)) throw new Error('VERSION = ' + st.v + ' — geen v61.x');
+    if (!/v6[0-9]/.test(st.v)) throw new Error('VERSION = ' + st.v + ' — geen v6x');
     if (!st.testversie) throw new Error('TESTVERSIE staat niet aan — geen aparte opslag!');
   }, 'body');
 
@@ -2785,6 +2790,156 @@ async function openTerugzetten(p) {
     if (!st.feedback) throw new Error('GitHub-feedback-knop mist');
     if (!st.sponsors) throw new Error('Sponsors-knop mist');
     if (!st.terug) throw new Error('Terug-naar-de-app-link mist in de footer');
+  });
+
+
+
+  await stap(pagina, 'W16 Werk-brug (v60.0): Week volgt Mijn regels — eigen momenten + Nacht zichtbaar; dag zonder momenten krijgt alleen het linkje naar Mijn regels', async () => {
+    await pagina.goto(basisUrl + WERK, { waitUntil: 'load' });
+    await pagina.waitForTimeout(1500);
+    await pagina.evaluate(() => {
+      const lijst = [{ id: 'w16a', naam: 'Boterhammen-test', tijd: 'rond 09:00', norm: true }, { id: 'w16b', naam: 'Warm-test', tijd: 'rond 18:00', norm: false }];
+      localStorage.setItem('eetweek.regels.zelftestwork.v1', JSON.stringify({ zo: lijst, ma: lijst, di: lijst, wo: lijst, do: lijst, vr: lijst, za: lijst }));
+    });
+    await pagina.reload({ waitUntil: 'load' });
+    await pagina.waitForTimeout(1800);
+    const vol = await pagina.evaluate(() => ({ tekst: document.body.textContent, link: !!document.querySelector('a.optbtn[href="regels-zelftest-work.html"]') }));
+    if (!/Boterhammen-test/.test(vol.tekst)) throw new Error('eigen moment "Boterhammen-test" staat niet in de Week');
+    if (!/Nacht/.test(vol.tekst)) throw new Error('Nacht-moment staat niet bij de dagen');
+    if (vol.link) throw new Error('met eigen momenten hoort het "+ Eigen moment maken"-linkje niet te staan');
+    await pagina.evaluate(() => { try { localStorage.removeItem('eetweek.regels.zelftestwork.v1'); } catch (e) {} });
+    await pagina.reload({ waitUntil: 'load' });
+    await pagina.waitForTimeout(1800);
+    const leeg = await pagina.evaluate(() => ({
+      link: !!document.querySelector('a.optbtn[href="regels-zelftest-work.html"]'),
+      tekst: document.body.textContent
+    }));
+    if (!leeg.link) throw new Error('lege dag toont het linkje "+ Eigen moment maken (Mijn regels)" niet');
+    if (/Boterhammen-test/.test(leeg.tekst)) throw new Error('eigen moment staat nog in de Week na het weghalen van Mijn regels');
+  });
+
+  await stap(pagina, 'W17 Prullenbak bij Recepten (v61.0): verwijderd recept staat onderaan en de ↩︎ Terugzetten-knop zet het echt terug', async () => {
+    await pagina.goto(basisUrl + WERK, { waitUntil: 'load' });
+    await pagina.waitForTimeout(1500);
+    const klaar = await pagina.evaluate(() => {
+      try {
+        const KEY = 'eetweek.v1.testversie';
+        var S = JSON.parse(localStorage.getItem(KEY) || '{}');
+        S.recipes = (S.recipes || []).filter(function (r) { return String(r.id) !== 'w17r'; });
+        S.prullen = [{ id: 'w17r', name: 'W17 prullenbak-recept', where: ['extra'], i: [] }];
+        localStorage.setItem(KEY, JSON.stringify(S));
+        return true;
+      } catch (e) { return 'fout: ' + e; }
+    });
+    if (klaar !== true) throw new Error('seed mislukt: ' + klaar);
+    await pagina.reload({ waitUntil: 'load' });
+    await pagina.waitForTimeout(1500);
+    await pagina.evaluate(() => { const t = document.getElementById('tabrec'); if (!t) throw new Error('geen Recepten-tab'); t.click(); });
+    await pagina.waitForTimeout(800);
+    const rec = await pagina.evaluate(() => document.body.textContent);
+    if (!/Prullenbak/.test(rec)) throw new Error('geen 🗑️ Prullenbak onderaan Recepten');
+    if (!/W17 prullenbak-recept/.test(rec)) throw new Error('het verwijderde recept staat niet in de prullenbak');
+    await pagina.evaluate(() => { const b = document.querySelector('[data-act="recback"][data-r="w17r"]'); if (!b) throw new Error('geen ↩︎ Terugzetten-knop in de prullenbak'); b.click(); });
+    await pagina.waitForTimeout(600);
+    const terug = await pagina.evaluate(() => {
+      var S = JSON.parse(localStorage.getItem('eetweek.v1.testversie') || '{}');
+      return { terug: (S.recipes || []).some(function (r) { return String(r.id) === 'w17r'; }), leeg: !(S.prullen || []).length };
+    });
+    if (!terug.terug) throw new Error('recept is niet teruggezet uit de prullenbak');
+    if (!terug.leeg) throw new Error('prullenbak is niet leeg na terugzetten');
+    await pagina.evaluate(() => {
+      try { var S = JSON.parse(localStorage.getItem('eetweek.v1.testversie') || '{}'); S.recipes = (S.recipes || []).filter(function (r) { return String(r.id) !== 'w17r'; }); localStorage.setItem('eetweek.v1.testversie', JSON.stringify(S)); } catch (e) {}
+    });
+  });
+
+  await stap(pagina, 'W18 Andere AI-aanbieder (v61.0): scherm aanwezig en leeg; iets invullen schakelt over, "Test de verbinding" schakelt terug — zonder één echte aanroep', async () => {
+    await pagina.goto(basisUrl + WERK, { waitUntil: 'load' });
+    await pagina.waitForTimeout(1500);
+    await pagina.evaluate(() => { const t = document.getElementById('tabinst'); if (!t) throw new Error('geen Instellingen-tab'); t.click(); });
+    await pagina.waitForTimeout(600);
+    const scherm = await pagina.evaluate(() => {
+      const s = [...document.querySelectorAll('details summary')].find(x => /Andere AI-aanbieder/i.test(x.textContent || ''));
+      const veld = id => { const e = document.getElementById(id); return e ? { aanwezig: true, leeg: String(e.value || '') === '' } : { aanwezig: false, leeg: null }; };
+      return { aanwezig: !!s, base: veld('aiBase'), key: veld('aiKey'), model: veld('aiModel'), nu: (document.getElementById('aiNu') || {}).textContent || '', testKnop: !!document.getElementById('aiTestKnop'), modellenKnop: !!document.getElementById('aiModelsKnop') };
+    });
+    if (!scherm.aanwezig) throw new Error('geen "🌐 Andere AI-aanbieder"-scherm in Instellingen');
+    if (!scherm.base.aanwezig || !scherm.key.aanwezig || !scherm.model.aanwezig) throw new Error('webadres-/sleutel-/model-veld ontbreekt');
+    if (!scherm.base.leeg || !scherm.key.leeg || !scherm.model.leeg) throw new Error('de velden starten niet leeg');
+    if (!/Mistral/.test(scherm.nu)) throw new Error('Nu in gebruik start niet bij Mistral: ' + scherm.nu);
+    if (!scherm.testKnop || !scherm.modellenKnop) throw new Error('test-/modellen-knop mist');
+    await pagina.evaluate(() => { const b = document.getElementById('aiBase'); if (!b) throw new Error('geen veld'); b.value = 'https://voorbeeld.test/v1'; b.dispatchEvent(new Event('input', { bubbles: true })); });
+    await pagina.waitForTimeout(300);
+    const over = await pagina.evaluate(() => ({ nu: (document.getElementById('aiNu') || {}).textContent || '', actief: localStorage.getItem('eetweek.ai.actief') }));
+    if (!/andere aanbieder/i.test(over.nu)) throw new Error('Nu in gebruik springt niet mee na invullen: ' + over.nu);
+    if (over.actief !== 'andere') throw new Error('actieve aanbieder = ' + over.actief + ' (moet "andere" zijn)');
+    await pagina.evaluate(() => { const b = document.createElement('button'); b.type = 'button'; b.textContent = 'Test de verbinding'; document.body.appendChild(b); b.click(); b.remove(); });
+    await pagina.waitForTimeout(300);
+    const terug = await pagina.evaluate(() => ({ nu: (document.getElementById('aiNu') || {}).textContent || '', actief: localStorage.getItem('eetweek.ai.actief') }));
+    if (!/Mistral/.test(terug.nu)) throw new Error('Nu in gebruik springt niet terug naar Mistral: ' + terug.nu);
+    if (terug.actief !== 'mistral') throw new Error('actieve aanbieder = ' + terug.actief + ' (moet "mistral" zijn)');
+    await pagina.evaluate(() => { try { localStorage.removeItem('eetweek.ai.actief'); localStorage.removeItem('eetweek.ai.andere.v1'); } catch (e) {} });
+  });
+
+  await stap(pagina, 'W19 Testen-blokje in Instellingen (v61.2): tussen Mijn data en Bewaren, met test-rondje-knop, Measure-helper erin en balk-terug-knop; testbalkje staat standaard uit', async () => {
+    await pagina.goto(basisUrl + WERK, { waitUntil: 'load' });
+    await pagina.waitForTimeout(1500);
+    await pagina.evaluate(() => { const t = document.getElementById('tabinst'); if (!t) throw new Error('geen Instellingen-tab'); t.click(); });
+    await pagina.waitForTimeout(600);
+    const st = await pagina.evaluate(() => {
+      const g = document.getElementById('grpTesten'), bew = document.getElementById('grpBewaren');
+      const mh = document.getElementById('meethulp');
+      return {
+        blokje: !!g,
+        voorBewaren: !!(g && bew && g.nextElementSibling === bew),
+        openKnop: !!document.getElementById('testOpenKnop'),
+        balkKnop: !!document.getElementById('testBalkKnop'),
+        helper: !!(mh && mh.closest && mh.closest('#testMeethulpPlek')),
+        verberg: sessionStorage.getItem('eetweek.testverberg')
+      };
+    });
+    if (!st.blokje) throw new Error('geen 🧪 Testen-blokje in Instellingen');
+    if (!st.voorBewaren) throw new Error('Testen-blokje staat niet vlak vóór Bewaren & terugzetten');
+    if (!st.openKnop || !st.balkKnop) throw new Error('open-/balk-terug-knop mist in het Testen-blokje');
+    if (!st.helper) throw new Error('Measure-helper is niet verhuisd naar het Testen-blokje');
+    if (st.verberg !== '1') throw new Error('testbalkje staat niet standaard uit (testverberg=' + st.verberg + ')');
+    await pagina.evaluate(() => { const t = document.getElementById('tabweek'); if (!t) throw new Error('geen Week-tab'); t.click(); });
+    await pagina.waitForTimeout(700);
+    const weg = await pagina.evaluate(() => { const b = document.getElementById('testbalk'); return !!(b && b.hidden); });
+    if (!weg) throw new Error('testbalkje staat tóch onderaan de Week-pagina');
+    await pagina.evaluate(() => { const t = document.getElementById('tabinst'); t.click(); });
+    await pagina.waitForTimeout(400);
+    await pagina.evaluate(() => { const k = document.getElementById('testBalkKnop'); if (!k) throw new Error('knop weg'); k.click(); });
+    await pagina.waitForTimeout(500);
+    await pagina.evaluate(() => { const t = document.getElementById('tabweek'); t.click(); });
+    await pagina.waitForTimeout(700);
+    const terug = await pagina.evaluate(() => { const b = document.getElementById('testbalk'); return !!(b && !b.hidden); });
+    if (!terug) throw new Error('testbalkje komt niet terug via de knop in het Testen-blokje');
+    await pagina.evaluate(() => { try { sessionStorage.removeItem('eetweek.testverberg'); } catch (e) {} });
+  });
+
+  await stap(pagina, 'W20 Werk-uiterlijk (v61.3/v62): Boodschappen-tab verborgen, tabbalk 5 kolommen, footer alleen op Week en Instellingen, versieregel "Mijn Eetboek • v62"', async () => {
+    await pagina.goto(basisUrl + WERK, { waitUntil: 'load' });
+    await pagina.waitForTimeout(1500);
+    const bo = await pagina.evaluate(() => { const b = document.getElementById('tabbo'); return !!(b && b.style.display === 'none'); });
+    if (!bo) throw new Error('Boodschappen-tab is niet verborgen');
+    const kol = await pagina.evaluate(() => { const t = document.querySelector('.tabs'); return t ? getComputedStyle(t).gridTemplateColumns.split(' ').length : 0; });
+    if (kol !== 5) throw new Error('tabbalk heeft ' + kol + ' kolommen, geen 5');
+    await pagina.evaluate(() => { const t = document.getElementById('tabweek'); t.click(); });
+    await pagina.waitForTimeout(500);
+    const week = await pagina.evaluate(() => { const f = document.querySelector('.appfoot'); return f ? !f.hidden : null; });
+    if (week !== true) throw new Error('footer staat niet op Week');
+    await pagina.evaluate(() => { const t = document.getElementById('tabinst'); t.click(); });
+    await pagina.waitForTimeout(500);
+    const inst = await pagina.evaluate(() => { const f = document.querySelector('.appfoot'); return f ? !f.hidden : null; });
+    if (inst !== true) throw new Error('footer staat niet op Instellingen');
+    await pagina.evaluate(() => { const t = document.getElementById('tabrec'); t.click(); });
+    await pagina.waitForTimeout(500);
+    const rec = await pagina.evaluate(() => { const f = document.querySelector('.appfoot'); return f ? !f.hidden : null; });
+    if (rec !== false) throw new Error('footer staat óók op Recepten — hoort alleen op Week en Instellingen');
+    await pagina.evaluate(() => { const t = document.getElementById('tabinst'); t.click(); });
+    await pagina.waitForTimeout(500);
+    const vers = await pagina.evaluate(() => document.body.textContent);
+    if (!/Mijn Eetboek • v62/.test(vers)) throw new Error('versieregel "Mijn Eetboek • v62" ontbreekt bij Instellingen');
   });
 
   // opruimen (netjes voor de volgende ronde)
