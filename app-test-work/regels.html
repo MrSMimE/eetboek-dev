@@ -108,7 +108,7 @@
 <div id="regelsview">
     <p style="margin:0 0 10px"><a class="pill" href="index.html">&#8592; Terug naar de app</a></p>
     <h2>Mijn regels</h2>
-    <p class="hint" style="margin:0 0 10px">Elke dag volgt standaard je normale dag (uit Instellingen). Tik een dag aan om eigen eetmomenten in te vullen voor dagen die anders lopen.</p>
+    <p class="hint" style="margin:0 0 10px">Bepaal zelf welke eetmomenten een dag heeft: wat je hier invult, staat op de dagkaart in de Week. Een dag zonder eigen momenten blijft leeg. Zet bij een moment het ⚡-vinkje als de ⚡-knop het moet vullen met je vaste producten.</p>
     <div class="rgl-dagen" id="rglDagen"></div>
     <div id="rglDag"></div>
 </div>
@@ -133,10 +133,12 @@
 .rgl-totaal { margin: 12px 0 0; color: var(--muted); font-size: 14px; }
 .rgl-totaal b { color: var(--fg); }
 .rgl-leeg { color: var(--muted); font-size: 14px; margin: 4px 0 12px; }
+.rgl-mom .rij label.normlbl { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 13px; font-weight: 600; cursor: pointer; }
+.rgl-mom .rij label.normlbl input { width: 18px; height: 18px; flex: none; }
 </style>
 <script>
 (function () {
-  // Regels-pagina (proef, app-test-work): eigen eetmomenten per dag.
+  // Regels-pagina (proef, app-test-work) — v60.0 - 15 nov 17u57: eigen eetmomenten per dag + ⚡-vinkje voor Mijn normale dag.
   // Opslag in eigen sleutel 'eetweek.regels.v1': raakt nooit de echte app-data.
   var KEY = 'eetweek.regels.v1';
   var DAGEN = ['ma', 'di', 'wo', 'do', 'vr', 'za', 'zo'];
@@ -181,7 +183,7 @@
   }
   function renderDag() {
     var lijst = momenten(geselecteerd), h = '<h3>' + DAGNAAM[geselecteerd] + '</h3>';
-    if (!lijst.length) h += '<p class="rgl-leeg">Deze dag volgt je normale dag (uit Instellingen). Voeg hier eigen momenten toe als deze dag anders loopt.</p>';
+    if (!lijst.length) h += '<p class="rgl-leeg">Nog geen eigen momenten op deze dag. Voeg ze hier toe; in de Week blijft deze dag verder leeg.</p>';
     lijst.forEach(function (m) {
       var verw = verwBezig === m.id;
       h += '<div class="rgl-mom" data-mid="' + m.id + '">' +
@@ -190,7 +192,8 @@
         '<input type="text" class="tijd" maxlength="30" autocomplete="off" data-f="tijd" value="' + esc(m.tijd || '') + '" placeholder="Tijd of moment, bijvoorbeeld rond 09:00" aria-label="Tijd of moment">' +
         '<div class="rij"><label for="k' + m.id + '">max kcal</label>' +
         '<input id="k' + m.id + '" type="text" inputmode="numeric" autocomplete="off" data-f="kcal" value="' + (m.kcal != null ? m.kcal : '') + '" aria-label="Maximum in kcal">' +
-        '</div></div>';
+        '</div>' +
+        '<div class="rij"><label class="normlbl"><input type="checkbox" data-f="norm"' + (m.norm ? ' checked' : '') + '> ⚡ in Mijn normale dag — de ⚡-knop vult dit moment met je vaste producten</label></div></div>';
     });
     h += '<div class="seg" style="margin-top:10px"><button type="button" class="pill" data-act="rgltoevoegen">+ Eigen moment toevoegen</button>' +
       (lijst.length ? '<button type="button" class="pill" data-act="rglleeg" style="margin-left:6px">Deze dag leegmaken</button>' : '') + '</div>';
@@ -212,7 +215,7 @@
       return;
     }
     if (el.closest && el.closest('[data-act="rgltoevoegen"]')) {
-      var nwe = { id: 'm' + Date.now().toString(36) + Math.floor(Math.random() * 1000), naam: '', tijd: '', kcal: null };
+      var nwe = { id: 'm' + Date.now().toString(36) + Math.floor(Math.random() * 1000), naam: '', tijd: '', kcal: null, norm: false };
       if (!Array.isArray(data[geselecteerd])) data[geselecteerd] = [];
       data[geselecteerd].push(nwe); verwBezig = null; verwLeegBezig = false; bewaar(data); render();
       var inp = document.querySelector('.rgl-mom[data-mid="' + nwe.id + '"] input[data-f="naam"]'); if (inp) inp.focus();
@@ -222,6 +225,16 @@
       if (verwLeegBezig) { delete data[geselecteerd]; verwLeegBezig = false; verwBezig = null; bewaar(data); render(); }
       else { verwLeegBezig = true; render(); var b = document.querySelector('[data-act="rglleeg"]'); if (b) { b.textContent = 'Echt alles van deze dag weg?'; b.focus(); } }
     }
+  });
+  document.getElementById('regelsview').addEventListener('change', function (ev) {
+    var inp = ev.target; if (!inp.getAttribute || inp.getAttribute('data-f') !== 'norm') return;
+    var doos = inp.closest('.rgl-mom'); if (!doos) return;
+    var mid = doos.getAttribute('data-mid');
+    var lijst = momenten(geselecteerd); var m = null;
+    for (var i = 0; i < lijst.length; i++) if (lijst[i].id === mid) m = lijst[i];
+    if (!m) return;
+    m.norm = !!inp.checked;
+    bewaar(data);
   });
   document.getElementById('regelsview').addEventListener('input', function (ev) {
     var inp = ev.target; if (!inp.getAttribute || !inp.getAttribute('data-f')) return;
