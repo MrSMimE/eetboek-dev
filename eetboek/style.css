@@ -113,7 +113,7 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .tolink { display: block; margin: 6px auto 0; background: none; border: 0; color: var(--accent-text); text-decoration: underline; font-size: 14px; padding: 4px 8px; }
 
 /* v45b.1: 4 brede tabs + tandwiel voor Instellingen */
-.tabs { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin-bottom: 8px; } /* v58.6: zes icoon-tabjes op een rij */
+.tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-bottom: 8px; } /* v62.1: vijf icoon-tabjes op een rij */
 .tab { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 56px; font-size: 12px; padding: 4px 2px; border-radius: 12px; border: none; background: none; font-weight: 700; }
 .tab .ti { font-size: 20px; line-height: 1; }
 .tabs .tab svg { width: 24px; height: 24px; display: block; } /* v58.6: getekende tab-icoontjes in de single */
@@ -707,108 +707,3 @@ table.ingtable .kcal-kruid { color: var(--muted); font-size: 12px; font-weight: 
 .zegstap input { width: 72px; min-height: 44px; border-radius: 10px; border: 1px solid var(--line); padding: 0 10px; background: var(--bg); color: var(--fg); font: inherit; text-align: center; }
 .zegstap select { min-height: 44px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--fg); font: inherit; padding: 0 8px; max-width: 100%; }
 .zegstatus.err { color: #b3261e; background: #fdecea; padding: 10px 12px; border-radius: 10px; white-space: pre-wrap; word-break: break-word; }
-:root[data-theme="dark"] .zegstatus.err { background: #3a2422; color: #ff8a80; }
-:root[data-theme="contrast"] .zegstatus.err { background: var(--soft); color: var(--fg); border: 1px solid var(--line); }
-#weekview details.zegblok { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 0 14px; margin: 8px 0; }
-#weekview details.zegblok > summary { cursor: pointer; font-weight: 700; min-height: 52px; display: flex; align-items: center; list-style: none; font-size: 15px; }
-#weekview details.zegblok > summary::-webkit-details-marker { display: none; }
-#weekview details.zegblok > summary::after { content: ''; width: 9px; height: 9px; border-right: 2px solid var(--muted); border-bottom: 2px solid var(--muted); transform: rotate(45deg); margin-left: auto; flex: none; }
-#weekview details.zegblok p.hint { font-weight: 700; } /* v51.13: tegeltjes in zeg-blok dikgedrukt, geen rondje-i */
-#weekview details.zegblok[open] > summary::after { transform: rotate(-135deg); margin-bottom: -4px; }
-.normaalknop { display: block; width: 100%; min-height: 44px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--accent-text); font-weight: 700; margin-top: 8px; cursor: pointer; font-size: 14px; } /* v49: eigen klasse (géén .toevoegknop) zodat de kliktest-bot de + Toevoegen-knop blijft vinden */
-
-/* v49.2: dag-pillen (⚡/⏪) en ✕ op week-blokjes */
-.pillenrow { display: flex; gap: 8px; margin: 0 0 8px; }
-.dagpill { width: 54px; height: 46px; border: none; background: none; color: var(--fg); border-radius: 14px; font-size: 21px; cursor: pointer; }
-.dagpill[aria-pressed="true"] { background: var(--soft); color: var(--fg); }
-/* per-moment icoontjes (⚡/⏪) rechts op een moment-rij + 🕒 in Instellingen */
-.mico { width: 30px; min-width: 30px; height: 30px; border-radius: 9px; border: 1px solid var(--line); background: var(--surface); color: var(--accent-text); font-size: 14px; cursor: pointer; flex: none; padding: 0 4px; }
-.micos { margin-left: auto; display: flex; gap: 6px; align-items: center; flex: none; }
-.mico.open { border-color: var(--accent); background: var(--soft); }
-.klok { min-width: 30px; height: 30px; border-radius: 9px; border: 1px solid var(--accent); background: var(--surface); color: var(--accent-text); font-size: 14px; cursor: pointer; flex: none; padding: 0 4px; }
-.klok.open { background: var(--accent); color: var(--on-accent); }
-/* twee rustige zones (grijs bestaand / zacht groen nieuw) */
-.zone { background: rgba(127, 127, 127, 0.12); border-radius: 12px; padding: 8px 10px 4px; margin-top: 8px; }
-.zone.groen { background: var(--soft); }
-.zonekop { margin: 0 0 4px; font-size: 11px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; color: var(--accent-text); }
-.zrow { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 3px 0; font-size: 14px; }
-.zrow .nm { font-weight: 600; overflow-wrap: anywhere; }
-.zrow .nm.weg { text-decoration: line-through; opacity: .5; }
-.zbtn { min-width: 28px; height: 28px; border-radius: 8px; border: 1px solid var(--accent); background: var(--surface); color: var(--accent-text); font-size: 14px; font-weight: 700; cursor: pointer; flex: none; padding: 0 6px; }
-.zbtn.aan { background: var(--accent); color: var(--on-accent); }
-.zbtn.wegb { border-color: var(--weg); color: var(--weg); background: transparent; }
-.eatrow { display: flex; align-items: center; gap: 4px; width: 100%; }
-.eatrow > .chip { flex: 1; min-width: 0; }
-.wkdel { flex: none; min-width: 44px; min-height: 44px; border: 0; background: none; color: var(--muted); font-size: 15px; font-weight: 700; cursor: pointer; border-radius: 10px; }
-.wkdel.sure { color: #b91c1c; border: 1px solid #b91c1c; font-size: 12px; padding: 0 8px; width: auto; }
-:root[data-theme="dark"] .wkdel.sure { color: #ff8a80; border-color: #ff8a80; }
-:root[data-theme="contrast"] .wkdel.sure { color: var(--weg); border-color: var(--line); }
-
-
-/* v56.4 middagronde: alle rij-lijstjes/kaders volgen de Producten-stijl (één doorlopend blok, alleen buitenste rand/vlak) */
-.tnotelist { gap: 0; }
-.tnote, .wkitem, .inggrprow { border: none !important; border-radius: 0; background: none; margin: 0; border-top: 1px solid var(--line); }
-.wkitem.vast { background: var(--soft); }
-details.ingdet { border: none !important; border-left: 2px solid var(--line); border-radius: 0; background: none; margin-top: 6px; padding: 0 0 6px 10px; }
-#gemview details.per, #instview details.per, .khgrp details.per { border: none !important; border-top: 1px solid var(--line); border-radius: 0; background: none; box-shadow: none; }
-#gemview .card, .khgrp .card { box-shadow: none; }
-.prod2 .seg, .prod2 .seg .pill { background: var(--surface); }
-
-/* v56.6: doorklik-onderdelen exact als productrijen: geen vlak/rand per regel, alleen dun lijntje */
-#weekview details.per, #gemview details.per, #instview details.per, .khgrp details.per { border: none !important; border-radius: 0; background: none; margin-top: 0; border-top: 1px solid var(--line); }
-.khgrp .card { background: none !important; border: none !important; border-radius: 0; padding: 0; margin-top: 0; border-top: 1px solid var(--line); }
-.opt, .instrow, button.btn[data-kaart-open] { border: none !important; border-radius: 0; background: none; margin-top: 0; border-top: 1px solid var(--line); text-align: left; justify-content: flex-start; }
-
-/* v56.7 - 13 nov 15:31: algemene basisstijl uitklap/doorklik-rijen = productrij (alleen lijntje) */
-details:not(.pgrp):not(.instgrp):not(.khgrp), .card, .per, .opt, .instrow, .wkitem, .tnote, .inggrprow, button.btn[data-kaart-open] { background: transparent !important; border: none !important; box-shadow: none !important; border-radius: 0 !important; border-top: 1px solid var(--line) !important; }
-.pgrp, .instgrp, .khgrp { background: var(--surface) !important; border: 1px solid var(--line) !important; border-radius: 14px !important; box-shadow: none !important; } /* v57: .sheet (fullscreen-overlay) eruit — kreeg zo een rand/vlak om zichzelf */
-.top .titlerij { align-items: center; min-height: 44px; }
-.titlerij h1 { margin: 0; }
-.titlerij .themabar { margin-left: auto; }
-
-/* v56.8 - 13 nov 16:01: buitenste uitklap-groepen ook vlak; week dagdeel/moment als strakke rij met pil rechts */
-.pgrp, .instgrp, .khgrp { background: transparent !important; border: none !important; border-radius: 0 !important; box-shadow: none !important; border-top: 1px solid var(--line) !important; }
-.pgrp > summary, .instgrp > summary, .khgrp > summary { background: none !important; }
-.dagdeel, .dkop, .moment { background: transparent !important; border: none !important; border-radius: 0 !important; box-shadow: none !important; border-top: 1px solid var(--line) !important; }
-.dagdeel-tel, .moment .cnt, .gcnt, .cn { margin-left: auto; background: var(--soft); color: var(--fg); border-radius: 99px; padding: 0 9px; min-width: 22px; text-align: center; font-size: 13px; font-weight: 700; }
-.moment .mdot { margin-left: auto; width: 10px; height: 10px; padding: 0; border-radius: 50%; flex: none; }
-.moment .mdot.vol { background: var(--fg); }
-.moment .mdot.leeg { background: transparent; border: 2px solid var(--weg); } /* v57.1: leeg stipje = rondje in de weg-kleur (licht #A95042, donker/nacht #E08577) */
-
-/* v56.9 - 13 nov 16:19: twee herbruikbare klassen, zodat je zelf in je HTML-editor kunt wisselen */
-/* .vlak-knop = onderdeel mét zacht vlak + rand (actieknoppen zoals 'Week kopiëren', groepskaders) */
-.vlak-knop { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; }
-/* .platte-rij = vlakke doorklik-rij, géén vlak/rand, alleen een dun scheidingslijntje ertussen */
-.platte-rij { background: transparent; border: none; border-radius: 0; box-shadow: none; border-top: 1px solid var(--line); }
-/* v57.6: meet-hulpje — zwevend zwart meet-blokje onderaan, boven alles (ook boven sheets, z-index 20) */
-#meetblok { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(8px + env(safe-area-inset-bottom, 0px)); z-index: 60; background: #111; color: #fff; font-size: 11px; line-height: 1.35; padding: 6px 10px; border-radius: 8px; max-width: 94vw; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,.45); font-family: inherit; }
-/* v57.6: stijlkeuze per pagina — subtiel grijs ▼ bij elk groepje + kleine keuze-rij */
-.stijlpijl { border: none; background: none; color: var(--muted); font-size: 11px; padding: 0 2px 0 6px; cursor: pointer; vertical-align: middle; }
-.stijlkeuze { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 2px 0 8px; font-size: 13px; color: var(--muted); }
-/* v57.6: stijl 'blok' = de rijen in die pagina als zachte blokjes (vlak-knop-stijl) ipv plat */
-.stijl-blok details:not(.pgrp):not(.instgrp):not(.khgrp), .stijl-blok .card, .stijl-blok .per, .stijl-blok .opt, .stijl-blok .instrow, .stijl-blok .wkitem, .stijl-blok .tnote, .stijl-blok .inggrprow, .stijl-blok button.btn[data-kaart-open] { background: var(--surface) !important; border: 1px solid var(--line) !important; border-radius: 12px !important; box-shadow: none !important; margin-top: 8px !important; }
-
-/* v56.9: groepsblokken op de Producten-pagina (#prijsview .pgrp, incl. Label-blokken) houden hun zachte vlak + kader */
-#prijsview .pgrp, #prijsview .pgrp.lblblok { background: var(--surface) !important; border: 1px solid var(--line) !important; border-radius: 14px !important; box-shadow: none !important; }
-
-/* v62 werk: versieregel beter leesbaar in het Extreem-thema */
-:root[data-theme="contrast"] #appversie { color: #F7E4D0 !important; font-weight: 700; } /* v62: de app zet zelf donkere accent-kleur op de versieregel — die wint van gewone CSS, daarom !important */
-
-
-/* ===== v62 gebruikers: leesbaar op kleinere telefoons ===== */
-@media (max-width: 370px) {
-  body { font-size: 15px; }
-  .wrap { padding-inline: 10px; }
-  .top h1 { font-size: 19px; margin: 0 0 10px; }
-  .tabs { gap: 3px; }
-  .hint { font-size: 13px; }
-  .instrow { font-size: 16px; min-height: 52px; }
-}
-@media (max-width: 340px) {
-  body { font-size: 14.5px; }
-  .wrap { padding-inline: 8px; }
-  .tabs { gap: 2px; }
-  .tab { min-height: 48px; }
-  .tabs .tab svg, .tab .ti { width: 20px; height: 20px; font-size: 17px; }
-  .top h1 { font-size: 17px; }
-}
