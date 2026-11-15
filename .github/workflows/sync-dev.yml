@@ -109,6 +109,12 @@ jobs:
             rsync -a "${{ env.SOURCE_DIR }}/.gitignore" ./.gitignore
           fi
 
+      - name: Houd de root-testversie (index.html) vers
+        if: steps.check.outputs.should_sync == 'true'
+        run: |
+          cp "versies/opdeling-test/index-zelftest.html" "./index.html"
+          echo "Root-index.html bijgewerkt vanuit versies/opdeling-test."
+
       - name: Commit en push rechstreeks naar default branch (zonder PR)
         if: steps.check.outputs.should_sync == 'true'
         run: |
