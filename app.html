@@ -480,7 +480,7 @@
     ok.push(t.indexOf(ANKER_ACC) !== -1);
     var V613 = "  (function () { // v61.3 werk: Boodschappen-tab tijdelijk weg voor gebruikers; Eetmomenten + Over & Feedback alleen op Week en Instellingen\n" +
 "    var bo = $('tabbo'); if (bo) bo.style.display = 'none';\n" +
-"    var st = document.createElement('style'); st.textContent = '.tabs{grid-template-columns:repeat(5,1fr)}'; document.head.appendChild(st);\n" +
+"    var st = document.createElement('style'); st.textContent = '.tabs{grid-template-columns:repeat(5,1fr)}:root[data-theme=\"contrast\"] #appversie{color:#F7E4D0;font-weight:700}'; document.head.appendChild(st);\n" +
 "    var foot = document.querySelector('.appfoot');\n" +
 "    var pasVoet = function () {\n" +
 "      if (!foot) return;\n" +
