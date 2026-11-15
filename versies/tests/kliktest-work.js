@@ -1,3 +1,7 @@
+// v4 (15 nov 2026, wens van de gebruiker): vier extra W-stappen — W11 kaartje-knoppen (▾ pilletje,
+//   pilletje open, ✕ permanent weg), W12 proef-mapje app-test-work (overzichtspagina + Regels-link in de
+//   footer + veiligheidsschakelaar), W13 thema-check van het kaartje (donker/contrast), W14 nieuw eigen
+//   moment begint met lege naam- en kcal-velden.
 // Kliktest-work voor MrSMimE/eetboek-dev — de VOLLEDIGE echte kliktest, nu op de werk-set.
 // v3 (15 nov 2026, wens van de gebruiker): "gewoon de kliktest kopi\u00ebren zonder AI plus de nieuwe dingen" —
 // dit is de echte kliktest.js (kern + rondes 1 t/m 7 + v58.x), mét de volgende aanpassingen:
@@ -2649,6 +2653,104 @@ async function openTerugzetten(p) {
     }));
     if (!st.test) throw new Error('geen test-opslag / TESTVERSIE uit');
     if (st.echt) throw new Error('eetweek.v1 bestaat in de werk-context — de werk-app heeft de echte opslag aangeraakt!');
+  });
+
+
+
+  await stap(pagina, 'W11 Kaartje-knoppen: ▾ klapt naar pilletje, pilletje weer open, ✕ verbergt permanent (vlag blijft na herladen)', async () => {
+    await pagina.goto(basisUrl + REGELS, { waitUntil: 'load' });
+    await pagina.waitForTimeout(1200);
+    await pagina.evaluate(() => { try { localStorage.removeItem('eetweek.testronde'); localStorage.removeItem('eetweek.regels.kaartje'); } catch (e) {} });
+    await pagina.reload({ waitUntil: 'load' });
+    await pagina.waitForTimeout(1500);
+    const kaart0 = await pagina.evaluate(() => !!(document.getElementById('rgltest') && !document.getElementById('rgltest').hidden));
+    if (!kaart0) throw new Error('kaartje begint niet zichtbaar bij een vers rondje');
+    await pagina.evaluate(() => { const m = document.getElementById('rglmin'); if (!m) throw new Error('geen ▾ (#rglmin)'); m.click(); });
+    await pagina.waitForTimeout(300);
+    const pil = await pagina.evaluate(() => { const d = document.getElementById('rgltest'), p = document.getElementById('rglpill'); return { dicht: !!(d && d.hidden), open: !!(p && !p.hidden), tekst: p ? p.textContent : '' }; });
+    if (!pil.dicht || !pil.open) throw new Error('▾ klapt het kaartje niet in tot pilletje');
+    if (!/van 1 ▸/.test(pil.tekst || '')) throw new Error('pilletje-tekst klopt niet: ' + pil.tekst);
+    await pagina.evaluate(() => { const p = document.getElementById('rglpill'); if (!p) throw new Error('geen pilletje'); p.click(); });
+    await pagina.waitForTimeout(300);
+    const weer = await pagina.evaluate(() => !!(document.getElementById('rgltest') && !document.getElementById('rgltest').hidden));
+    if (!weer) throw new Error('pilletje opent het kaartje niet weer');
+    await pagina.evaluate(() => { const x = document.getElementById('rglx'); if (!x) throw new Error('geen ✕ (#rglx)'); x.click(); });
+    await pagina.waitForTimeout(300);
+    const weg = await pagina.evaluate(() => ({ kaart: !!(document.getElementById('rgltest') && document.getElementById('rgltest').hidden), pil: !!(document.getElementById('rglpill') && document.getElementById('rglpill').hidden), vlag: localStorage.getItem('eetweek.regels.kaartje') }));
+    if (!weg.kaart || !weg.pil) throw new Error('✕ verbergt kaartje + pilletje niet');
+    if (weg.vlag !== 'weg') throw new Error('weg-vlag niet gezet: ' + weg.vlag);
+    await pagina.reload({ waitUntil: 'load' });
+    await pagina.waitForTimeout(1500);
+    const nogWeg = await pagina.evaluate(() => { const d = document.getElementById('rgltest'), p = document.getElementById('rglpill'); return !!((d && d.hidden) && (p && p.hidden)); });
+    if (!nogWeg) throw new Error('kaartje kwam terug na herladen — ✕ is niet permanent');
+  });
+
+  await stap(pagina, 'W12 Proef-mapje app-test-work: overzichtspagina (incl. Regels-link), Regels-link in de footer, veiligheidsschakelaar leidt eetweek.v1 om', async () => {
+    await pagina.goto(basisUrl + 'app-test-work/overzicht.html', { waitUntil: 'load' });
+    await pagina.waitForTimeout(700);
+    const ovw = await pagina.evaluate(() => ({
+      kop: (document.querySelector('.ovw-kop') || { textContent: '' }).textContent,
+      links: [...document.querySelectorAll('.ovw-lijst a')].map(a => a.getAttribute('href')),
+      regels: !!document.querySelector('.ovw-lijst a[href="regels.html"]')
+    }));
+    if (!/app-test-work/i.test(ovw.kop || '')) throw new Error('overzicht-kop klopt niet: ' + ovw.kop);
+    if (ovw.links.length < 8) throw new Error('overzicht heeft maar ' + ovw.links.length + ' links, geen 8');
+    if (!ovw.regels) throw new Error('overzicht mist de Regels-link');
+    await pagina.goto(basisUrl + 'app-test-work/index.html', { waitUntil: 'load' });
+    await pagina.waitForTimeout(1500);
+    const foot = await pagina.evaluate(() => !!document.querySelector('footer a[href="regels.html"], footer a[href$="regels.html"]'));
+    if (!foot) throw new Error('proef-app mist de Regels-link in de footer');
+    const schakelaar = await pagina.evaluate(() => {
+      var geland = '';
+      try {
+        localStorage.setItem('eetweek.v1', 'bot-proef');
+        geland = (localStorage.getItem('eetweek.v1.testversie') !== null) ? 'testversie' : ((localStorage.getItem('eetweek.v1') !== null) ? 'echt' : 'geen');
+      } catch (e) { geland = 'fout: ' + e; }
+      try { localStorage.removeItem('eetweek.v1'); localStorage.removeItem('eetweek.v1.testversie'); } catch (e) {}
+      return geland;
+    });
+    if (schakelaar !== 'testversie') throw new Error('veiligheidsschakelaar leidt eetweek.v1 NIET om naar eetweek.v1.testversie (geland in: ' + schakelaar + ')');
+  });
+
+  await stap(pagina, 'W13 Kaartje volgt het thema: donker en extreem-contrast gebruiken app-kleuren (geen vast #111)', async () => {
+    await pagina.goto(basisUrl + REGELS + '#kaartje', { waitUntil: 'load' });
+    await pagina.waitForTimeout(1500);
+    const donker = await pagina.evaluate(() => {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      const d = document.getElementById('rgltest');
+      if (!d) throw new Error('geen kaartje');
+      return getComputedStyle(d).backgroundColor;
+    });
+    if (/rgb\(17, ?17, ?17\)/i.test(donker)) throw new Error('donker thema: kaartje blijft vast #111 (' + donker + ') i.p.v. app-kleuren');
+    const contrast = await pagina.evaluate(() => {
+      document.documentElement.setAttribute('data-theme', 'contrast');
+      const d = document.getElementById('rgltest');
+      return getComputedStyle(d).backgroundColor;
+    });
+    if (contrast === donker) throw new Error('contrast-thema geeft dezelfde kleur als donker (' + contrast + ')');
+    await pagina.evaluate(() => { document.documentElement.removeAttribute('data-theme'); });
+  });
+
+  await stap(pagina, 'W14 Nieuw eigen moment begint met lege velden (lege naam en lege kcal)', async () => {
+    await pagina.goto(basisUrl + REGELS, { waitUntil: 'load' });
+    await pagina.waitForTimeout(1200);
+    await pagina.evaluate(() => { const b = document.querySelector('[data-act="rgltoevoegen"]'); if (!b) throw new Error('knop weg'); b.click(); });
+    await pagina.waitForTimeout(400);
+    const leeg = await pagina.evaluate(() => {
+      const m = document.querySelector('.rgl-mom');
+      if (!m) throw new Error('geen nieuw moment');
+      const n = m.querySelector('input[data-f="naam"]'), k = m.querySelector('input[data-f="kcal"]');
+      if (!n || !k) throw new Error('naam- of kcal-invoer ontbreekt');
+      return { naam: n.value, kcal: k.value };
+    });
+    if (leeg.naam !== '') throw new Error('naam begint niet leeg: "' + leeg.naam + '"');
+    if (leeg.kcal !== '') throw new Error('kcal begint niet leeg: "' + leeg.kcal + '"');
+    await pagina.evaluate(() => { const v = document.querySelector('.rgl-mom .verw'); if (v) v.click(); });
+    await pagina.waitForTimeout(300);
+    await pagina.evaluate(() => { const v = document.querySelector('.rgl-mom .verw'); if (v) v.click(); });
+    await pagina.waitForTimeout(400);
+    const weg = await pagina.evaluate(() => !document.querySelector('.rgl-mom'));
+    if (!weg) throw new Error('moment is niet verwijderd na de dubbel-tik');
   });
 
   // opruimen (netjes voor de volgende ronde)
