@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mijn Eetboek — Over &amp; Feedback</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  .ov-wrap { max-width: 560px; margin: 0 auto; padding: 16px; }
+  .ov-kop { font-size: 22px; font-weight: 700; margin: 8px 0 6px; }
+  .ov-tekst { line-height: 1.5; }
+  .ov-lijst { list-style: none; margin: 14px 0; padding: 0; }
+  .ov-lijst li { margin: 10px 0; padding: 12px 14px; border-radius: 12px; background: var(--surface, #f5f2eb); border: 1px solid var(--line, #d5ccc0); }
+  .ov-lijst .ov-t { font-weight: 600; }
+  .ov-lijst small { display: block; margin-top: 2px; line-height: 1.45; }
+  .ov-btn { display: block; margin: 16px 0 6px; padding: 14px 16px; border-radius: 12px; background: #2f6b66; color: #fff; text-decoration: none; text-align: center; font-weight: 600; font-size: 17px; }
+</style>
+</head>
+<body>
+<div class="ov-wrap">
+  <div class="ov-kop">ℹ️ Over Mijn Eetboek</div>
+  <p class="ov-tekst">Mijn Eetboek helpt je om je weekmenu, vaste eetmomenten, recepten, voorraad en boodschappenlijst overzichtelijk bij te houden.</p>
+  <ul class="ov-lijst">
+    <li><span class="ov-t">🔒 100% van jou</span><small>Al je gegevens en recepten blijven veilig lokaal op je eigen apparaat staan (geen account nodig). Maak af en toe een reservekopie via Bewaren &amp; terugzetten.</small></li>
+    <li><span class="ov-t">🤖 Eigen AI-koppeling (optioneel)</span><small>Wil je foto's van etiketten of bonnen laten uitlezen? Vul bij Instellingen je eigen Mistral-sleutel in, of kies AI-instellingen voor andere aanbieders voor bijv. Google Gemini of OpenAI.</small></li>
+    <li><span class="ov-t">📱 Gebruik als app</span><small>Open deze pagina op je telefoon en kies in je browsermenu voor 'Zet op beginscherm' voor de beste ervaring.</small></li>
+  </ul>
+  <p class="ov-tekst"><strong>💬 Vragen, ideeën of een foutje gezien?</strong><br>Laat een berichtje achter op de GitHub-pagina van Mijn Eetboek, of stuur gerust een mailtje. Wil je de verdere ontwikkeling steunen? Dat kan via GitHub Sponsors. 🙏</p>
+  <a class="ov-btn" href="https://github.com/MrSMimE/eetboek-dev" target="_blank" rel="noopener">💬 Feedback achterlaten op GitHub</a>
+  <button type="button" class="ov-btn" style="background:#5b5a52" data-mail="1">✉️ Liever een mailtje? Tik hier = adres kopiëren</button>
+<script>
+  (function(){
+    var b = document.querySelector('[data-mail]');
+    if (!b) return;
+    var A = 'mrsmime' + '1' + String.fromCharCode(64) + 'gmail' + '.com';
+    function klaar() { b.textContent = '✓ Gekopieerd: plak het in je mail-app'; setTimeout(function(){ b.textContent = '✉️ Liever een mailtje? Tik hier = adres kopiëren'; }, 4000); }
+    b.addEventListener('click', function() {
+      var done = false;
+      try { navigator.clipboard.writeText(A).then(klaar, function(){}); done = true; } catch (e) {}
+      if (!done) { var i = document.createElement('input'); i.value = A; document.body.appendChild(i); i.select(); try { document.execCommand('copy'); klaar(); } catch (e2) {} i.remove(); }
+    });
+  })();
+</script>
+  <a class="ov-btn" style="background:#3f5d3a" href="https://mrsmime.github.io/eetboek-dev/download.html">⬇️ De app downloaden (offline / als echte app)</a>
+  <a class="ov-btn" style="background:#824f4d" href="https://github.com/sponsors/MrSMimE" target="_blank" rel="noopener">🙏 Steun de ontwikkeling (Sponsors)</a>
+  <footer class="appfoot"><a href="index.html">← Terug naar de app</a></footer>
+</div>
+</body>
+</html>
