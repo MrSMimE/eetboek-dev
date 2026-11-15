@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mijn Eetboek — Recepten</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+<div class="top">
+    <div class="titlerij">
+      <h1>&#127829;&#65039; Mijn Eetboek</h1>
+      <!-- v56.2: thema-schakelaar in de titelbalk op élke pagina -->
+      <div class="themabar" id="themabar">
+        <button type="button" data-theme-set="light" aria-pressed="false" aria-label="Licht">&#9728;&#65039;</button>
+        <button type="button" data-theme-set="dark" aria-pressed="false" aria-label="Donker">&#127769;</button>
+        <button type="button" data-theme-set="contrast" aria-pressed="false" aria-label="Extreem contrast">&#9680;</button>
+      </div>
+    </div>
+<!-- v58.6: tabbalk ín de kop (.top), onder de titelrij -->
+<nav class="bottomnav">
+  <!-- Week (agenda) -->
+  <a href="index.html" aria-label="Week">
+    <span class="ico">
+      <svg width="24" height="24" viewBox="0 0 64 64" fill="none" style="vertical-align: middle;">
+        <rect x="10" y="14" width="44" height="42" rx="8" fill="#FAF6EE" stroke="#B58969" stroke-width="3.5"/>
+        <path d="M10 22C10 17.5817 13.5817 14 18 14H46C50.4183 14 54 17.5817 54 22V26H10V22Z" fill="#C97B63"/>
+        <line x1="22" y1="9" x2="22" y2="18" stroke="#9A6F50" stroke-width="4" stroke-linecap="round"/>
+        <line x1="42" y1="9" x2="42" y2="18" stroke="#9A6F50" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="22" cy="36" r="2.8" fill="#B58969"/>
+        <circle cx="32" cy="36" r="2.8" fill="#85997E"/>
+        <circle cx="42" cy="36" r="2.8" fill="#B58969"/>
+        <circle cx="22" cy="46" r="2.8" fill="#B58969"/>
+        <circle cx="32" cy="46" r="2.8" fill="#B58969"/>
+      </svg>
+    </span>
+  </a>
+  <!-- Recepten (bord met bestek) -->
+  <a href="recepten.html" class="active" aria-label="Recepten">
+    <span class="ico">
+      <svg width="24" height="24" viewBox="0 0 64 64" fill="none" style="vertical-align: middle;">
+        <circle cx="32" cy="34" r="18" fill="#FAF6EE" stroke="#B58969" stroke-width="3.5"/>
+        <circle cx="32" cy="34" r="11" stroke="#D6C7B2" stroke-width="2.5"/>
+        <line x1="10" y1="18" x2="10" y2="48" stroke="#9A6F50" stroke-width="3.5" stroke-linecap="round"/>
+        <path d="M7 18V27C7 29 13 29 13 27V18" stroke="#9A6F50" stroke-width="3" stroke-linecap="round"/>
+        <path d="M54 18V48M54 18C57 21 57 28 54 31" stroke="#9A6F50" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </span>
+  </a>
+  <!-- Producten (voorraaddoosje) -->
+  <a href="producten.html" aria-label="Producten">
+    <span class="ico">
+      <svg width="24" height="24" viewBox="0 0 64 64" fill="none" style="vertical-align: middle;">
+        <rect x="12" y="20" width="40" height="34" rx="6" fill="#C9A382" stroke="#9A6F50" stroke-width="3.5"/>
+        <path d="M10 18C10 15.7909 11.7909 14 14 14H50C52.2091 14 54 15.7909 54 18V23H10V18Z" fill="#B58969" stroke="#9A6F50" stroke-width="3"/>
+        <rect x="25" y="30" width="14" height="6" rx="3" fill="#FAF6EE"/>
+      </svg>
+    </span>
+  </a>
+  <!-- Kookhulp (koksmuts) -->
+  <a href="kookhulp.html" aria-label="Kookhulp">
+    <span class="ico">
+      <svg width="24" height="24" viewBox="0 0 64 64" fill="none" style="vertical-align: middle;">
+        <path d="M18 36C13 36 10 31.5 10 27C10 22 14 18.5 18.5 18.5C20.5 13 26 10 32 10C38 10 43.5 13 45.5 18.5C50 18.5 54 22 54 27C54 31.5 51 36 46 36V48C46 50.2 44.2 52 42 52H22C19.8 52 18 50.2 18 48V36Z" fill="#FAF6EE" stroke="#B58969" stroke-width="3.5" stroke-linejoin="round"/>
+        <line x1="18" y1="43" x2="46" y2="43" stroke="#C9A382" stroke-width="3"/>
+      </svg>
+    </span>
+  </a>
+
+  <!-- Instellingen (tandwiel) -->
+  <a href="instellingen.html" aria-label="Instellingen">
+    <span class="ico">
+      <svg width="24" height="24" viewBox="0 0 64 64" fill="none" style="vertical-align: middle;">
+        <g stroke="#9A6F50" stroke-width="6">
+          <line x1="44" y1="32" x2="52" y2="32"/>
+          <line x1="40.5" y1="40.5" x2="46.2" y2="46.2"/>
+          <line x1="32" y1="44" x2="32" y2="52"/>
+          <line x1="23.5" y1="40.5" x2="17.8" y2="46.2"/>
+          <line x1="20" y1="32" x2="12" y2="32"/>
+          <line x1="23.5" y1="23.5" x2="17.8" y2="17.8"/>
+          <line x1="32" y1="20" x2="32" y2="12"/>
+          <line x1="40.5" y1="23.5" x2="46.2" y2="17.8"/>
+        </g>
+        <circle cx="32" cy="32" r="13" fill="#9A6F50"/>
+        <circle cx="32" cy="32" r="8" fill="#B58969"/>
+        <circle cx="32" cy="32" r="4" fill="#FAF6EE"/>
+      </svg>
+    </span>
+  </a>
+</nav>
+  </div>
+  <div id="banner"></div>
+<div id="recview">
+<!-- SECTIE: Recepten (recview) — doorklik-rijen hier gebruiken .platte-rij -->
+    <!-- Knoppen bovenaan -->
+    <button class="btn main" style="width:100%;margin-top:6px" data-act="recnew">Nieuw recept</button>
+    <button class="btn" style="width:100%;margin-top:8px" type="button" data-kaart-open="snelhulp">💡 3 ideeën uit mijn recepten</button>
+
+    <!-- Zoekveld -->
+    <div class="rowx" style="margin-top:8px">
+      <input id="recq" class="note" type="text" maxlength="80" autocomplete="off" placeholder="Recept of ingrediënt zoeken…" aria-label="Recepten zoeken">
+    </div>
+
+    <!-- Portie kiezer -->
+    <div class="chiprow" style="margin-top:10px;align-items:center">
+      <span class="hint" style="margin:0 6px 0 0">Portie</span>
+      <button class="fchip" data-act="recmult" data-v="1" aria-pressed="true">×1</button>
+      <button class="fchip" data-act="recmult" data-v="2" aria-pressed="false">×2</button>
+      <button class="fchip" data-act="recmult" data-v="3" aria-pressed="false">×3</button>
+      <button class="fchip" data-act="recmult" data-v="4" aria-pressed="false">×4</button>
+    </div>
+
+    <!-- Recepten lijst (wordt gevuld door JS) -->
+    <div id="reclist"></div>
+  </div>
+
+</div>
+
+<div class="sheet" id="addsheet" hidden>
+  <div class="scrim" data-act="addclose"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="addt">
+    <div class="phead">
+      <button class="back xbtn" data-act="addclose" aria-label="Sluiten">✕</button>
+      <div>
+        <h2 id="addt">Iets toevoegen</h2>
+        <p>Wat wil je toevoegen?</p>
+      </div>
+    </div>
+    <div class="pbody">
+      <button class="opt" data-act="addgo" data-v="kbon"><span class="on">📸 Kassabon<small>Foto van je bon — prijzen en producten in één keer</small></span></button>
+      <button class="opt" data-act="addgo" data-v="zelf"><span class="on">✏️ Zelf typen<small>Leeg formulier, alles met de hand invullen</small></span></button>
+      <p class="hint">Verder, klein en stil:</p>
+      <p style="text-align:center;margin:6px 0 0">
+        <button class="tolink" style="display:inline;margin:0 auto" data-act="addgo" data-v="fromrec">🍽️ Uit recepten</button>
+        &nbsp;·&nbsp;
+        <button class="tolink" style="display:inline;margin:0 auto" data-act="addgo" data-v="prcopy">📋 Kopieer prijzen</button>
+      </p>
+      <button class="btn" style="width:100%;margin-top:10px" data-act="addclose">✕ Toch niet</button>
+    </div>
+  </div>
+</div>
+
+<!-- Variant C: Sheet Lijst plakken — welke lijst heb je? -->
+
+<div class="sheet" id="basheet" hidden>
+  <div class="scrim" data-act="addback"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="bat">
+    <div class="phead">
+      <button class="back xbtn" data-act="addback" aria-label="Terug naar het keuzescherm">✕</button>
+      <div>
+        <h2 id="bat">Bewaren alles</h2>
+        <p>Wat wil je doen?</p>
+      </div>
+    </div>
+    <div class="pbody">
+      <button class="back" style="margin:0 0 4px -8px" data-act="addback">‹ Terug naar het keuzescherm</button>
+      <button class="opt" data-act="addgo" data-v="bestand"><span class="on">💾 Bestand bewaren<small>Volledige reservekopie als bestand op je apparaat</small></span></button>
+      <button class="opt" data-act="addgo" data-v="kopieer"><span class="on">📋 Kopiëren<small>De reservekopie als tekst, om zelf ergens te plakken</small></span></button>
+      <button class="opt" data-act="addgo" data-v="uitbestand"><span class="on">📂 Uit bestand terugzetten<small>Een eerder bewaard bestand kiezen en terugzetten</small></span></button>
+      <button class="opt" data-act="addgo" data-v="plakken"><span class="on">📋 Plakken en terugzetten<small>Een gekopieerde reservekopie plakken en terugzetten</small></span></button>
+      <button class="btn" style="width:100%;margin-top:10px" data-act="addback">✕ Toch niet</button>
+    </div>
+  </div>
+</div>
+
+<!-- Variant C: Sheet Terugzetten — uit bestand of plakken -->
+
+<div class="sheet" id="bwsheet" hidden>
+  <div class="scrim" data-act="addclose"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="bwt">
+    <div class="phead">
+      <button class="back xbtn" data-act="addclose" aria-label="Sluiten">✕</button>
+      <div>
+        <h2 id="bwt">Bewaren</h2>
+        <p>Wat wil je bewaren?</p>
+      </div>
+    </div>
+    <div class="pbody">
+      <button class="opt" data-act="addsub" data-v="basheet"><span class="on">💾 Bewaren alles<small>Volledige reservekopie — heel je boek in één keer</small></span></button>
+      <button class="opt" data-act="addgo" data-v="week"><span class="on">📅 Bewaren week<small>Alleen je weekdagen apart</small></span></button>
+      <button class="opt" data-act="addgo" data-v="recepten"><span class="on">📖 Bewaren recepten<small>Alleen je recepten apart</small></span></button>
+      <button class="opt" data-act="addgo" data-v="prodcsv"><span class="on">📊 Producten als tabel (CSV)<small>Opent in Excel; bewerk en lees het weer in via Plakken of bestand kiezen</small></span></button>
+      <button class="opt" data-act="addgo" data-v="producten"><span class="on">🛖 Bewaren producten<small>Producten + prijzen apart — dit is de oude Export</small></span></button>
+      <p class="hint zz">Alles staat alleen op dit apparaat. Wis je de gegevens van je browser, dan is de app leeg. In de reservekopie zitten: je week, recepten, producten + prijzen, boodschappenlijstje, categorieën, voorkeuren en regels. Foto's (ook de etiketfoto's) zitten alleen in de reservekopie als bestand, niet in de gekopieerde tekst. De Mistral API-sleutel zit nooit in een reservekopie. Lukt het bewaren als bestand niet op jouw telefoon, gebruik dan Reservekopie kopiëren en bewaar de tekst in een notitie.</p>
+      <button class="btn" style="width:100%;margin-top:10px" data-act="addclose">✕ Toch niet</button>
+    </div>
+  </div>
+</div>
+
+<!-- Variant C: Sheet Bewaren alles — de vier handelingen -->
+
+<div class="sheet" id="cooksheet" hidden>
+  <div class="cookpanel" role="dialog" aria-modal="true" aria-label="Kookmodus" id="cookbody"></div>
+</div>
+
+<!-- Sheet: Kaarten (3 ideeën, snelhulp) -->
+
+<div class="sheet" id="kaartsheet" hidden>
+  <div class="scrim" data-act="kaartclose"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="kt">
+    <div class="phead">
+      <button class="back xbtn" data-act="kaartclose" aria-label="Sluiten">✕</button>
+      <div>
+        <h2 id="kt"></h2>
+        <p id="ks"></p>
+      </div>
+    </div>
+    <div class="pbody" id="kaartbody"></div>
+  </div>
+</div>
+
+
+<!-- Sheet: Oude data omzetten (v45b.4) -->
+<!-- Variant C: Sheet Bewaren — wat wil je bewaren? -->
+
+<div class="sheet" id="mergesheet" hidden>
+  <div class="scrim" data-act="mergeclose"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="mergetitle">
+    <div class="phead">
+      <button class="back xbtn" data-act="mergeclose" aria-label="Sluiten">✕</button>
+      <div>
+        <h2 id="mergetitle">Producten samenvoegen</h2>
+      </div>
+      <button class="done" data-act="domerge">Samenvoegen</button>
+    </div>
+    <div class="pbody" id="mergebody"></div>
+  </div>
+</div>
+
+<!-- Sheet: Uitvoer (kopiëren/export) -->
+
+<div class="sheet" id="oudsheet" hidden>
+  <div class="scrim" data-act="oudclose"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="oudt">
+    <div class="phead">
+      <button class="back xbtn" data-act="oudclose" aria-label="Sluiten">✕</button>
+      <div>
+        <h2 id="oudt">Oude data</h2>
+        <p>Zet oude weekdagen om naar de nieuwe indeling.</p>
+      </div>
+    </div>
+    <div class="pbody" id="oudbody"></div>
+  </div>
+</div>
+
+<!-- Toast melding -->
+
+<div class="sheet" id="outsheet" hidden>
+  <div class="scrim" data-act="outclose"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="ot">
+    <div class="phead">
+      <button class="back xbtn" data-act="outclose" aria-label="Sluiten">✕</button>
+      <div>
+        <h2 id="ot"></h2>
+        <p id="op"></p>
+      </div>
+      <button class="done" data-act="outclose">Sluiten</button>
+    </div>
+    <div class="pbody">
+      <textarea class="out" id="outarea" aria-label="Tekst"></textarea>
+      <div class="btns">
+        <button class="btn main" id="outcopy" data-act="outcopy">Kopiëren</button>
+        <button class="btn main" id="outrestore" data-act="outrestore" hidden>Terugzetten</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Sheet: Mijn regels -->
+
+<div class="sheet" id="pastesheet" hidden>
+  <div class="scrim" data-act="pasteclose"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="pt">
+    <div class="phead">
+      <button class="back xbtn" data-act="pasteclose" aria-label="Sluiten">✕</button>
+      <div>
+        <h2 id="pt">Recept plakken</h2>
+        <p>Plak een recept of kies een bestand, en kijk eerst naar het voorbeeld.</p>
+      </div>
+    </div>
+    <div class="pbody" id="pastebody"></div>
+  </div>
+</div>
+
+<!-- Sheet: Uitvoer (kopiëren) -->
+
+<div class="sheet" id="pjsheet" hidden>
+  <div class="scrim" data-act="pjclose"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="pjt">
+    <div class="phead">
+      <button class="back xbtn" data-act="pjclose" aria-label="Sluiten">✕</button>
+      <div>
+        <h2 id="pjt">Producten plakken</h2>
+        <p>Plak een tabel, tekstregels of JSON, of kies een bestand. Je ziet eerst een controlelijst.</p>
+      </div>
+    </div>
+    <div class="pbody" id="pjbody"></div>
+  </div>
+</div>
+
+<!-- Sheet: Prijzen plakken -->
+
+<div class="sheet" id="ppsheet" hidden>
+  <div class="scrim" data-act="ppclose"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="ppt">
+    <div class="phead">
+      <button class="back xbtn" data-act="ppclose" aria-label="Sluiten">✕</button>
+      <div>
+        <h2 id="ppt">Prijzen plakken</h2>
+        <p>Plak een lijstje, ook een gedeeld lijstje uit de AH-app, en kijk eerst naar het voorbeeld.</p>
+      </div>
+    </div>
+    <div class="pbody" id="ppbody"></div>
+  </div>
+</div>
+
+<!-- Sheet: Scanner -->
+
+<div class="sheet" id="prodsheet" hidden>
+  <div class="scrim" data-act="prodclose"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="prt">
+    <div class="phead">
+      <button class="back xbtn" data-act="prodclose" aria-label="Sluiten">✕</button>
+      <div>
+        <h2 id="prt">Product</h2>
+      </div>
+      <button class="done" data-act="prodsave">Opslaan</button>
+    </div>
+    <div class="pbody" id="prodbody"></div>
+  </div>
+</div>
+
+<!-- Sheet: Producten plakken -->
+
+<div class="sheet" id="recsheet" hidden>
+  <div class="scrim" data-act="recclose"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="rt">
+    <div class="phead">
+      <button class="back xbtn" data-act="recclose" aria-label="Sluiten">✕</button>
+      <div>
+        <h2 id="rt">Recept</h2>
+      </div>
+      <button class="done" data-act="recsave">Opslaan</button>
+    </div>
+    <div class="pbody" id="recbody"></div>
+  </div>
+</div>
+
+<!-- Sheet: Recept plakken -->
+
+<div class="sheet" id="rgsheet" hidden>
+  <div class="scrim" data-act="rgclose"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="rgt">
+    <div class="phead">
+      <button class="back xbtn" data-act="rgclose" aria-label="Sluiten">✕</button>
+      <div>
+        <h2 id="rgt">Mijn regels</h2>
+        <p>Je schema van 7 oktober en je maxima per moment.</p>
+      </div>
+    </div>
+    <div class="pbody" id="rgbody"></div>
+  </div>
+</div>
+
+<!-- Sheet: Kookmodus -->
+
+<div class="sheet" id="scsheet" hidden>
+  <div class="scrim" data-act="scclose"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="sct">
+    <div class="phead">
+      <button class="back xbtn" data-act="scclose" aria-label="Sluiten">✕</button>
+      <div>
+        <h2 id="sct">Scanner</h2>
+        <p>Lees prijzen en etiketten uit screenshots of foto's, en kassabonnen. Kijk eerst naar het overzicht.</p>
+      </div>
+    </div>
+    <div class="pbody" id="scbody"></div>
+  </div>
+</div>
+
+<!-- Sheet: Producten samenvoegen -->
+
+<div class="sheet" id="sheet" hidden>
+  <div class="scrim" data-act="close"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="st">
+    <div class="phead">
+      <button class="back xbtn" data-act="close" aria-label="Sluiten">✕</button>
+      <div><h2 id="st"></h2><p id="sp"></p></div>
+    </div>
+    <div class="pbody" id="pbody"></div>
+  </div>
+</div>
+
+
+<!-- Sheet: Oude data omzetten (v45b.4) -->
+
+<div class="sheet" id="tgsheet" hidden>
+  <div class="scrim" data-act="addback"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="tgt">
+    <div class="phead">
+      <button class="back xbtn" data-act="addback" aria-label="Terug naar het keuzescherm">✕</button>
+      <div>
+        <h2 id="tgt">Terugzetten</h2>
+        <p>Hoe wil je het terugzetten?</p>
+      </div>
+    </div>
+    <div class="pbody">
+      <button class="back" style="margin:0 0 4px -8px" data-act="addback">‹ Terug naar het keuzescherm</button>
+      <button class="opt" data-act="addgo" data-v="uitbestand"><span class="on">📂 Uit bestand<small>Een eerder bewaard bestand kiezen en terugzetten</small></span></button>
+      <button class="opt" data-act="addgo" data-v="plakken"><span class="on">📋 Plakken en terugzetten<small>Een gekopieerde reservekopie plakken en terugzetten</small></span></button>
+      <button class="btn" style="width:100%;margin-top:10px" data-act="addback">✕ Toch niet</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast melding -->
+
+<div class="sheet" id="verwsheet" hidden>
+  <div class="scrim" data-act="verwclose"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="verwt">
+    <div class="phead">
+      <button class="back xbtn" data-act="verwclose" aria-label="Sluiten">✕</button>
+      <div>
+        <h2 id="verwt">Verwijderen</h2>
+      </div>
+    </div>
+    <div class="pbody" id="verwbody"></div>
+  </div>
+</div>
+
+<!-- Sheet: Scanner -->
+
+<div class="toast" id="toast" hidden></div>
+
+<!-- File inputs -->
+<input type="file" id="etikfiles" accept="image/*" multiple class="fileoff">
+<input type="file" id="foto" accept="image/*" class="fileoff">
+<input type="file" id="fotoCam" accept="image/*" capture="environment" class="fileoff">
+<input type="file" id="pastefile" accept=".json,application/json,text/plain" multiple class="fileoff">
+<input type="file" id="photofile" accept="image/*" class="fileoff">
+<input type="file" id="pjfile" accept=".json,.csv,.tsv,.txt,application/json,text/csv,text/plain" multiple class="fileoff">
+<input type="file" id="prodfile" accept="image/*" class="fileoff">
+<input type="file" id="restorefile" accept=".json,.txt,application/json,text/plain" class="fileoff">
+<input type="file" id="scfile" accept="image/*" multiple class="fileoff">
+
+<script src="checkjebon-js.js"></script>
+<script src="app.js"></script>
+<script>
+// v45b.3 multi-page: initialiseer rec tab
+APP.S.tab = 'rec';
+APP.render();
+</script>
+
+</body>
+</html>
