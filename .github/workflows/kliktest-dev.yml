@@ -1,0 +1,63 @@
+# Kliktest-dev (publieke repo) - v1 (15 nov 2026, Vibe Work)
+# Handmatig te starten kliktest op de losse app-test/ map (index-zelftest.html).
+# ZONDER AI/Mistral-stuff. De sync-action draait deze bot ook automatisch mee
+# na een sync; deze knop is voor als je zelf even wilt testen zonder sync.
+name: Kliktest-dev
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  kliktest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: Test
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Playwright-gereedschap (eerste keer +/- 2-3 min)
+        shell: bash
+        run: |
+          cd versies/tests
+          npm init -y >/dev/null
+          npm i playwright --no-fund --no-audit
+          npx playwright install chromium
+
+      - name: Controleer app-test/index-zelftest.html
+        shell: bash
+        run: |
+          if [ ! -f app-test/index-zelftest.html ]; then
+            echo "STORING: geen app-test/index-zelftest.html op de Test-branch."
+            exit 1
+          fi
+
+      - name: Vinger-kliktest (161 stappen)
+        shell: bash
+        timeout-minutes: 30
+        run: |
+          cd versies/tests
+          node kliktest-dev.js
+
+      - name: Rapport tonen in de log
+        if: always()
+        shell: bash
+        run: |
+          for f in versies/tests/rapport-laatste-dev/*.md; do
+            echo "================ ${f##*/} ================"
+            cat "$f" 2>/dev/null || echo "(niet aanwezig)"
+          done
+
+      - name: Rapport als artifact bewaren (14 dagen)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kliktest-dev-rapport
+          path: versies/tests/rapport-laatste-dev/
+          retention-days: 14
