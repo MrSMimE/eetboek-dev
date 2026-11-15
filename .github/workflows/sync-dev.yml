@@ -39,17 +39,20 @@ jobs:
             *) echo "  -> onbekende code, kijk op de bovenstaande regel" >> $GITHUB_STEP_SUMMARY ;;
           esac
 
-      - name: Check of er een nieuwe commit op de bron-branch staat
+      - name: Check of er een nieuwe commit op de bron-branch staat (via API)
         id: check
         run: |
-          url="https://x-access-token:${{ secrets.SYNC_TOKEN }}@github.com/${{ env.SOURCE_REPO }}.git"
-          new_sha=$(git ls-remote "$url" refs/heads/Eetboek | awk '{print $1}')
+          api="https://api.github.com/repos/${{ env.SOURCE_REPO }}"
+          auth="Authorization: Bearer ${{ secrets.SYNC_TOKEN }}"
+          new_sha=$(curl -s -H "$auth" "$api/branches/Eetboek" | jq -r '.commit.sha // empty')
           if [ -z "$new_sha" ]; then
-            default_ref=$(git ls-remote --symref "$url" HEAD | sed -n '1s/^ref: //p')
-            new_sha=$(git ls-remote "$url" "$default_ref" | awk '{print $1}')
+            default_ref=$(curl -s -H "$auth" "$api" | jq -r '.default_branch // empty')
+            if [ -n "$default_ref" ]; then
+              new_sha=$(curl -s -H "$auth" "$api/branches/$default_ref" | jq -r '.commit.sha // empty')
+            fi
           fi
           if [ -z "$new_sha" ]; then
-            echo "Kon geen branch-sha ophalen uit ${SOURCE_REPO}" >&2
+            echo "Kon geen branch-sha ophalen uit ${{ env.SOURCE_REPO }}" >&2
             exit 1
           fi
           old_sha=$(cat .sync-sha 2>/dev/null || true)
@@ -62,13 +65,17 @@ jobs:
             echo "Nieuwe commit: ${new_sha:0:7} (vorige: ${old_sha:-geen})"
           fi
 
-      - name: Clone prive-repository met SYNC_TOKEN
+      - name: Download prive-repository als tarball (werkt met fine-grained token)
         if: steps.check.outputs.should_sync == 'true'
         run: |
-          git clone --depth 1 \
-            "https://x-access-token:${{ secrets.SYNC_TOKEN }}@github.com/${{ env.SOURCE_REPO }}.git" \
-            "${{ env.SOURCE_DIR }}"
-          git -C "${{ env.SOURCE_DIR }}" config --unset-all http.https://github.com/.extraheader || true
+          mkdir -p "${{ env.SOURCE_DIR }}"
+          curl -sL -H "Authorization: Bearer ${{ secrets.SYNC_TOKEN }}" \
+            "https://api.github.com/repos/${{ env.SOURCE_REPO }}/tarball/Eetboek" \
+            | tar xz --strip-components=1 -C "${{ env.SOURCE_DIR }}"
+          if [ ! -f "${{ env.SOURCE_DIR }}/app-test/index-zelftest.html" ]; then
+            echo "STORING: download mislukt - geen app-test/index-zelftest.html in de tarball" >&2
+            exit 1
+          fi
 
       - name: Controleer bronmap app-test/ (losse bestanden)
         if: steps.check.outputs.should_sync == 'true'
