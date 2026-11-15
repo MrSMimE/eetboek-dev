@@ -73,7 +73,7 @@
       '<scr' + 'ipt>' +
       '(function () {' +
       "  var KEY = 'eetweek.testronde', DAG = '15 nov', IDX = 0;" +
-      "  var weergave = null; // 'kaart' | 'pil' | 'weg' — null = nog niet berekend" +
+      "  var weergave = null; /* 'kaart' | 'pil' | 'weg' — null = nog niet berekend */" +
       "  function $(id) { return document.getElementById(id); }" +
       "  function lees() { try { var v = JSON.parse(localStorage.getItem(KEY) || 'null'); if (v && typeof v === 'object' && v.v === DAG) return v; } catch (e) {} return { v: DAG, klein: {}, vol: {}, laatste: '' }; }" +
       "  function vink() { var st = lees(); var g = st.klein && st.klein[IDX]; return g === 'goed' || g === 'fout' ? g : null; }" +
