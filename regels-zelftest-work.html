@@ -27,7 +27,7 @@
     ok.push(t.indexOf('href="index.html"') !== -1);
     t = t.split('href="index.html"').join('href="index-zelftest-work.html#testen"');
     ok.push(t.indexOf('<nav class="bottomnav">') !== -1);
-    t = t.replace('<nav class="bottomnav">', '<nav class="bottomnav" style="display:none">');
+    // v58.10: de tabbalk met de 6 iconen blijft ZICHTBAAR op de Regels-pagina (net als op de andere pagina's)
     ok.push(t.indexOf('href="testen.html"') !== -1);
     t = t.replace('href="testen.html"', 'href="index-zelftest-work.html#testen"');
     // Eigen test-kaartje voor het Regels-testpunt (zelfde opslag als de werk-app)
@@ -43,7 +43,7 @@
       '</style>' +
       '<div id="rgltest">' +
       '<b>Regels-test · Deel 6 (v58.10)</b>' +
-      'Eigen Regels-pagina: moment toevoegen, hernoemen, kcal invullen, totaalregel en ← Terug naar de app.' +
+      'Eigen Regels-pagina met bovenaan de tabbalk met 6 iconen (zoals op de andere pagina\'s): moment toevoegen, hernoemen, kcal invullen, totaalregel en ← Terug naar de app.' +
       '<div class="rknoppen">' +
       '<button type="button" data-rglvt="goed" class="ok">✓</button>' +
       '<button type="button" data-rglvt="fout" class="fout">✗</button>' +
