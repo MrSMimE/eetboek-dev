@@ -35,7 +35,7 @@ jobs:
       - name: Controleer de werk-set
         shell: bash
         run: |
-          for f in index-zelftest-work.html regels-zelftest-work.html index.html app-test-work/regels.html versies/tests/kliktest-work.js; do
+          for f in app.html regels-zelftest-work.html index.html app-test-work/regels.html; do
             if [ ! -f "$f" ]; then
               echo "STORING: geen $f op de Test-branch."
               exit 1
