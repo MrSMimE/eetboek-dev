@@ -25,11 +25,11 @@
     ok.push(t.indexOf("var KEY = 'eetweek.regels.v1';") !== -1);
     t = t.replace("var KEY = 'eetweek.regels.v1';", "var KEY = 'eetweek.regels.zelftestwork.v1';");
     ok.push(t.indexOf('href="index.html"') !== -1);
-    t = t.split('href="index.html"').join('href="index-zelftest-work.html"');
+    t = t.split('href="index.html"').join('href="index-zelftest-work.html#testen"');
     ok.push(t.indexOf('<nav class="bottomnav">') !== -1);
     t = t.replace('<nav class="bottomnav">', '<nav class="bottomnav" style="display:none">');
     ok.push(t.indexOf('href="testen.html"') !== -1);
-    t = t.replace('href="testen.html"', 'href="index-zelftest-work.html"');
+    t = t.replace('href="testen.html"', 'href="index-zelftest-work.html#testen"');
     // Eigen test-kaartje voor het Regels-testpunt (zelfde opslag als de werk-app)
     var KAARTJE =
       '<style>' +
