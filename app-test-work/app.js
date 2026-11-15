@@ -1,5 +1,5 @@
 (function () {
-  // WERK-DEURTJE app-test-work — v61.0 - 15 nov 18u25 (Amsterdam)
+  // WERK-DEURTJE app-test-work — v61.0 - 15 nov 18u34 (Amsterdam)
   // Laadt de echte app.js uit versies/opdeling-test en past de werk-set aan
   // (canvas "weekweergave-eigen-regels v2" + "recepten-eigen-momenten v1" + "ai-instellingen v1", gekeurd 15 nov):
   // 1. opslag afgeschermd: 'eetweek.v1' -> 'eetweek.v1.testversie' (je echte eetboek blijft onaangeraakt)
@@ -32,9 +32,9 @@
 
     // ---- 1. versie mee naar v61.0 ----
     ok.push(t.indexOf("var VERSION = 'v58.9 - 14 nov 20u55';") !== -1);
-    t = t.replace("var VERSION = 'v58.9 - 14 nov 20u55';", "var VERSION = 'v61.0 - 15 nov 18u25';");
+    t = t.replace("var VERSION = 'v58.9 - 14 nov 20u55';", "var VERSION = 'v61.0 - 15 nov 18u34';");
     ok.push(t.indexOf("VERSION = 'v58.9 - 14 nov 20u55 (testbuild 14 nov 20u55)';") !== -1);
-    t = t.replace("VERSION = 'v58.9 - 14 nov 20u55 (testbuild 14 nov 20u55)';", "VERSION = 'v61.0 - 15 nov 18u25 (testbuild 15 nov 18u25)';");
+    t = t.replace("VERSION = 'v58.9 - 14 nov 20u55 (testbuild 14 nov 20u55)';", "VERSION = 'v61.0 - 15 nov 18u34 (testbuild 15 nov 18u34)';");
 
     // ---- 2. WERK-BRUG (v60.0): regelsMomenten + nieuwe momentsFor ----
     var OUD_MOM = `  function momentsFor(dow, d, force) {
@@ -379,10 +379,10 @@
       '    {"versie":"v60.0","deel":6,"t":"Regels-pagina: het ⚡-vinkje","sub":"per eigen moment een vinkje: ⚡ in Mijn normale dag","ga":"test","doen":"Open Mijn regels en voeg een moment toe. Staat onder max kcal het ⚡-vinkje met uitleg? Vink het aan en herlaad de pagina: blijft het vinkje staan?"},' + '\n' +
       '    {"versie":"v60.0","deel":6,"t":"Mijn normale dag volgt het vinkje","sub":"Instellingen toont per weekdag alleen de aangevinkte eigen momenten; de ⚡-knop vult alleen die (ma t/m vr zoals altijd)","ga":"test","doen":"Vink op een weekdag één moment aan en vul er bij Instellingen een product in. Tik in de Week op ⚡: komt het product alleen in dat ene moment?"},' + '\n' +
       '    {"versie":"v60.0","deel":6,"t":"Zeg-blok volgt de eigen momenten","sub":"het uitklaplijstje toont alleen je eigen momenten van die dag; de knop kiest het moment met een leesbaar tijdje dichtst bij nu, anders het eerste nog-lege moment","ga":"week","doen":"Vul bij een eigen moment een tijdje in zoals rond 09:00. Open het zeg-blok op die dag: staan er alleen je eigen momenten in het lijstje en kiest de knop er een logische uit?"},' + '\n' +
-      '    {"versie":"v61.0","deel":6,"t":"Recepten: je eigen momentnamen","sub":"recept-groepen volgen Mijn regels; oude keuzes (Ochtend, Lunch, Avondeten enz.) blijven werken als je moment zo heet","ga":"test","doen":"Maak op Mijn regels een moment dat Ochtend heet. Open Recepten: staat onder Per moment een groep Ochtend met je ochtend-recepten? Bewerk een recept en kies bij Waar een andere groep: verhuist het recept?"},' + '\n' +
-      '    {"versie":"v61.0","deel":6,"t":"Recepten: prullenbak","sub":"verwijderen is omkeerbaar: het recept gaat naar de prullenbak onderaan Recepten, per stuk of alles terug te zetten; blijft bewaard na herladen","ga":"test","doen":"Verwijder een recept (twee keer tikken). Staat het daarna in de prullenbak onderaan Recepten? Zet het terug. Herlaad de pagina: is de prullenbak nog zoals je hem achterliet?"},' + '\n' +
-      '    {"versie":"v61.0","deel":6,"t":"AI: andere aanbieder (OpenAI-compatibel)","sub":"achter het Mistral-blok een extra scherm: lege velden (webadres, sleutel, model, geen placeholders), test-knop en modellen-knop; hint dat het voor alles met AI geldt","ga":"test","doen":"Open het Mistral-blok bij Instellingen: staat daaronder het scherm Andere AI-aanbieder met de hint over alles met AI? Zijn de velden leeg?"},' + '\n' +
-      '    {"versie":"v61.0","deel":6,"t":"AI: laatst gebruikt = actief","sub":"iets invullen of testen bij de andere aanbieder schakelt de app over; bij Mistral testen schakelt de app terug; het Nu in gebruik-plaatje volgt op beide schermen","ga":"test","doen":"Typ iets in het webadres-veld van de andere aanbieder: springt Nu in gebruik naar de andere aanbieder? Ga terug naar het Mistral-blok en tik daar op Test de verbinding: springt het plaatje terug naar Mistral?"},' + '\n';
+      '    {"versie":"v61.0","deel":7,"t":"Recepten: je eigen momentnamen","sub":"recept-groepen volgen Mijn regels; oude keuzes (Ochtend, Lunch, Avondeten enz.) blijven werken als je moment zo heet","ga":"test","doen":"Maak op Mijn regels een moment dat Ochtend heet. Open Recepten: staat onder Per moment een groep Ochtend met je ochtend-recepten? Bewerk een recept en kies bij Waar een andere groep: verhuist het recept?"},' + '\n' +
+      '    {"versie":"v61.0","deel":7,"t":"Recepten: prullenbak","sub":"verwijderen is omkeerbaar: het recept gaat naar de prullenbak onderaan Recepten, per stuk of alles terug te zetten; blijft bewaard na herladen","ga":"test","doen":"Verwijder een recept (twee keer tikken). Staat het daarna in de prullenbak onderaan Recepten? Zet het terug. Herlaad de pagina: is de prullenbak nog zoals je hem achterliet?"},' + '\n' +
+      '    {"versie":"v61.0","deel":7,"t":"AI: andere aanbieder (OpenAI-compatibel)","sub":"achter het Mistral-blok een extra scherm: lege velden (webadres, sleutel, model, geen placeholders), test-knop en modellen-knop; hint dat het voor alles met AI geldt","ga":"test","doen":"Open het Mistral-blok bij Instellingen: staat daaronder het scherm Andere AI-aanbieder met de hint over alles met AI? Zijn de velden leeg?"},' + '\n' +
+      '    {"versie":"v61.0","deel":7,"t":"AI: laatst gebruikt = actief","sub":"iets invullen of testen bij de andere aanbieder schakelt de app over; bij Mistral testen schakelt de app terug; het Nu in gebruik-plaatje volgt op beide schermen","ga":"test","doen":"Typ iets in het webadres-veld van de andere aanbieder: springt Nu in gebruik naar de andere aanbieder? Ga terug naar het Mistral-blok en tik daar op Test de verbinding: springt het plaatje terug naar Mistral?"},' + '\n';
     ok.push(t.indexOf('var VERS_TESTEN = [') !== -1);
     t = t.replace('var VERS_TESTEN = [', 'var VERS_TESTEN = [\n' + PUNTEN);
     ok.push(t.indexOf('Math.min(5, Math.max(1, VERS_TESTEN[i].deel || 1))') !== -1);
