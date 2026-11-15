@@ -1,0 +1,73 @@
+# Kliktest-work (publieke repo) - v1 (15 nov 2026, Vibe Work)
+# Handmatig te starten kliktest die ALLÉÉN de werk-set pakt:
+#   DEEL 1: de volledige ECHTE kliktest (kliktest.js, alle rondes) tegen de werk-app
+#           (index-zelftest-work.html laadt de echte index.html + werk-ombouw).
+#   DEEL 2: Ronde W — alle nieuwe aanpassingen nagekeken (v58.10 Regels + aparte opslag,
+#           v59.0 rustige testpagina + permanente vinkjes + Archief + Regels-kaartje).
+# ZONDER echte Mistral-aanroepen: de echte kliktest zet zélf een nep-Mistral aan.
+# De echte index.html wordt nooit gewijzigd.
+name: Kliktest-work
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  kliktest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: Test
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+
+      - name: Playwright-gereedschap (eerste keer +/- 2-3 min)
+        shell: bash
+        run: |
+          cd versies/tests
+          npm init -y >/dev/null
+          npm i playwright --no-fund --no-audit
+          npx playwright install chromium
+
+      - name: Controleer de werk-set (loader + Regels + echte index + kliktest)
+        shell: bash
+        run: |
+          for f in index-zelftest-work.html regels-zelftest-work.html index.html app-test-work/regels.html versies/tests/kliktest.js versies/tests/kliktest-work.js; do
+            if [ ! -f "$f" ]; then
+              echo "STORING: geen $f op de Test-branch."
+              exit 1
+            fi
+          done
+
+      - name: Echte kliktest + Ronde W op de werk-set (kan +/- 15-45 min duren)
+        shell: bash
+        timeout-minutes: 90
+        run: |
+          cd versies/tests
+          node kliktest-work.js
+
+      - name: Rapporten tonen in de log
+        if: always()
+        shell: bash
+        run: |
+          for f in versies/tests/rapport-laatste-work/*.md; do
+            echo "================ ${f##*/} ================"
+            cat "$f" 2>/dev/null || echo "(niet aanwezig)"
+          done
+          echo "================ echte-kliktest-rapport.md (in rapport/) ================"
+          head -c 8000 versies/tests/rapport/rapport.md 2>/dev/null || echo "(niet aanwezig)"
+
+      - name: Rapporten als artifact bewaren (14 dagen)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: kliktest-work-rapport
+          path: |
+            versies/tests/rapport-laatste-work/
+            versies/tests/rapport/rapport.md
+          retention-days: 14
