@@ -53,20 +53,20 @@ jobs:
             "${{ env.SOURCE_DIR }}"
           git -C "${{ env.SOURCE_DIR }}" config --unset-all http.https://github.com/.extraheader || true
 
-      - name: Controleer bronmap versies/
+      - name: Controleer bronmap app-test/ (losse bestanden)
         if: steps.check.outputs.should_sync == 'true'
         run: |
-          if [ ! -d "${{ env.SOURCE_DIR }}/versies" ]; then
-            echo "Map 'versies' niet gevonden in ${SOURCE_REPO}" >&2
+          if [ ! -f "${{ env.SOURCE_DIR }}/app-test/index-zelftest.html" ]; then
+            echo "Map 'app-test' (losse bestanden) niet compleet in ${SOURCE_REPO}" >&2
             exit 1
           fi
 
-      - name: Verwijder oude versies/ uit publieke repo
+      - name: Verwijder oude kopieen
         if: steps.check.outputs.should_sync == 'true'
         run: |
-          rm -rf ./versies
+          rm -rf ./app-test ./versies
 
-      - name: Kopieer versies/, README.md en .gitignore (strikte uitsluitingen)
+      - name: Kopieer app-test/ (los, zonder zips) + kliktest-bot + README (strikte uitsluitingen)
         if: steps.check.outputs.should_sync == 'true'
         run: |
           EXCLUDES=(
@@ -74,11 +74,17 @@ jobs:
             --exclude='.env*'
             --exclude='*.pem' --exclude='*.key' --exclude='*.p12' --exclude='*.pfx'
             --exclude='secrets' --exclude='secrets.*' --exclude='credentials*'
-            --exclude='app-test/' --exclude='actueel/' --exclude='app/'
-            --exclude='server/' --exclude='backend/' --exclude='api/'
+            --exclude='*.zip'
             --exclude='node_modules/'
           )
-          rsync -a "${EXCLUDES[@]}" "${{ env.SOURCE_DIR }}/versies/" ./versies/
+          rsync -a "${EXCLUDES[@]}" "${{ env.SOURCE_DIR }}/app-test/" ./app-test/
+          if [ -d "${{ env.SOURCE_DIR }}/versies/tests" ]; then
+            rsync -a "${EXCLUDES[@]}" "${{ env.SOURCE_DIR }}/versies/tests/" ./versies/tests/
+          fi
+          if [ -f "${{ env.SOURCE_DIR }}/versies/README.md" ]; then
+            mkdir -p ./versies
+            rsync -a "${{ env.SOURCE_DIR }}/versies/README.md" ./versies/README.md
+          fi
           if [ -f "${{ env.SOURCE_DIR }}/README.md" ]; then
             rsync -a --exclude='.git' --exclude='.env*' "${{ env.SOURCE_DIR }}/README.md" ./README.md
           fi
@@ -86,7 +92,7 @@ jobs:
             rsync -a "${{ env.SOURCE_DIR }}/.gitignore" ./.gitignore
           fi
 
-      - name: Commit en push rechstreeks naar main (zonder PR)
+      - name: Commit en push rechstreeks naar default branch (zonder PR)
         if: steps.check.outputs.should_sync == 'true'
         run: |
           git config user.name "github-actions[bot]"
@@ -96,7 +102,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "Geen wijzigingen, niets te pushen."
           else
-            git commit -m "Sync dev: versies/ (+ README/.gitignore) @ ${{ steps.check.outputs.new_sha }}"
+            git commit -m "Sync dev: app-test/ (los) + versies/tests @ ${{ steps.check.outputs.new_sha }}"
             git push origin "HEAD:${{ env.TARGET_BRANCH }}"
           fi
 
@@ -107,8 +113,6 @@ jobs:
             cd ./versies/tests
           elif [ -d "${{ env.SOURCE_DIR }}/tests" ]; then
             cd "${{ env.SOURCE_DIR }}/tests"
-          elif [ -d ./versies ]; then
-            cd ./versies
           else
             echo "Geen versies/tests of tests/ gevonden om de klikbot te starten" >&2
             exit 1
