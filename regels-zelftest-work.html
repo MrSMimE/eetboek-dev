@@ -9,7 +9,7 @@
 <script>
 (function () {
   // Regels voor de zelftest-work-pagina. Gemaakt op dezelfde manier als
-  // index-zelftest-work.html: de Regels-code wordt geladen en meteeen
+  // app.html: de Regels-code wordt geladen en meteeen
   // aangepast, zodat deze pagina volledig eigen is:
   // - eigen opslag-sleutel (eetweek.regels.zelftestwork.v1)
   // - navigatie terug naar de work-pagina, niet naar het proef-mapje
@@ -27,11 +27,11 @@
     ok.push(t.indexOf("var KEY = 'eetweek.regels.v1';") !== -1);
     t = t.replace("var KEY = 'eetweek.regels.v1';", "var KEY = 'eetweek.regels.zelftestwork.v1';");
     ok.push(t.indexOf('href="index.html"') !== -1);
-    t = t.split('href="index.html"').join('href="index-zelftest-work.html"');
+    t = t.split('href="index.html"').join('href="app.html"');
     ok.push(t.indexOf('<nav class="bottomnav">') !== -1);
     t = t.replace('<nav class="bottomnav">', '<nav class="bottomnav" style="display:none">'); /* v58.10: tabbalk van het mapje is verborgen — de werk-set is zelfstandig */
     ok.push(t.indexOf('href="testen.html"') !== -1);
-    t = t.replace('href="testen.html"', 'href="index-zelftest-work.html#testen"');
+    t = t.replace('href="testen.html"', 'href="app.html#testen"');
     // Eigen test-kaartje voor het Regels-testpunt (zelfde opslag als de werk-app)
     var KAARTJE =
       '<style>' +
@@ -87,7 +87,7 @@
       "    if (px) px.hidden = weergave !== 'pil';" +
       "    toon();" +
       "  }" +
-      "  document.addEventListener('click', function (ev) { var b = ev.target.closest ? ev.target.closest('[data-rglvt]') : null; if (!b) return; var a = b.getAttribute('data-rglvt'); if (a === 'goed' || a === 'fout') { zet(a === 'goed'); } else if (a === 'min') { weergave = 'pil'; pasWeergave(); } else if (a === 'open') { weergave = 'kaart'; pasWeergave(); } else if (a === 'verberg') { weergave = 'weg'; try { localStorage.setItem(KAART, 'weg'); } catch (e) {} pasWeergave(); } else if (a === 'terug') { try { location.assign('index-zelftest-work.html#testen'); } catch (e) {} } });" +
+      "  document.addEventListener('click', function (ev) { var b = ev.target.closest ? ev.target.closest('[data-rglvt]') : null; if (!b) return; var a = b.getAttribute('data-rglvt'); if (a === 'goed' || a === 'fout') { zet(a === 'goed'); } else if (a === 'min') { weergave = 'pil'; pasWeergave(); } else if (a === 'open') { weergave = 'kaart'; pasWeergave(); } else if (a === 'verberg') { weergave = 'weg'; try { localStorage.setItem(KAART, 'weg'); } catch (e) {} pasWeergave(); } else if (a === 'terug') { try { location.assign('app.html#testen'); } catch (e) {} } });" +
       '  pasWeergave();' +
       '})();' +
       '</scr' + 'ipt>';
