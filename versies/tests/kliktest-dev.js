@@ -1,14 +1,15 @@
-// Kliktest-dev voor MrSMimE/eetboek-dev — test de nieuwste single in versies/.
+// Kliktest-dev voor MrSMimE/eetboek-dev — test de losse map app-test/ (index-zelftest.html).
 // ZONDER AI/Mistral-stuff: geen live-opzoek, geen Mistral-aanroepen, geen AI-jury.
-// Gebruik: node tests/kliktest-dev.js [pad-naar-single]
-//   (zonder argument: nieuwste *single-file.html in versies/)
-// Lokaal: bash tests/draai-klikbot-dev.sh   |   CI: .github/workflows/kliktest-dev.yml
+// Gebruik: node versies/tests/kliktest-dev.js [pad-naar-testbestand]
+//   (zonder argument: app-test/index-zelftest.html; anders nieuwste *single-file.html in versies/)
+// Lokaal: bash versies/tests/draai-klikbot-dev.sh   |   CI: sync-dev.yml draait dit na de sync
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
 const { execSync } = require('child_process');
 
-const ROOT = path.join(__dirname, '..');
+const ROOT = path.join(__dirname, '..', '..'); // repo-root (script woont in versies/tests/)
+const APPTEST = path.join(ROOT, 'app-test');
 const VERSIES = path.join(ROOT, 'versies');
 const RAPPORT_DIR = path.join(__dirname, 'rapport-laatste-dev');
 const POORT = parseInt(process.env.POORT || '8137', 10);
@@ -17,9 +18,13 @@ function versieNum(f) {
   const m = f.match(/v(\d+)\.(\d+)/);
   return m ? (+m[1]) * 1000 + (+m[2]) : -1;
 }
-function newestSingle() {
+function kiesDoel() {
+  // v58.9+ (14 nov 21u3x): losse opdeling — app-test/index-zelftest.html is de single-file testbuild
+  const los = path.join(APPTEST, 'index-zelftest.html');
+  if (fs.existsSync(los)) return los;
+  // oude situatie: nieuwste *single-file.html in versies/
   const singles = fs.readdirSync(VERSIES).filter(f => f.endsWith('---single-file.html')).sort((a, b) => versieNum(a) - versieNum(b));
-  if (!singles.length) throw new Error('geen single-file in versies/ — zet eerst een zip/single neer');
+  if (!singles.length) throw new Error('geen app-test/index-zelftest.html en geen single-file in versies/ — zet eerst een losse testversie neer');
   return path.join(VERSIES, singles[singles.length - 1]);
 }
 
@@ -48,14 +53,15 @@ function serve(dir) {
 }
 
 (async () => {
-  const doel = process.argv[2] ? path.resolve(process.argv[2]) : newestSingle();
+  const doel = process.argv[2] ? path.resolve(process.argv[2]) : kiesDoel();
+  const doelMap = path.dirname(doel);
   const doelNaam = path.basename(doel);
-  console.log(' Doel: ' + doelNaam);
-  const zips = fs.readdirSync(VERSIES).filter(f => f.endsWith('.zip'));
-  console.log(' zips in versies/: ' + zips.join(', '));
+  console.log(' Doel: ' + path.relative(ROOT, doel));
+  const zips = fs.readdirSync(doelMap).filter(f => f.endsWith('.zip'));
+  console.log(' zips in ' + path.relative(ROOT, doelMap) + ': ' + (zips.join(', ') || 'geen'));
 
   const { chromium } = require('playwright');
-  const srv = await serve(VERSIES);
+  const srv = await serve(doelMap); // de bot start zélf een server — geen apart server.js nodig (geen poort-conflict)
   const pagina = await (await chromium.launch()).newPage({ viewport: { width: 390, height: 844 } });
   const pageFouten = [];
   pagina.on('pageerror', e => pageFouten.push('PAGEERROR: ' + String(e).slice(0, 200)));
@@ -64,7 +70,7 @@ function serve(dir) {
   const url = 'http://localhost:' + POORT + '/' + encodeURIComponent(doelNaam);
 
   await stap(pagina, 'Zip-integrity (python3 zipfile, optioneel)', async () => {
-    try { execSync('python3 -c "import zipfile,glob; [zipfile.ZipFile(z).testzip() for z in glob.glob(' + JSON.stringify(path.join(VERSIES, '*.zip')) + ')]"', { stdio: 'pipe' }); }
+    try { execSync('python3 -c "import zipfile,glob; [zipfile.ZipFile(z).testzip() for z in glob.glob(' + JSON.stringify(path.join(doelMap, '*.zip')) + ')]"', { stdio: 'pipe' }); }
     catch (e) { console.log('  (python3 niet beschikbaar — zip-check overgeslagen)'); }
   });
 
