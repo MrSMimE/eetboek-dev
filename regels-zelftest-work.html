@@ -9,11 +9,13 @@
 <script>
 (function () {
   // Regels voor de zelftest-work-pagina. Gemaakt op dezelfde manier als
-  // index-zelftest-work.html: de Regels-code wordt geladen en meteen
+  // index-zelftest-work.html: de Regels-code wordt geladen en meteeen
   // aangepast, zodat deze pagina volledig eigen is:
   // - eigen opslag-sleutel (eetweek.regels.zelftestwork.v1)
   // - navigatie terug naar de work-pagina, niet naar het proef-mapje
-  // - v58.10 (15 nov): goedgekeurd, test-rondje afgerond — test-kaartje verwijderd
+  // - test-kaartje (Deel 6) ALLÉÉN zichtbaar zolang het Regels-testpunt
+  //   nog niet is afgevinkt (15 nov 12u50, Amsterdam): na ✓/✗ en bij elk
+  //   volgend bezoek weg, tot een nieuw test-rondje (nieuwe versie/dag) begint
   // Jouw echte eetboek en het proef-mapje blijven volledig onaangeraakt.
   var x = new XMLHttpRequest();
   x.open('GET', 'app-test-work/regels.html', true);
@@ -30,6 +32,67 @@
     t = t.replace('<nav class="bottomnav">', '<nav class="bottomnav" style="display:none">'); /* v58.10: tabbalk van het mapje is verborgen — de werk-set is zelfstandig */
     ok.push(t.indexOf('href="testen.html"') !== -1);
     t = t.replace('href="testen.html"', 'href="index-zelftest-work.html#testen"');
+    // Eigen test-kaartje voor het Regels-testpunt (zelfde opslag als de werk-app)
+    var KAARTJE =
+      '<style>' +
+      '#rgltest { position: fixed; left: 8px; bottom: calc(8px + env(safe-area-inset-bottom, 0px)); z-index: 61; background: #111; color: #fff; border-radius: 12px; padding: 8px 10px; font-size: 12px; line-height: 1.35; max-width: 260px; box-shadow: 0 2px 10px rgba(0,0,0,.45); }' +
+      '#rgltest[hidden] { display: none; }' +
+      '#rgltest .rglmain { max-height: 40dvh; overflow-y: auto; }' +
+      '#rgltest b { display: block; margin-bottom: 2px; }' +
+      '#rgltest .rknoppen { display: flex; gap: 6px; margin-top: 8px; align-items: center; flex-wrap: wrap; }' +
+      '#rgltest button { flex: none; width: auto; min-width: 34px; min-height: 34px; padding: 0 8px; border: none; border-radius: 10px; font-weight: 800; font-size: 13px; cursor: pointer; background: #2e2e2e; color: #fff; white-space: normal; }' +
+      '#rgltest button.ok { background: #3E6B4F; }' +
+      '#rgltest button.fout { background: #A95042; }' +
+      '#rgltest.klaar button.ok, #rgltest.klaar button.fout { opacity: .55; }' +
+      '#rgltest #rglmin { margin-left: auto; } /* pijltje duwt zichzelf + kruisje naar de rechterkant van de knoppenrij */' +
+      '#rgltest #rglx { min-width: 28px; min-height: 28px; } /* kruisje netjes in de rij, rechts naast het pijltje */' +
+      ':root[data-theme="dark"] #rgltest, :root[data-theme="contrast"] #rgltest { background: var(--surface); color: var(--fg); border: 1px solid var(--line); box-shadow: none; }' +
+      ':root[data-theme="dark"] #rgltest button, :root[data-theme="contrast"] #rgltest button { background: var(--soft); color: var(--fg); }' +
+      ':root[data-theme="dark"] #rgltest button.ok, :root[data-theme="contrast"] #rgltest button.ok { background: var(--accent); color: var(--on-accent); }' +
+      ':root[data-theme="dark"] #rgltest button.fout, :root[data-theme="contrast"] #rgltest button.fout { background: var(--weg); color: var(--bg); }' +
+      '#rglpill { position: fixed; left: 8px; bottom: calc(8px + env(safe-area-inset-bottom, 0px)); z-index: 61; background: #111; color: #fff; border: none; border-radius: 99px; padding: 6px 12px; font-size: 12px; font-weight: 700; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,.45); }' +
+      '#rglpill[hidden] { display: none; }' +
+      '#rglpillx { position: fixed; left: 44px; bottom: calc(8px + env(safe-area-inset-bottom, 0px)); z-index: 61; width: 30px; height: 30px; border-radius: 50%; border: none; background: #111; color: #fff; font-weight: 800; font-size: 13px; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,.45); }' +
+      '#rglpillx[hidden] { display: none; }' +
+      ':root[data-theme="dark"] #rglpill, :root[data-theme="contrast"] #rglpill, :root[data-theme="dark"] #rglpillx, :root[data-theme="contrast"] #rglpillx { background: var(--surface); color: var(--fg); border: 1px solid var(--line); box-shadow: none; }' +
+      '</style>' +
+      '<div id="rgltest" hidden>' +
+      '<div class="rglmain"><b>Regels-test · Deel 6 (v58.10)</b>' +
+      'Eigen Regels-pagina: moment toevoegen, hernoem het, vul kcal in, kijk of de totaalregel meedoet en ← Terug naar de app.</div>' +
+      '<div class="rknoppen">' +
+      '<button type="button" id="rglgoed" data-rglvt="goed" class="ok" title="Doet het">✓</button>' +
+      '<button type="button" id="rglfout" data-rglvt="fout" class="fout" title="Gaat fout">✗</button>' +
+      '<span id="rglstatus">nog niet nagekeken</span>' +
+      '<button type="button" id="rglterug" data-rglvt="terug" title="Terug naar het Testen-overzicht in de werk-app">Terug</button>' +
+      '<button type="button" id="rglmin" data-rglvt="min" aria-label="Balktje inklappen" title="Inklappen naar pilletje">▾</button>' +
+      '<button type="button" id="rglx" data-rglvt="verberg" aria-label="Testbalkje helemaal verbergen" title="Helemaal verbergen — uitslagen blijven bewaard">✕</button>' +
+      '</div>' +
+      '</div>' +
+      '<button type="button" id="rglpill" data-rglvt="open" hidden>0 van 1 ▸</button>' +
+      '<button type="button" id="rglpillx" data-rglvt="verberg" aria-label="Testbalkje helemaal verbergen (uitslagen blijven bewaard)" title="Verberg balkje + pilletje" hidden>✕</button>' +
+      '<scr' + 'ipt>' +
+      '(function () {' +
+      "  var KEY = 'eetweek.testronde', DAG = '15 nov', IDX = 0;" +
+      "  var weergave = null; // 'kaart' | 'pil' | 'weg' — null = nog niet berekend" +
+      "  function $(id) { return document.getElementById(id); }" +
+      "  function lees() { try { var v = JSON.parse(localStorage.getItem(KEY) || 'null'); if (v && typeof v === 'object' && v.v === DAG) return v; } catch (e) {} return { v: DAG, klein: {}, vol: {}, laatste: '' }; }" +
+      "  function vink() { var st = lees(); var g = st.klein && st.klein[IDX]; return g === 'goed' || g === 'fout' ? g : null; }" +
+      "  function zet(g) { var st = lees(); st.klein = st.klein || {}; st.klein[IDX] = g ? 'goed' : 'fout'; st.laatste = 'klein'; try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} weergave = 'pil'; pasWeergave(); }" +
+      "  function toon() { var g = vink(); var s = $('rglstatus'); if (s) s.textContent = g === 'goed' ? '✓ nagekeken goed' : (g === 'fout' ? '✗ gaat fout' : 'nog niet nagekeken'); var d = $('rgltest'); if (d) { if (g) d.className = 'klaar'; else d.removeAttribute('class'); } var p = $('rglpill'); if (p) p.textContent = (g ? 1 : 0) + ' van 1 ▸'; }" +
+      "  function pasWeergave() {" +
+      "    if (!weergave) weergave = vink() ? 'weg' : 'kaart';" + // nog niet afgevinkt → kaartje; afgevinkt → helemaal niets meer
+      "    var d = $('rgltest'), p = $('rglpill'), px = $('rglpillx');" +
+      "    if (d) d.hidden = weergave !== 'kaart';" +
+      "    if (p) p.hidden = weergave !== 'pil';" +
+      "    if (px) px.hidden = weergave !== 'pil';" +
+      "    toon();" +
+      "  }" +
+      "  document.addEventListener('click', function (ev) { var b = ev.target.closest ? ev.target.closest('[data-rglvt]') : null; if (!b) return; var a = b.getAttribute('data-rglvt'); if (a === 'goed' || a === 'fout') { zet(a === 'goed'); } else if (a === 'min') { weergave = 'pil'; pasWeergave(); } else if (a === 'open') { weergave = 'kaart'; pasWeergave(); } else if (a === 'verberg') { weergave = 'weg'; pasWeergave(); } else if (a === 'terug') { try { location.assign('index-zelftest-work.html#testen'); } catch (e) {} } });" +
+      '  pasWeergave();' +
+      '})();' +
+      '</scr' + 'ipt>';
+    ok.push(t.indexOf('</body>') !== -1);
+    t = t.replace('</body>', KAARTJE + '</body>');
     document.open();
     document.write(t);
     document.close();
