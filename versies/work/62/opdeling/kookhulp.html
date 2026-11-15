@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mijn Eetboek — Kookhulp</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+<div class="top">
+    <div class="titlerij">
+      <h1>&#127829;&#65039; Mijn Eetboek</h1>
+      <!-- v56.2: thema-schakelaar in de titelbalk op élke pagina -->
+      <div class="themabar" id="themabar">
+        <button type="button" data-theme-set="light" aria-pressed="false" aria-label="Licht">&#9728;&#65039;</button>
+        <button type="button" data-theme-set="dark" aria-pressed="false" aria-label="Donker">&#127769;</button>
+        <button type="button" data-theme-set="contrast" aria-pressed="false" aria-label="Extreem contrast">&#9680;</button>
+      </div>
+    </div>
+<!-- v58.6: tabbalk ín de kop (.top), onder de titelrij -->
+<nav class="bottomnav">
+  <!-- Week (agenda) -->
+  <a href="index.html" aria-label="Week">
+    <span class="ico">
+      <svg width="24" height="24" viewBox="0 0 64 64" fill="none" style="vertical-align: middle;">
+        <rect x="10" y="14" width="44" height="42" rx="8" fill="#FAF6EE" stroke="#B58969" stroke-width="3.5"/>
+        <path d="M10 22C10 17.5817 13.5817 14 18 14H46C50.4183 14 54 17.5817 54 22V26H10V22Z" fill="#C97B63"/>
+        <line x1="22" y1="9" x2="22" y2="18" stroke="#9A6F50" stroke-width="4" stroke-linecap="round"/>
+        <line x1="42" y1="9" x2="42" y2="18" stroke="#9A6F50" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="22" cy="36" r="2.8" fill="#B58969"/>
+        <circle cx="32" cy="36" r="2.8" fill="#85997E"/>
+        <circle cx="42" cy="36" r="2.8" fill="#B58969"/>
+        <circle cx="22" cy="46" r="2.8" fill="#B58969"/>
+        <circle cx="32" cy="46" r="2.8" fill="#B58969"/>
+      </svg>
+    </span>
+  </a>
+  <!-- Recepten (bord met bestek) -->
+  <a href="recepten.html" aria-label="Recepten">
+    <span class="ico">
+      <svg width="24" height="24" viewBox="0 0 64 64" fill="none" style="vertical-align: middle;">
+        <circle cx="32" cy="34" r="18" fill="#FAF6EE" stroke="#B58969" stroke-width="3.5"/>
+        <circle cx="32" cy="34" r="11" stroke="#D6C7B2" stroke-width="2.5"/>
+        <line x1="10" y1="18" x2="10" y2="48" stroke="#9A6F50" stroke-width="3.5" stroke-linecap="round"/>
+        <path d="M7 18V27C7 29 13 29 13 27V18" stroke="#9A6F50" stroke-width="3" stroke-linecap="round"/>
+        <path d="M54 18V48M54 18C57 21 57 28 54 31" stroke="#9A6F50" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </span>
+  </a>
+  <!-- Producten (voorraaddoosje) -->
+  <a href="producten.html" aria-label="Producten">
+    <span class="ico">
+      <svg width="24" height="24" viewBox="0 0 64 64" fill="none" style="vertical-align: middle;">
+        <rect x="12" y="20" width="40" height="34" rx="6" fill="#C9A382" stroke="#9A6F50" stroke-width="3.5"/>
+        <path d="M10 18C10 15.7909 11.7909 14 14 14H50C52.2091 14 54 15.7909 54 18V23H10V18Z" fill="#B58969" stroke="#9A6F50" stroke-width="3"/>
+        <rect x="25" y="30" width="14" height="6" rx="3" fill="#FAF6EE"/>
+      </svg>
+    </span>
+  </a>
+  <!-- Kookhulp (koksmuts) -->
+  <a href="kookhulp.html" class="active" aria-label="Kookhulp">
+    <span class="ico">
+      <svg width="24" height="24" viewBox="0 0 64 64" fill="none" style="vertical-align: middle;">
+        <path d="M18 36C13 36 10 31.5 10 27C10 22 14 18.5 18.5 18.5C20.5 13 26 10 32 10C38 10 43.5 13 45.5 18.5C50 18.5 54 22 54 27C54 31.5 51 36 46 36V48C46 50.2 44.2 52 42 52H22C19.8 52 18 50.2 18 48V36Z" fill="#FAF6EE" stroke="#B58969" stroke-width="3.5" stroke-linejoin="round"/>
+        <line x1="18" y1="43" x2="46" y2="43" stroke="#C9A382" stroke-width="3"/>
+      </svg>
+    </span>
+  </a>
+  <!-- Boodschappen (klembord, lichte vulling) -->
+  <a href="boodschappen.html" aria-label="Boodschappen">
+    <span class="ico">
+      <svg width="24" height="24" viewBox="0 0 64 64" fill="none" style="vertical-align: middle;">
+        <rect x="10" y="10" width="44" height="50" rx="8" fill="#FAF6EE" stroke="#B58969" stroke-width="3.5"/>
+        <rect x="23" y="6" width="18" height="9" rx="3" fill="#9A6F50"/>
+        <path d="M20 26L23 29L28 23" stroke="#85997E" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="33" y1="26" x2="43" y2="26" stroke="#B58969" stroke-width="3.5" stroke-linecap="round"/>
+        <path d="M20 36L23 39L28 33" stroke="#85997E" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="33" y1="36" x2="43" y2="36" stroke="#B58969" stroke-width="3.5" stroke-linecap="round"/>
+        <path d="M20 46L23 49L28 43" stroke="#85997E" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="33" y1="46" x2="40" y2="46" stroke="#B58969" stroke-width="3.5" stroke-linecap="round"/>
+      </svg>
+    </span>
+  </a>
+  <!-- Instellingen (tandwiel) -->
+  <a href="instellingen.html" aria-label="Instellingen">
+    <span class="ico">
+      <svg width="24" height="24" viewBox="0 0 64 64" fill="none" style="vertical-align: middle;">
+        <g stroke="#9A6F50" stroke-width="6">
+          <line x1="44" y1="32" x2="52" y2="32"/>
+          <line x1="40.5" y1="40.5" x2="46.2" y2="46.2"/>
+          <line x1="32" y1="44" x2="32" y2="52"/>
+          <line x1="23.5" y1="40.5" x2="17.8" y2="46.2"/>
+          <line x1="20" y1="32" x2="12" y2="32"/>
+          <line x1="23.5" y1="23.5" x2="17.8" y2="17.8"/>
+          <line x1="32" y1="20" x2="32" y2="12"/>
+          <line x1="40.5" y1="23.5" x2="46.2" y2="17.8"/>
+        </g>
+        <circle cx="32" cy="32" r="13" fill="#9A6F50"/>
+        <circle cx="32" cy="32" r="8" fill="#B58969"/>
+        <circle cx="32" cy="32" r="4" fill="#FAF6EE"/>
+      </svg>
+    </span>
+  </a>
+</nav>
+  </div>
+  <div id="banner"></div>
+<div id="gemview">
+<!-- SECTIE: Kookhulp (gemview) — doorklik-rijen hier gebruiken .platte-rij -->
+    <!-- v58: Voorbereiden-blok bovenaan — afvinkbare ingrediënten uit het eigen recept (geen Mistral nodig); spring vanaf het kaartje via 🧺 Voorbereiden -->
+    <details class="pgrp khgrp" id="khGroepVoorbereiden">
+     <summary><span class="ci">🧺</span><span>Voorbereiden</span></summary>
+     <div class="pgin">
+      <div class="card">
+       <p class="hint small zz" id="vrWelk" style="margin-top:6px">Open een recept bij Recepten en tik op 🧺 Voorbereiden om de ingrediënten klaar te leggen</p>
+       <div id="vrLijst"></div>
+      </div>
+     </div>
+    </details><!-- /khGroepVoorbereiden -->
+    <!-- v50.1: 3 hoofdgroepen, alles begint dicht; dubbel inklap (norm: testversies/rustige-kookhulp) -->
+    <details class="pgrp khgrp" id="khGroepVoorkeuren">
+     <summary><span class="ci">🛠️</span><span>Kook-voorkeuren</span></summary>
+     <div class="pgin">
+      <p class="hint zz" style="margin:10px 6px 0">Alles wat Mistral over jou mag weten, zit hierbinnen.</p>
+    <div class="card">
+     <details class="per" id="khApparaten" data-gg="kh:khApparaten">
+      <summary>🍳 Waarmee wil je koken?</summary>
+      <p class="hint small zz" style="margin-top:0">Geen vinkje = Mistral kiest zelf.</p>
+      <label class="vink"><input type="checkbox" id="apMagn"> Magnetron</label> <label class="vink"><input type="checkbox" id="apOven"> Oven</label>
+      <p class="hint small">Een vinkje betekent: gebruik dit waar het kan. Typ je in je wens zelf iets anders (bijvoorbeeld "geen oven"), dan gaat dat voor. Je hebt geen airfryer; die noemt Mistral nooit. Bij de magnetron noemt Mistral de stand (bijvoorbeeld de hoogste stand) en geen watt.</p>
+      <p class="hint small">Je kunt dit altijd veranderen. Het budget doet pas iets als je "Toon prijs" gebruikt: je ziet dan of je erboven of eronder zit. De knoppen "Maak goedkoper" staan er altijd, ook zonder budget. Prijzen komen uit je eigen lijst hieronder; er wordt nooit een prijs gezocht.</p>
+     </details>
+    </div>
+    <div class="card">
+     <details class="per" id="meerOpties" data-gg="kh:meerOpties">
+      <summary>👥 Personen, moment, budget</summary> <select id="versie" aria-label="Hoe wil je het recept?"> <option value="zo">Zoals het is</option> <option value="lichter">Lichter voor mij</option> <option value="lichter_klein">Lichter en een kleinere portie</option> </select> <label for="personen" style="margin-top:10px">Voor hoeveel personen?</label> <select id="personen" aria-label="Voor hoeveel personen?"> <option value="zo">Zoals in het recept</option> <option value="1">1 persoon</option> <option value="2">2 personen</option> <option value="vriend">Samen met mijn vriend</option> </select>
+      <div id="pvriendBlok" hidden>
+       <label for="pvriend" style="margin-top:10px">Hoeveel porties maak je?</label> <select id="pvriend" aria-label="Hoeveel porties maak je?"> <option value="2">2 porties (één keer samen eten)</option> <option value="4">4 porties (twee keer eten)</option> <option value="zo">Zoals in het recept</option> </select>
+       <div id="hijEetBlok">
+        <label for="hijEet" style="margin-top:10px">Hoeveel eet je vriend ongeveer? (leeg laten mag)</label> <input type="text" id="hijEet" autocomplete="off" placeholder="Bijvoorbeeld: 900 kcal, of 2 burgers">
+        <p class="hint small">Alleen bij 2 porties. Het recept wordt dan voor jullie samen gemaakt: jouw deel volgt je schema, zijn deel is wat je hier invult.</p>
+       </div>
+      </div>
+      <label for="portiesVast" style="margin-top:10px">Aantal porties van het recept (leeg laten = Mistral kiest of schat)</label> <input type="text" id="portiesVast" inputmode="numeric" placeholder="Bijvoorbeeld: 16" autocomplete="off"> <label for="momentKeuze" style="margin-top:10px">Voor welk moment is het recept?</label> <select id="momentKeuze" aria-label="Voor welk moment is het recept?"> <option value="auto">Automatisch (Mistral kiest)</option> <option value="ontbijt">Ontbijt</option> <option value="lunch">Lunch</option> <option value="avondeten">Avondeten</option> <option value="tussendoor">Tussendoor</option> </select> <details class="per meer" data-gg="kh:blk2"><summary>Meer opties</summary> <label for="dagKeuze" style="margin-top:10px">Voor welke dag?</label> <select id="dagKeuze" aria-label="Voor welke dag?"><option value="vandaag">Vandaag</option></select> <label for="budget" style="margin-top:10px">Budget per portie in euro (leeg laten = geen budget)</label> <input type="text" id="budget" inputmode="decimal" placeholder="Bijvoorbeeld: 3,50" autocomplete="off"> <label for="lunchMax" style="margin-top:10px">Mijn eigen maximum voor de lunch in calorieën (leeg = alleen je schema)</label> <input type="text" id="lunchMax" inputmode="numeric" value="350" placeholder="Bijvoorbeeld: 350" autocomplete="off">
+      <p class="hint small">Dit getal gaat alleen over de lunch zelf. Je schema voor lunch en middag samen verandert niet: bij "Toon calorieën" zie je hoeveel daarvan overblijft voor de middag. Het gaat voor op het richtgetal van je schema en Mistral krijgt het mee.</p>
+      <p class="hint small">Geldt voor het aanpassen. Recepten in een andere taal komen altijd in het Nederlands, met maten omgerekend.</p></details>
+     </details>
+    </div>
+    <div class="card">
+     <details class="per" id="lust" data-gg="kh:lust">
+      <summary>😊 Lust-lijstjes</summary>
+      <label for="nietIk">Lust ik niet</label> <input type="text" id="nietIk" placeholder="Bijvoorbeeld: prei, venkel" autocapitalize="off" autocomplete="off"> <label for="nietHij" style="margin-top:10px">Lust hij niet (telt alleen bij "Samen met mijn vriend")</label> <input type="text" id="nietHij" placeholder="Bijvoorbeeld: courgette, aubergine" autocapitalize="off" autocomplete="off">
+      <p class="hint small">Zet er komma's tussen. De lijstjes blijven op dit apparaat bewaard en gaan bij elk recept mee. Staat zo'n ingrediënt in het recept, dan stelt Mistral alleen iets voor dat echt bij het gerecht past en op geen van beide lijstjes staat. Past er niets, dan laat hij het weg en meldt dat in het gele vak.</p>
+     </details>
+    </div>
+    <div class="card">
+     <details class="per" data-gg="kh:blk4">
+      <summary>💡 Voorkeuren per soort gerecht</summary>
+      <label for="voorkeur">Voor elk recept (gelden bij alle tabbladen)</label> <input type="text" id="voorkeur" placeholder="Bijvoorbeeld: krieltjes, alles in één pan" autocapitalize="off" autocomplete="off">
+      <p class="hint small" style="margin-top:12px"><b>Per soort gerecht</b>: tik een soort open. Bij "Voorkeuren / Harde afspraken" zet je wat altijd moet gelden, bij "Lust ik niet" een lijstje met komma's. Mistral krijgt alleen de afspraken die bij het gerecht passen (een afspraak over vis alleen bij een recept met vis). Alles blijft op dit apparaat en zit in de reservekopie.</p>
+      <div id="catBlok"></div>
+     </details>
+    </div>
+     </div><!-- /pgin -->
+    </details><!-- /khGroepVoorkeuren -->
+    <details class="pgrp khgrp" id="khGroepAanpas">
+     <summary><span class="ci">✏️</span><span>Recept aanpassen</span></summary>
+     <div class="pgin">
+    <div id="oudePanes" hidden>
+     <div class="card pane" id="pane-nieuw" hidden>
+      <h2>2. Recept laten maken</h2>
+      <div style="background:var(--soft);border-radius:12px;padding:12px;margin:10px 0 12px;border:1px solid var(--line)">
+       <div style="font-weight:700;font-size:14px;color:var(--accent);margin-bottom:4px">🛌 Snelhulp: moe of weinig trek (bijv. door medicatie)</div>
+       <p class="hint small zz" style="margin:0 0 8px">Geen eetlust of te moe om na te denken? Tik op een knop voor een zacht, makkelijk gerecht met minimale afwas:</p>
+       <div class="row" style="margin-top:4px;margin-bottom:8px">
+        <button class="btn main" type="button" data-kaart-open="snelhulp">💡 3 ideeën met recept</button>
+        <button class="btn" type="button" data-kaart-open="snel">⏱ Iets snels nu (3 ideeën)</button>
+       </div>
+       <div class="row" style="margin-top:4px">
+        <button class="pill" type="button" data-gemtip="moe">🛌 Moe &amp; weinig trek (zacht &amp; compact)</button>
+        <button class="pill" type="button" data-gemtip="pan">⚡ Snel in 1 pan</button>
+        <button class="pill" type="button" data-gemtip="kwark">🥣 Zacht &amp; fris (kwark met banaan)</button>
+        <button class="pill" type="button" data-gemtip="ei">🍳 Eiwitrijk met ei (licht voor de maag)</button>
+       </div>
+      </div>
+      <label for="wensNieuw">Wat wil je eten? Je hebt geen recept nodig.</label> <textarea id="wensNieuw" placeholder="Bijvoorbeeld: een lichte lunch met kip en veel groente, in één pan, voor 2 personen"></textarea>
+      <p class="keuze" id="keuzeNieuw"></p>
+      <label class="vink"><input type="checkbox" id="makkelijkN"> Maak het meteen makkelijk en snel</label>
+      <p class="hint small zz">Ben je moe of heb je geen trek? Typ dat gewoon in je wens, dan maakt Mistral iets dat makkelijk weg te eten is. Je lust-lijstjes, voorkeuren, het aantal personen en het budget gelden ook hier. Noem je je vriend niet, dan is het recept voor 1 portie. Het calorierichtgetal van je schema gaat automatisch mee; typ je zelf een getal in je wens, dan gaat dat voor. Calorieën rekent de app zelf uit; Mistral noemt ze niet.</p>
+      <div class="row">
+       <button class="btn main" id="goNieuw" type="button">Maak een recept</button>
+      </div>
+     </div>
+     <div class="card pane" id="pane-tekst">
+      <h2>2. Recept inlezen</h2>
+      <label for="invoer">Plak de tekst van een recept of een link (https://...)</label> <textarea id="invoer" placeholder="Bijvoorbeeld: https://www.voorbeeld.nl/recept of de gekopieerde tekst"></textarea>
+      <div class="row" style="margin-top:6px">
+       <button class="pill" type="button" data-teksttip="engels">🇬🇧 Vertaal Engels recept naar Nederlands &amp; pas calorieën aan</button>
+       <button class="pill" type="button" data-teksttip="zachter">🥣 Maak recept zachter &amp; makkelijker verteerbaar</button>
+       <button class="pill" type="button" data-teksttip="mindercal">⚖️ Verlaag calorieën naar schema</button>
+      </div>
+      <p class="keuze" id="keuzeTekst"></p>
+      <label class="vink"><input type="checkbox" id="makkelijkT"> Maak het meteen makkelijker</label>
+      <div class="row">
+       <button class="btn main" id="goTekst" type="button">Recept inlezen</button>
+      </div>
+      <p class="hint small zz">Bij een link leest Mistral de pagina zelf. Websites die pas met JavaScript laden of achter een inlog zitten, lukken vaak niet. Plak dan de tekst.</p>
+     </div>
+     <div class="card pane" id="pane-foto" hidden>
+      <h2>2. Foto van een recept</h2>
+      <label for="foto">Maak een foto of kies er een (kookboek of handschrift)</label>       <div class="row">
+       <button class="btn" type="button" data-cam="foto">Maak foto</button>
+      </div>
+      <img id="prev" alt="" hidden>
+      <p class="keuze" id="keuzeFoto"></p>
+      <label class="vink"><input type="checkbox" id="makkelijkF"> Maak het meteen makkelijker</label>
+      <div class="row">
+       <button class="btn main" id="goFoto" type="button">Foto lezen</button>
+      </div>
+      <p class="hint small zz">Hou de foto recht, goed belicht en dicht bij de tekst. Een foto wordt eerst verkleind en daarna naar Mistral gestuurd.</p>
+     </div>
+    </div>
+    <details class="per" id="khAanpas" style="margin-top:0" data-gg="kh:khAanpas">
+     <summary>Mistral past je recept bij</summary>
+     <div class="card pane" id="pane-aanpassen" style="margin-top:10px">
+      <p class="hint small zz" id="aanpasWelk" style="margin-top:0">Tik bij Recepten op een recept en dan op "Aanpassen met Mistral". Of plak hieronder zelf een recept.</p>
+      <select id="kiesReceptAanpas" hidden style="margin-bottom:10px"><option value="">-- Kies uit Mijn Recepten --</option></select> <label for="orig">Het recept (tekst)</label> <textarea id="orig">Tonijnsalade
+- 1 blikje tonijn op water, goed uitgeknepen
+- 2-3 zoetzure augurken in blokjes
+- 2 flinke el magere kwark of Griekse yoghurt
+- 1 tl augurkenvocht
+Bereiding: Knijp de tonijn goed uit. Snijd de augurken klein en roer ze erdoor. Meng de kwark erdoor en voeg als laatste het augurkenvocht toe. Bewaren in de koelkast, maximaal 2 dagen.</textarea> <label for="wens">Wat moet er anders?</label> <input type="text" id="wens" value="Maak er kip van in plaats van tonijn">
+      <p class="keuze" id="keuzeAanpassen"></p>
+      <div class="row">
+       <button class="btn main" id="goAanpassen" type="button">Recept aanpassen</button>
+      </div>
+     </div>
+     <div id="status" role="status" aria-live="polite"></div>
+     <div class="card" id="uitkomst" hidden>
+      <div class="row" style="margin-top:0">
+       <button class="btn nieuwrecept" type="button">Nieuw recept</button>
+      </div>
+      <h2 id="rNaam"></h2>
+      <p class="hint zz" id="rPorties"></p>
+      <p class="hint zz" id="rPast" hidden></p>
+      <strong>Ingrediënten</strong>
+      <ul class="ing" id="rIng"></ul>
+      <strong>Bereiding</strong>
+      <div class="step" id="rStappen"></div>
+      <div id="rWijz" hidden style="margin-top:10px">
+       <strong>Wat is er veranderd</strong>
+       <ul class="ing" id="rWijzLijst"></ul>
+      </div>
+      <div id="rExtra" hidden style="margin-top:10px">
+       <strong>Extra voor mijn vriend</strong>
+       <p class="hint small zz">Voorstellen van de AI, per maaltijd. Vink aan wat hij erbij krijgt. Dit telt niet mee in jouw calorieën.</p>
+       <ul class="ing" id="rExtraLijst" style="list-style:none;margin-left:0"></ul>
+      </div>
+      <div class="q" id="rTwijfel" hidden></div>
+      <div class="row">
+       <button class="btn" id="btnLust" type="button" hidden>Haal het eruit of vervang het</button>
+      </div>
+      <div class="row">
+       <button class="btn" id="btnStuks" type="button" hidden></button>
+      </div>
+      <div class="vraagblok">
+       <label for="vraag">Wil je nog iets aanpassen of vragen?</label> <input type="text" id="vraag" placeholder="Typ gewoon wat je wilt, bijvoorbeeld: minder zout, kan ik dit invriezen, of: dit is te weinig voor avondeten" autocomplete="off">
+       <div class="row">
+        <button class="btn main" id="btnDoe" type="button">Doe dit</button>
+        <button class="btn" id="btnMakkelijk" type="button">Maak makkelijker</button>
+        <button class="btn" id="btnSeizoen" type="button">🌱 Seizoensgroente</button>
+        <button class="btn" id="btnInvries" type="button">🧊 Kan dit invriezen?</button>
+       </div>
+       <p class="hint small zz">Mistral bepaalt zelf of je tekst een vraag is (dan krijg je een antwoord) of een wens of opmerking (dan past hij het recept aan en zegt kort wat hij heeft gedaan). Twijfelt hij, dan past hij aan.</p>
+       <details class="per" id="reserve" data-gg="kh:reserve">
+        <summary>Zelf kiezen (reserve)</summary>
+        <div class="row">
+         <button class="btn" id="btnPasaan" type="button">Pas het recept aan</button>
+         <button class="btn" id="btnVraag" type="button">Stel een vraag</button>
+        </div>
+        <p class="hint small zz">Alleen als "Doe dit" het verkeerd begrijpt: "Pas het recept aan" verandert altijd het recept, "Stel een vraag" verandert nooit iets.</p>
+       </details>
+       <div class="q" id="rAntwoord" hidden style="background:var(--soft);color:var(--fg);white-space:pre-line"></div>
+       <div class="row">
+        <button class="btn" id="btnWens" type="button" hidden></button>
+       </div>
+      </div>
+      <div class="row">
+       <button class="btn" id="btnKcal" type="button">Toon calorieën</button>
+       <button class="btn" id="btnPrijs" type="button">Toon prijs</button>
+       <button class="btn" id="btnVW" type="button">Toon voedingswaarden</button>
+       <button class="btn" id="btnKopPrijs" type="button">Kopieer ingrediënten met prijs</button>
+      </div>
+      <div id="kcalDoelBlok" hidden>
+       <label for="kcalDoel">Jouw calorieën of percentage voor deze maaltijd (voor de verdeling met je vriend)</label> <input type="text" id="kcalDoel" inputmode="numeric" autocomplete="off" placeholder="Bijvoorbeeld 675 of 40%. Leeg = schema van vandaag"> <label for="ratioKeuze" style="margin-top:10px">Of: je vriend eet zoveel keer jouw portie</label> <select id="ratioKeuze"><option value="auto">Niet gebruiken (jouw schemadoel)</option><option value="1.5">1,5 keer jouw portie</option><option value="2">2 keer jouw portie</option><option value="eigen">Eigen getal</option></select> <input type="text" id="ratioEigen" inputmode="decimal" autocomplete="off" placeholder="Bijvoorbeeld 1,65" hidden style="margin-top:6px">
+       <div id="snelVerhoogBlok" style="margin-top:10px"><label>Snel verdelen: je vriend eet</label> <div class="seg mvact" style="margin-top:4px"><button class="pill" type="button" data-ratio="1.5" aria-pressed="false">1,5× zoveel</button><button class="pill" type="button" data-ratio="2" aria-pressed="false">2× zoveel</button><button class="pill" type="button" data-ratio="2.5" aria-pressed="false">2,5× zoveel</button></div><p class="hint small" style="margin:4px 0 0">De kaarten hieronder rekenen direct mee, zonder verversen.</p></div>
+      </div>
+      <div id="rKaarten" hidden></div>
+      <div id="rKcal" class="q" hidden style="background:var(--soft);color:var(--fg)"></div>
+      <div id="rPrijs" class="q" hidden style="background:var(--soft);color:var(--fg)"></div>
+      <div id="rVW" class="q" hidden style="background:var(--soft);color:var(--fg)"></div>
+      <div class="row">
+       <button class="btn main" id="btnBewaar" type="button">Bewaar in mijn recepten</button>
+      </div>
+      <div id="gBewaar" class="card" hidden></div>
+      <div class="row">
+       <button class="btn" id="btnKopieer" type="button">Kopieer in app-formaat</button>
+       <button class="btn" id="btnDownload" type="button">Bewaar als bestand</button>
+      </div>
+      <div class="row">
+       <button class="btn nieuwrecept" type="button">Nieuw recept</button>
+      </div>
+      <p class="hint small">Het recept blijft hier staan als je naar een ander tabblad gaat, tot je de app sluit. "Nieuw recept" wist het en maakt de velden leeg. Is het nog niet bewaard, dan vraagt de app eerst of je zeker weet dat je het wilt wissen.</p>
+      <p class="hint small">"Herkend als" betekent dat het product in de eigen ingrediëntenlijst van deze pagina staat. "Geschat" betekent dat het niet in die lijst staat en Mistral een schatting heeft gedaan (iets aan de hoge kant). Die schatting zie je alleen als je op "Toon calorieën" tikt en dan "Bekijk per ingrediënt" opent. Bij het bewaren in Recepten blijft zo'n ingrediënt gemarkeerd, zodat het bij de weekcontrole nagekeken kan worden. Bij "nog te schatten" doet de app niets.</p>
+     </div>
+    </details>
+     </div><!-- /pgin -->
+    </details><!-- /khGroepAanpas -->
+  </div>
+<footer class="appfoot"><a href="testen.html">🧪 Testen</a></footer>
+</div>
+
+<div class="sheet" id="addsheet" hidden>
+  <div class="scrim" data-act="addclose"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="addt">
+    <div class="phead">
+      <button class="back xbtn" data-act="addclose" aria-label="Sluiten">✕</button>
+      <div>
+        <h2 id="addt">Iets toevoegen</h2>
+        <p>Wat wil je toevoegen?</p>
+      </div>
+    </div>
+    <div class="pbody">
+      <button class="opt" data-act="addgo" data-v="kbon"><span class="on">📸 Kassabon<small>Foto van je bon — prijzen en producten in één keer</small></span></button>
+      <button class="opt" data-act="addgo" data-v="zelf"><span class="on">✏️ Zelf typen<small>Leeg formulier, alles met de hand invullen</small></span></button>
+      <p class="hint">Verder, klein en stil:</p>
+      <p style="text-align:center;margin:6px 0 0">
+        <button class="tolink" style="display:inline;margin:0 auto" data-act="addgo" data-v="fromrec">🍽️ Uit recepten</button>
+        &nbsp;·&nbsp;
+        <button class="tolink" style="display:inline;margin:0 auto" data-act="addgo" data-v="prcopy">📋 Kopieer prijzen</button>
+      </p>
+      <button class="btn" style="width:100%;margin-top:10px" data-act="addclose">✕ Toch niet</button>
+    </div>
+  </div>
+</div>
+
+<!-- Variant C: Sheet Lijst plakken — welke lijst heb je? -->
+
+<div class="sheet" id="basheet" hidden>
+  <div class="scrim" data-act="addback"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="bat">
+    <div class="phead">
+      <button class="back xbtn" data-act="addback" aria-label="Terug naar het keuzescherm">✕</button>
+      <div>
+        <h2 id="bat">Bewaren alles</h2>
+        <p>Wat wil je doen?</p>
+      </div>
+    </div>
+    <div class="pbody">
+      <button class="back" style="margin:0 0 4px -8px" data-act="addback">‹ Terug naar het keuzescherm</button>
+      <button class="opt" data-act="addgo" data-v="bestand"><span class="on">💾 Bestand bewaren<small>Volledige reservekopie als bestand op je apparaat</small></span></button>
+      <button class="opt" data-act="addgo" data-v="kopieer"><span class="on">📋 Kopiëren<small>De reservekopie als tekst, om zelf ergens te plakken</small></span></button>
+      <button class="opt" data-act="addgo" data-v="uitbestand"><span class="on">📂 Uit bestand terugzetten<small>Een eerder bewaard bestand kiezen en terugzetten</small></span></button>
+      <button class="opt" data-act="addgo" data-v="plakken"><span class="on">📋 Plakken en terugzetten<small>Een gekopieerde reservekopie plakken en terugzetten</small></span></button>
+      <button class="btn" style="width:100%;margin-top:10px" data-act="addback">✕ Toch niet</button>
+    </div>
+  </div>
+</div>
+
+<!-- Variant C: Sheet Terugzetten — uit bestand of plakken -->
+
+<div class="sheet" id="bwsheet" hidden>
+  <div class="scrim" data-act="addclose"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="bwt">
+    <div class="phead">
+      <button class="back xbtn" data-act="addclose" aria-label="Sluiten">✕</button>
+      <div>
+        <h2 id="bwt">Bewaren</h2>
+        <p>Wat wil je bewaren?</p>
+      </div>
+    </div>
+    <div class="pbody">
+      <button class="opt" data-act="addsub" data-v="basheet"><span class="on">💾 Bewaren alles<small>Volledige reservekopie — heel je boek in één keer</small></span></button>
+      <button class="opt" data-act="addgo" data-v="week"><span class="on">📅 Bewaren week<small>Alleen je weekdagen apart</small></span></button>
+      <button class="opt" data-act="addgo" data-v="recepten"><span class="on">📖 Bewaren recepten<small>Alleen je recepten apart</small></span></button>
+      <button class="opt" data-act="addgo" data-v="prodcsv"><span class="on">📊 Producten als tabel (CSV)<small>Opent in Excel; bewerk en lees het weer in via Plakken of bestand kiezen</small></span></button>
+      <button class="opt" data-act="addgo" data-v="producten"><span class="on">🛖 Bewaren producten<small>Producten + prijzen apart — dit is de oude Export</small></span></button>
+      <p class="hint zz">Alles staat alleen op dit apparaat. Wis je de gegevens van je browser, dan is de app leeg. In de reservekopie zitten: je week, recepten, producten + prijzen, boodschappenlijstje, categorieën, voorkeuren en regels. Foto's (ook de etiketfoto's) zitten alleen in de reservekopie als bestand, niet in de gekopieerde tekst. De Mistral API-sleutel zit nooit in een reservekopie. Lukt het bewaren als bestand niet op jouw telefoon, gebruik dan Reservekopie kopiëren en bewaar de tekst in een notitie.</p>
+      <button class="btn" style="width:100%;margin-top:10px" data-act="addclose">✕ Toch niet</button>
+    </div>
+  </div>
+</div>
+
+<!-- Variant C: Sheet Bewaren alles — de vier handelingen -->
+
+<div class="sheet" id="cooksheet" hidden>
+  <div class="cookpanel" role="dialog" aria-modal="true" aria-label="Kookmodus" id="cookbody"></div>
+</div>
+
+<!-- Sheet: Kaarten (3 ideeën, snelhulp) -->
+
+<div class="sheet" id="kaartsheet" hidden>
+  <div class="scrim" data-act="kaartclose"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="kt">
+    <div class="phead">
+      <button class="back xbtn" data-act="kaartclose" aria-label="Sluiten">✕</button>
+      <div>
+        <h2 id="kt"></h2>
+        <p id="ks"></p>
+      </div>
+    </div>
+    <div class="pbody" id="kaartbody"></div>
+  </div>
+</div>
+
+
+<!-- Sheet: Oude data omzetten (v45b.4) -->
+<!-- Variant C: Sheet Bewaren — wat wil je bewaren? -->
+
+<div class="sheet" id="mergesheet" hidden>
+  <div class="scrim" data-act="mergeclose"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="mergetitle">
+    <div class="phead">
+      <button class="back xbtn" data-act="mergeclose" aria-label="Sluiten">✕</button>
+      <div>
+        <h2 id="mergetitle">Producten samenvoegen</h2>
+      </div>
+      <button class="done" data-act="domerge">Samenvoegen</button>
+    </div>
+    <div class="pbody" id="mergebody"></div>
+  </div>
+</div>
+
+<!-- Sheet: Uitvoer (kopiëren/export) -->
+
+<div class="sheet" id="oudsheet" hidden>
+  <div class="scrim" data-act="oudclose"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="oudt">
+    <div class="phead">
+      <button class="back xbtn" data-act="oudclose" aria-label="Sluiten">✕</button>
+      <div>
+        <h2 id="oudt">Oude data</h2>
+        <p>Zet oude weekdagen om naar de nieuwe indeling.</p>
+      </div>
+    </div>
+    <div class="pbody" id="oudbody"></div>
+  </div>
+</div>
+
+<!-- Toast melding -->
+
+<div class="sheet" id="outsheet" hidden>
+  <div class="scrim" data-act="outclose"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="ot">
+    <div class="phead">
+      <button class="back xbtn" data-act="outclose" aria-label="Sluiten">✕</button>
+      <div>
+        <h2 id="ot"></h2>
+        <p id="op"></p>
+      </div>
+      <button class="done" data-act="outclose">Sluiten</button>
+    </div>
+    <div class="pbody">
+      <textarea class="out" id="outarea" aria-label="Tekst"></textarea>
+      <div class="btns">
+        <button class="btn main" id="outcopy" data-act="outcopy">Kopiëren</button>
+        <button class="btn main" id="outrestore" data-act="outrestore" hidden>Terugzetten</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Sheet: Mijn regels -->
+
+<div class="sheet" id="pastesheet" hidden>
+  <div class="scrim" data-act="pasteclose"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="pt">
+    <div class="phead">
+      <button class="back xbtn" data-act="pasteclose" aria-label="Sluiten">✕</button>
+      <div>
+        <h2 id="pt">Recept plakken</h2>
+        <p>Plak een recept of kies een bestand, en kijk eerst naar het voorbeeld.</p>
+      </div>
+    </div>
+    <div class="pbody" id="pastebody"></div>
+  </div>
+</div>
+
+<!-- Sheet: Uitvoer (kopiëren) -->
+
+<div class="sheet" id="pjsheet" hidden>
+  <div class="scrim" data-act="pjclose"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="pjt">
+    <div class="phead">
+      <button class="back xbtn" data-act="pjclose" aria-label="Sluiten">✕</button>
+      <div>
+        <h2 id="pjt">Producten plakken</h2>
+        <p>Plak een tabel, tekstregels of JSON, of kies een bestand. Je ziet eerst een controlelijst.</p>
+      </div>
+    </div>
+    <div class="pbody" id="pjbody"></div>
+  </div>
+</div>
+
+<!-- Sheet: Prijzen plakken -->
+
+<div class="sheet" id="ppsheet" hidden>
+  <div class="scrim" data-act="ppclose"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="ppt">
+    <div class="phead">
+      <button class="back xbtn" data-act="ppclose" aria-label="Sluiten">✕</button>
+      <div>
+        <h2 id="ppt">Prijzen plakken</h2>
+        <p>Plak een lijstje, ook een gedeeld lijstje uit de AH-app, en kijk eerst naar het voorbeeld.</p>
+      </div>
+    </div>
+    <div class="pbody" id="ppbody"></div>
+  </div>
+</div>
+
+<!-- Sheet: Scanner -->
+
+<div class="sheet" id="prodsheet" hidden>
+  <div class="scrim" data-act="prodclose"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="prt">
+    <div class="phead">
+      <button class="back xbtn" data-act="prodclose" aria-label="Sluiten">✕</button>
+      <div>
+        <h2 id="prt">Product</h2>
+      </div>
+      <button class="done" data-act="prodsave">Opslaan</button>
+    </div>
+    <div class="pbody" id="prodbody"></div>
+  </div>
+</div>
+
+<!-- Sheet: Producten plakken -->
+
+<div class="sheet" id="recsheet" hidden>
+  <div class="scrim" data-act="recclose"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="rt">
+    <div class="phead">
+      <button class="back xbtn" data-act="recclose" aria-label="Sluiten">✕</button>
+      <div>
+        <h2 id="rt">Recept</h2>
+      </div>
+      <button class="done" data-act="recsave">Opslaan</button>
+    </div>
+    <div class="pbody" id="recbody"></div>
+  </div>
+</div>
+
+<!-- Sheet: Recept plakken -->
+
+<div class="sheet" id="rgsheet" hidden>
+  <div class="scrim" data-act="rgclose"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="rgt">
+    <div class="phead">
+      <button class="back xbtn" data-act="rgclose" aria-label="Sluiten">✕</button>
+      <div>
+        <h2 id="rgt">Mijn regels</h2>
+        <p>Je schema van 7 oktober en je maxima per moment.</p>
+      </div>
+    </div>
+    <div class="pbody" id="rgbody"></div>
+  </div>
+</div>
+
+<!-- Sheet: Kookmodus -->
+
+<div class="sheet" id="scsheet" hidden>
+  <div class="scrim" data-act="scclose"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="sct">
+    <div class="phead">
+      <button class="back xbtn" data-act="scclose" aria-label="Sluiten">✕</button>
+      <div>
+        <h2 id="sct">Scanner</h2>
+        <p>Lees prijzen en etiketten uit screenshots of foto's, en kassabonnen. Kijk eerst naar het overzicht.</p>
+      </div>
+    </div>
+    <div class="pbody" id="scbody"></div>
+  </div>
+</div>
+
+<!-- Sheet: Producten samenvoegen -->
+
+<div class="sheet" id="sheet" hidden>
+  <div class="scrim" data-act="close"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="st">
+    <div class="phead">
+      <button class="back xbtn" data-act="close" aria-label="Sluiten">✕</button>
+      <div><h2 id="st"></h2><p id="sp"></p></div>
+    </div>
+    <div class="pbody" id="pbody"></div>
+  </div>
+</div>
+
+
+<!-- Sheet: Oude data omzetten (v45b.4) -->
+
+<div class="sheet" id="tgsheet" hidden>
+  <div class="scrim" data-act="addback"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="tgt">
+    <div class="phead">
+      <button class="back xbtn" data-act="addback" aria-label="Terug naar het keuzescherm">✕</button>
+      <div>
+        <h2 id="tgt">Terugzetten</h2>
+        <p>Hoe wil je het terugzetten?</p>
+      </div>
+    </div>
+    <div class="pbody">
+      <button class="back" style="margin:0 0 4px -8px" data-act="addback">‹ Terug naar het keuzescherm</button>
+      <button class="opt" data-act="addgo" data-v="uitbestand"><span class="on">📂 Uit bestand<small>Een eerder bewaard bestand kiezen en terugzetten</small></span></button>
+      <button class="opt" data-act="addgo" data-v="plakken"><span class="on">📋 Plakken en terugzetten<small>Een gekopieerde reservekopie plakken en terugzetten</small></span></button>
+      <button class="btn" style="width:100%;margin-top:10px" data-act="addback">✕ Toch niet</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast melding -->
+
+<div class="sheet" id="verwsheet" hidden>
+  <div class="scrim" data-act="verwclose"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="verwt">
+    <div class="phead">
+      <button class="back xbtn" data-act="verwclose" aria-label="Sluiten">✕</button>
+      <div>
+        <h2 id="verwt">Verwijderen</h2>
+      </div>
+    </div>
+    <div class="pbody" id="verwbody"></div>
+  </div>
+</div>
+
+<!-- Sheet: Scanner -->
+
+<div class="toast" id="toast" hidden></div>
+
+<!-- File inputs -->
+<input type="file" id="etikfiles" accept="image/*" multiple class="fileoff">
+<input type="file" id="foto" accept="image/*" class="fileoff">
+<input type="file" id="fotoCam" accept="image/*" capture="environment" class="fileoff">
+<input type="file" id="pastefile" accept=".json,application/json,text/plain" multiple class="fileoff">
+<input type="file" id="photofile" accept="image/*" class="fileoff">
+<input type="file" id="pjfile" accept=".json,.csv,.tsv,.txt,application/json,text/csv,text/plain" multiple class="fileoff">
+<input type="file" id="prodfile" accept="image/*" class="fileoff">
+<input type="file" id="restorefile" accept=".json,.txt,application/json,text/plain" class="fileoff">
+<input type="file" id="scfile" accept="image/*" multiple class="fileoff">
+
+<script src="checkjebon-js.js"></script>
+<script src="app.js"></script>
+<script>
+// v45b.3 multi-page: initialiseer gem tab
+APP.S.tab = 'gem';
+APP.render();
+</script>
+
+</body>
+</html>
