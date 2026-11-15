@@ -2,16 +2,16 @@
 <html lang="nl">
 <head>
 <meta charset="utf-8">
-<title>Mijn Eetboek — Zelftest work v59.0</title>
+<title>Mijn Eetboek — Zelftest work v60.0</title>
 </head>
 <body>
 <p>Zelftest work-versie laden…</p>
 <script>
 (function () {
-  // Zelftest-work v59.0: laadt de echte index.html en past meteen aan:
+  // Zelftest-work v60.0 (15 nov): WERK-BRUG — Week, Zeg-blok en Mijn normale dag volgen Mijn regels. Zelftest-work v59.0: laadt de echte index.html en past meteen aan:
   // - test-modus aan (schrijft alleen naar eetweek.v1.testversie)
   // - Regels-knop in de footer (linkt naar regels-zelftest-work.html)
-  // - versie + datum + tijd naar v59.0 - 15 nov 13u20 (Amsterdam)
+  // - versie + datum + tijd naar v60.0 - 15 nov 18u01 (Amsterdam)
   // - eigen testpunten (Deel 6) voor de werk-onderdelen
   // - komt de pagina aan met #testen, dan start de app meteen op het Testen-tab
   // - RUSTIGE TESTPAGINA (v59.0): vinkjes permanent (geen dag-reset), bovenaan
@@ -30,9 +30,9 @@
     ok.push(t.indexOf(OUD) !== -1);
     t = t.replace(OUD, NIEUW);
     ok.push(t.indexOf("var VERSION = 'v58.9 - 14 nov 20u55';") !== -1);
-    t = t.replace("var VERSION = 'v58.9 - 14 nov 20u55';", "var VERSION = 'v59.0 - 15 nov 13u20';");
+    t = t.replace("var VERSION = 'v58.9 - 14 nov 20u55';", "var VERSION = 'v60.0 - 15 nov 18u01';");
     ok.push(t.indexOf("VERSION = 'v58.9 - 14 nov 20u55 (testbuild 14 nov 20u55)';") !== -1);
-    t = t.replace("VERSION = 'v58.9 - 14 nov 20u55 (testbuild 14 nov 20u55)';", "VERSION = 'v59.0 - 15 nov 13u20 (testbuild 15 nov 13u20)';");
+    t = t.replace("VERSION = 'v58.9 - 14 nov 20u55 (testbuild 14 nov 20u55)';", "VERSION = 'v60.0 - 15 nov 18u01 (testbuild 15 nov 18u01)';");
     var OPEN = 'var VERS_TESTEN = [';
     var PUNTEN =
       '    {"versie":"v58.10","deel":6,"t":"Eigen Regels-pagina (v58.10)","sub":"knop 📋 Regels onderaan, vóór 🧪 Testen; opent de eigen Regels-work-pagina; ← Terug naar de app komt hier terug","doen":"Tik onderaan op 📋 Regels. Opent de Regels-pagina met dag-chips ma t/m zo? Voeg op een dag een eigen moment toe, hernoem het, vul kcal in en kijk of de totaalregel meetelt. Tik ← Terug naar de app: ben je terug in de werk-app?"},' +
@@ -102,6 +102,150 @@
       '</scr' + 'ipt>';
     ok.push(t.indexOf('</body>') !== -1);
     t = t.replace('</body>', HASH + '</body>');
+        // ---- v60.0 werk (15 nov 18u01): WERK-BRUG — Week, Zeg-blok en Mijn normale dag volgen Mijn regels ----
+    // De eigen momenten komen uit de werk-sleutel van de Regels-work-pagina (eetweek.regels.zelftestwork.v1).
+    // Zelfde aanpassingen als in app-test-work/app.js (canvas weekweergave-eigen-regels v2, gekeurd 15 nov):
+    // dag mét eigen momenten toont alleen die; dag zonder is leeg (vaste ritme vervalt);
+    // ⚡ alleen bij momenten mét vinkje; Zeg-blok leest het tijdje slim; geen kcal op de dagkaarten (was al zo).
+    var OUD_MOM60 = `  function momentsFor(dow, d, force) {
+    var list = momentsBase(dow, d, force);
+    list.forEach(function (m) { if (['och', 'ont', 'pz', 'av', 'okb', 'wont', 'wtus', 'opst'].indexOf(m.slot) < 0) m.g = m.g.concat(['NK']); });
+    list.push({ slot: 'nacht', t: 'Nacht', p: 'na het slapengaan of midden in de nacht', g: ['LU', 'NE', 'ND', 'NF', 'NA', 'NK'] });
+    list.push({ slot: 'move', t: 'Bewegen', p: '', g: [] });
+    list.push({ slot: 'eod', t: 'Einde van de dag', p: 'hoeveel trek nog', g: [] });
+    return list;
+  }`;
+    var NIEUW_MOM60 = `  var RGLKEY60 = 'eetweek.regels.zelftestwork.v1'; // v60.0 werk: opslag van de Regels-work-pagina
+  var RGLDAG60 = ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za'];
+  function regelsMomenten(dow) {
+    try {
+      var o = JSON.parse(localStorage.getItem(RGLKEY60) || '{}');
+      var lijst = (o && typeof o === 'object' && !Array.isArray(o) && Array.isArray(o[RGLDAG60[dow]])) ? o[RGLDAG60[dow]] : null;
+      if (!lijst || !lijst.length) return null;
+      var uit = [];
+      lijst.forEach(function (m) {
+        if (!m || !m.naam) return;
+        uit.push({ slot: 'rgl:' + (m.id || String(m.naam)), t: String(m.naam).slice(0, 30), p: m.tijd ? String(m.tijd).slice(0, 30) : '', plan: '', g: ['NE', 'ND', 'NF', 'NA', 'NK'], norm: !!m.norm });
+      });
+      return uit.length ? uit : null;
+    } catch (e) { return null; }
+  }
+  function momentsFor(dow, d, force) {
+    var rg = regelsMomenten(dow);
+    if (rg) { // v60.0 werk: eigen momenten uit Mijn regels + Nacht; het vaste ritme vervalt
+      rg.push({ slot: 'nacht', t: 'Nacht', p: 'na het slapengaan of midden in de nacht', g: ['LU', 'NE', 'ND', 'NF', 'NA', 'NK'] });
+      return rg;
+    }
+    return []; // v60.0 werk: geen eigen momenten = lege dag
+  }`;
+    ok.push(t.indexOf(OUD_MOM60) !== -1);
+    t = t.replace(OUD_MOM60, NIEUW_MOM60);
+
+    var OUD_PS60 = `  function patroonSlots(dow) {
+    if (dow === 2 || dow === 5) return ['ont', 'pz', 'lun']; // di/vr: ontbijt + pauze + lunch
+    if (dow >= 1 && dow <= 4) return ['ont', 'pz', 'kl'];    // ma/wo/do: ontbijt + pauze + kleine lunch
+    return [];
+  }`;
+    var NIEUW_PS60 = `  function patroonSlots(dow) {
+    var rg = regelsMomenten(dow); // v60.0 werk: alleen de eigen momenten mét ⚡-vinkje
+    if (!rg) return [];
+    return rg.filter(function (m) { return m.norm; }).map(function (m) { return m.slot; });
+  }`;
+    ok.push(t.indexOf(OUD_PS60) !== -1);
+    t = t.replace(OUD_PS60, NIEUW_PS60);
+
+    var OUD_AEM60 = `  function alleEetMomenten(dow) {
+    if (dow === 2 || dow === 5) return [
+      { slot: 'ont', t: 'Ontbijt', p: '' },
+      { slot: 'pz', t: 'Pauze', p: '' },
+      { slot: 'lun', t: 'Lunch', p: '' }
+    ];
+    return [
+      { slot: 'ont', t: 'Ontbijt', p: '' },
+      { slot: 'pz', t: 'Pauze', p: '' },
+      { slot: 'kl', t: 'Kleine lunch', p: '' }
+    ];
+  }`;
+    var NIEUW_AEM60 = `  function alleEetMomenten(dow) {
+    var rg = regelsMomenten(dow); // v60.0 werk: de eigen momenten van die dag (voor Mijn normale dag)
+    if (rg) return rg.map(function (m) { return { slot: m.slot, t: m.t, p: m.p }; });
+    return [];
+  }`;
+    ok.push(t.indexOf(OUD_AEM60) !== -1);
+    t = t.replace(OUD_AEM60, NIEUW_AEM60);
+
+    var OUD_ZEG60 = `  function zegMomentStandaard(id) {
+    var ms = zegMomentLijst(id);
+    if (!ms.length) return 'Extra, buiten het schema';
+    var now = new Date(), hh = now.getHours() + now.getMinutes() / 60;
+    var slots = ms.map(function (m) { return m.slot; });
+    function pick(l) { for (var i = 0; i < l.length; i++) if (slots.indexOf(l[i]) >= 0) return l[i]; return null; }
+    var s = null;
+    if (hh < 9) s = pick(['ont', 'wont', 'wtus', 'pz']);
+    else if (hh < 11) s = pick(['pz', 'wtus', 'ont', 'wont']);
+    else if (hh < 14) s = pick(['lun', 'kl', 'pz', 'mid', 'mdg']);
+    else if (hh < 17) s = pick(['mid', 'mdg', 'sport', 'ovb', 'lun', 'kl']);
+    else if (hh < 21) s = pick(['av', 'ovb', 'sport', 'mid', 'mdg']);
+    else s = pick(['ab', 'nacht', 'av', 'extra']);
+    var m = ms.filter(function (x) { return x.slot === s; })[0] || ms[0];
+    return m.t;
+  }`;
+    var NIEUW_ZEG60 = `  function zegMomentStandaard(id) {
+    var ms = zegMomentLijst(id);
+    if (!ms.length) return 'Extra, buiten het schema';
+    // v60.0 werk: slim tijdje lezen — het moment met een leesbare kloktijd dichtst bij 'nu';
+    // geen leesbaar tijdje: het eerste nog-lege moment van die dag
+    var dd = dayDoc(id), now = new Date(), hh = now.getHours() + now.getMinutes() / 60;
+    var metTijd = [];
+    ms.forEach(function (m) {
+      var r1 = /(\\d{1,2})[:.](\\d{2})/.exec(m.p || ''), r2 = /(\\d{1,2})\\s*uur/.exec(m.p || '');
+      var h = null;
+      if (r1) h = (+r1[1]) + (+r1[2]) / 60;
+      else if (r2) h = +r2[1];
+      if (h != null && isFinite(h) && h >= 0 && h < 24) metTijd.push({ m: m, h: h });
+    });
+    if (metTijd.length) {
+      var best = metTijd[0];
+      for (var i = 1; i < metTijd.length; i++) if (Math.abs(metTijd[i].h - hh) < Math.abs(best.h - hh)) best = metTijd[i];
+      return best.m.t;
+    }
+    var es = (dd.entries || []);
+    for (var j = 0; j < ms.length; j++) {
+      var sl = ms[j].slot;
+      if (!es.some(function (e) { return e.slot === sl; }) && !(dd.notes && dd.notes[sl])) return ms[j].t;
+    }
+    return ms[0].t;
+  }`;
+    ok.push(t.indexOf(OUD_ZEG60) !== -1);
+    t = t.replace(OUD_ZEG60, NIEUW_ZEG60);
+
+    var OUD_OPT60 = `  function optButtons(dow, list, id) {
+    var h = '';
+    OPTL.forEach(function (o) {
+      if (!o.dows[dow]) return;
+      if (list.some(function (m) { return m.slot === o.slot; })) return;
+      h += '<button class="optbtn" data-act="sheet" data-day="' + id + '" data-slot="' + o.slot + '">+ ' + esc(o.dows[dow]) + '</button>';
+    });
+    return h ? '<div class="optrow">' + h + '</div>' : '';
+  }`;
+    var NIEUW_OPT60 = `  function optButtons(dow, list, id) {
+    var rg = regelsMomenten(dow); // v60.0 werk
+    if (rg) return ''; // dag mét eigen momenten: geen vaste extra-knoppen meer
+    return '<div class="optrow"><a class="optbtn" href="regels-zelftest-work.html">+ Eigen moment maken (Mijn regels)</a></div>'; // lege dag: door naar de Regels-work-pagina
+  }`;
+    ok.push(t.indexOf(OUD_OPT60) !== -1);
+    t = t.replace(OUD_OPT60, NIEUW_OPT60);
+
+    var PUNTEN60 =
+      '    {"versie":"v60.0","deel":6,"t":"Week: alleen eigen momenten uit Mijn regels","sub":"dag mét eigen momenten toont alleen die; dag zonder eigen momenten is leeg, met alleen een linkje naar Mijn regels; geen kcal op de dagkaarten","ga":"week","doen":"Open 📋 Regels en voeg op een dag twee momenten toe (naam + tijdje). Open daarna de Week: toont die dag alleen deze twee momenten? Is een dag zonder eigen momenten leeg en staat daar alleen het linkje naar Mijn regels?"},' + '\n' +
+      '    {"versie":"v60.0","deel":6,"t":"Regels-pagina: het ⚡-vinkje","sub":"per eigen moment een vinkje: ⚡ in Mijn normale dag","ga":"test","doen":"Open 📋 Regels en voeg een moment toe. Staat onder max kcal het ⚡-vinkje met uitleg? Vink het aan en herlaad de pagina: blijft het vinkje staan?"},' + '\n' +
+      '    {"versie":"v60.0","deel":6,"t":"Mijn normale dag volgt het vinkje","sub":"Instellingen toont per weekdag alleen de aangevinkte eigen momenten; de ⚡-knop vult alleen die (ma t/m vr zoals altijd)","ga":"test","doen":"Vink op een weekdag één moment aan en vul er bij Instellingen een product in. Tik in de Week op ⚡: komt het product alleen in dat ene moment?"},' + '\n' +
+      '    {"versie":"v60.0","deel":6,"t":"Zeg-blok volgt de eigen momenten","sub":"het uitklaplijstje toont alleen je eigen momenten van die dag; de knop kiest het moment met een leesbaar tijdje dichtst bij nu, anders het eerste nog-lege moment","ga":"week","doen":"Vul bij een eigen moment een tijdje in zoals rond 09:00. Open het zeg-blok op die dag: staan er alleen je eigen momenten in het lijstje en kiest de knop er een logische uit?"},' + '\n';
+    ok.push(t.indexOf('var VERS_TESTEN = [') !== -1);
+    t = t.replace('var VERS_TESTEN = [', 'var VERS_TESTEN = [\n' + PUNTEN60);
+    ok.push(t.indexOf('Math.min(5, Math.max(1, VERS_TESTEN[di].deel || 1))') !== -1);
+    t = t.split('Math.min(5, Math.max(1, VERS_TESTEN[di].deel || 1))').join('Math.min(9, Math.max(1, VERS_TESTEN[di].deel || 1))');
+
     document.open();
     document.write(t);
     document.close();
