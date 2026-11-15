@@ -792,4 +792,4 @@ details:not(.pgrp):not(.instgrp):not(.khgrp), .card, .per, .opt, .instrow, .wkit
 #prijsview .pgrp, #prijsview .pgrp.lblblok { background: var(--surface) !important; border: 1px solid var(--line) !important; border-radius: 14px !important; box-shadow: none !important; }
 
 /* v62 werk: versieregel beter leesbaar in het Extreem-thema */
-:root[data-theme="contrast"] #appversie { color: #F7E4D0; font-weight: 700; }
+:root[data-theme="contrast"] #appversie { color: #F7E4D0 !important; font-weight: 700; } /* v62: de app zet zelf donkere accent-kleur op de versieregel — die wint van gewone CSS, daarom !important */
