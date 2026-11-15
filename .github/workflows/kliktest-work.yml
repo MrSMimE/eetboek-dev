@@ -1,10 +1,9 @@
-# Kliktest-work (publieke repo) - v1 (15 nov 2026, Vibe Work)
-# Handmatig te starten kliktest die ALLÉÉN de werk-set pakt:
-#   DEEL 1: de volledige ECHTE kliktest (kliktest.js, alle rondes) tegen de werk-app
-#           (index-zelftest-work.html laadt de echte index.html + werk-ombouw).
-#   DEEL 2: Ronde W — alle nieuwe aanpassingen nagekeken (v58.10 Regels + aparte opslag,
-#           v59.0 rustige testpagina + permanente vinkjes + Archief + Regels-kaartje).
-# ZONDER echte Mistral-aanroepen: de echte kliktest zet zélf een nep-Mistral aan.
+# Kliktest-work (publieke repo) - v2 (15 nov 2026, Vibe Work)
+# Handmatig te starten kliktest die ALLÉÉN de werk-set pakt.
+# ZONDER AI/Mistral-stuff: geen live-opzoek, geen Mistral-aanroepen, geen AI-jury.
+# Kern-ronde (tabbalk, recepten, ⋮-menu, kookhulp, producten, instellingen, breedte)
+# + Ronde W: alle nieuwe aanpassingen (v58.10 Regels + aparte opslag, v59.0 rustige
+#   testpagina + permanente vinkjes + Archief + Regels-kaartje permanent).
 # De echte index.html wordt nooit gewijzigd.
 name: Kliktest-work
 
@@ -34,24 +33,24 @@ jobs:
           npm i playwright --no-fund --no-audit
           npx playwright install chromium
 
-      - name: Controleer de werk-set (loader + Regels + echte index + kliktest)
+      - name: Controleer de werk-set
         shell: bash
         run: |
-          for f in index-zelftest-work.html regels-zelftest-work.html index.html app-test-work/regels.html versies/tests/kliktest.js versies/tests/kliktest-work.js; do
+          for f in index-zelftest-work.html regels-zelftest-work.html index.html app-test-work/regels.html versies/tests/kliktest-work.js; do
             if [ ! -f "$f" ]; then
               echo "STORING: geen $f op de Test-branch."
               exit 1
             fi
           done
 
-      - name: Echte kliktest + Ronde W op de werk-set (kan +/- 15-45 min duren)
+      - name: Vinger-kliktest werk-set (+/- 1-3 min)
         shell: bash
-        timeout-minutes: 90
+        timeout-minutes: 30
         run: |
           cd versies/tests
           node kliktest-work.js
 
-      - name: Rapporten tonen in de log
+      - name: Rapport tonen in de log
         if: always()
         shell: bash
         run: |
@@ -59,15 +58,11 @@ jobs:
             echo "================ ${f##*/} ================"
             cat "$f" 2>/dev/null || echo "(niet aanwezig)"
           done
-          echo "================ echte-kliktest-rapport.md (in rapport/) ================"
-          head -c 8000 versies/tests/rapport/rapport.md 2>/dev/null || echo "(niet aanwezig)"
 
-      - name: Rapporten als artifact bewaren (14 dagen)
+      - name: Rapport als artifact bewaren (14 dagen)
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: kliktest-work-rapport
-          path: |
-            versies/tests/rapport-laatste-work/
-            versies/tests/rapport/rapport.md
+          path: versies/tests/rapport-laatste-work/
           retention-days: 14
