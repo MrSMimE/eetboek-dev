@@ -474,20 +474,23 @@
   })();
 
 `;
-    var ANKER_ACC = "  (function () { // v61.3 werk: Boodschappen-tab tijdelijk weg voor gebruikers; Eetmomenten + Over & Feedback alleen op Week en Instellingen
-    var bo = $('tabbo'); if (bo) bo.style.display = 'none';
-    var foot = document.querySelector('.appfoot');
-    var pasVoet = function () {
-      if (!foot) return;
-      var tb = S.tab;
-      foot.hidden = (tb === 'test') || (tb !== 'week' && tb !== 'inst');
-    };
-    var oudRender = render;
-    render = function () { oudRender(); pasVoet(); };
-    pasVoet();
-  })();
-
-  // v58.9: accordion — binnen een lijst staat één deel/onderwerp-blokje tegelijk open";
+    var ANKER_ACC = "  // v58.9: accordion — binnen een lijst staat één deel/onderwerp-blokje tegelijk open";
+    ok.push(t.indexOf(ANKER_ACC) !== -1);
+    var V613 = "  (function () { // v61.3 werk: Boodschappen-tab tijdelijk weg voor gebruikers; Eetmomenten + Over & Feedback alleen op Week en Instellingen\n" +
+"    var bo = $('tabbo'); if (bo) bo.style.display = 'none';\n" +
+"    var foot = document.querySelector('.appfoot');\n" +
+"    var pasVoet = function () {\n" +
+"      if (!foot) return;\n" +
+"      var tb = S.tab;\n" +
+"      foot.hidden = (tb === 'test') || (tb !== 'week' && tb !== 'inst');\n" +
+"    };\n" +
+"    var oudRender = render;\n" +
+"    render = function () { oudRender(); pasVoet(); };\n" +
+"    pasVoet();\n" +
+"  })();\n" +
+"\n";
+    ok.push(t.indexOf(ANKER_ACC) !== -1);
+    t = t.replace(ANKER_ACC, V613 + ANKER_ACC);
     ok.push(t.indexOf(ANKER_ACC) !== -1);
     t = t.replace(ANKER_ACC, V61_BLOK + ANKER_ACC);
 
