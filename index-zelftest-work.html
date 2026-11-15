@@ -18,9 +18,9 @@
     var t = x.responseText;
     var vondVlag = t.indexOf('var TESTVERSIE = false;') !== -1;
     t = t.replace('var TESTVERSIE = false;', 'var TESTVERSIE = true; // zelftest-work: schrijft alleen naar test-opslag');
-    // Regels-knop in de footer, vóór Testen (zelfde plek als in het proef-mapje)
+    // Regels-knop in de footer, vóór Testen — linkt naar de eigen Regels-work-pagina
     var OUD = '<footer class="appfoot"><button type="button" data-act="tab" data-t="test" id="tabtest">🧪 Testen</button></footer>';
-    var NIEUW = '<footer class="appfoot"><a href="app-test-work/regels.html">📋 Regels</a> <button type="button" data-act="tab" data-t="test" id="tabtest">🧪 Testen</button></footer>';
+    var NIEUW = '<footer class="appfoot"><a href="regels-zelftest-work.html">📋 Regels</a> <button type="button" data-act="tab" data-t="test" id="tabtest">🧪 Testen</button></footer>';
     var vondFooter = t.indexOf(OUD) !== -1;
     t = t.replace(OUD, NIEUW);
     document.open();

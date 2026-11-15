@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>Mijn Eetboek — Regels (zelftest work)</title>
+</head>
+<body>
+<p>Regels (work-versie) laden…</p>
+<script>
+(function () {
+  // Regels voor de zelftest-work-pagina. Gemaakt op dezelfde manier als
+  // index-zelftest-work.html: de Regels-code wordt geladen en meteen
+  // aangepast, zodat deze pagina volledig eigen is:
+  // - eigen opslag-sleutel (eetweek.regels.zelftestwork.v1)
+  // - navigatie terug naar de work-pagina, niet naar het proef-mapje
+  // Jouw echte eetboek en het proef-mapje blijven volledig onaangeraakt.
+  var x = new XMLHttpRequest();
+  x.open('GET', 'app-test-work/regels.html', true);
+  x.onload = function () {
+    var t = x.responseText;
+    var ok = [];
+    // stijl uit de bestaande asset
+    ok.push(t.indexOf('href="style.css"') !== -1);
+    t = t.replace('href="style.css"', 'href="app-test-work/style.css"');
+    // eigen opslag-sleutel: volledig los van het mapje en van de echte app
+    ok.push(t.indexOf("var KEY = 'eetweek.regels.v1';") !== -1);
+    t = t.replace("var KEY = 'eetweek.regels.v1';", "var KEY = 'eetweek.regels.zelftestwork.v1';");
+    // navigatie: allebei de index-links wijzen naar de work-pagina
+    ok.push(t.indexOf('href="index.html"') !== -1);
+    t = t.split('href="index.html"').join('href="index-zelftest-work.html"');
+    // de tabbalk van het proef-mapje hoort hier niet: verbergen
+    ok.push(t.indexOf('<nav class="bottomnav">') !== -1);
+    t = t.replace('<nav class="bottomnav">', '<nav class="bottomnav" style="display:none">');
+    // footer: Testen-link gaat terug naar de work-pagina
+    ok.push(t.indexOf('href="testen.html"') !== -1);
+    t = t.replace('href="testen.html"', 'href="index-zelftest-work.html"');
+    document.open();
+    document.write(t);
+    document.close();
+    if (ok.indexOf(false) !== -1) { try { console.warn('regels-work: niet alle aanpassingen zijn gelukt — controleer de code'); } catch (e) {} }
+  };
+  x.onerror = function () {
+    document.body.innerHTML = '<p>Kon de Regels-pagina niet laden. Kijk even of je internetverbinding het doet en probeer opnieuw.</p>';
+  };
+  x.send();
+})();
+</script>
+</body>
+</html>
