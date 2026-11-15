@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mijn Eetboek — Zelftest work</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #EFECE6; color: #483F37; font: 16px/1.5 system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; }
+  .lz { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
+  .lz .d { width: 34px; height: 34px; border: 3px solid #D5CCC0; border-top-color: #6E5F50; border-radius: 50%; animation: dl 0.9s linear infinite; }
+  @keyframes dl { to { transform: rotate(360deg); } }
+  .lz .f { color: #A95042; max-width: 320px; text-align: center; padding: 16px; }
+</style>
+</head>
+<body>
+<div class="lz" id="lz">
+  <div class="d"></div>
+  <div>Zelftest-work laden…</div>
+</div>
+<script>
+(function () {
+  // Zelftest-work: laadt de echte index.html, maar zet eerst de test-modus aan.
+  // TESTVERSIE = true betekent: leest je echte week, schrijft ALLEEN naar
+  // 'eetweek.v1.testversie'. Je echte eetboek wordt dus nooit aangeraakt.
+  var x = new XMLHttpRequest();
+  x.open('GET', 'index.html', true);
+  x.onload = function () {
+    var t = x.responseText;
+    var oud = 'var TESTVERSIE = false;';
+    if (t.indexOf(oud) === -1) {
+      document.getElementById('lz').innerHTML = '<div class="f">Kon de test-modus-schakelaar niet vinden in index.html.<br>Misschien is de app geupdate — laat het Marlijn weten / meld het bij de bouw.</div>';
+      return;
+    }
+    t = t.replace(oud, 'var TESTVERSIE = true;');
+    document.open(); document.write(t); document.close();
+  };
+  x.onerror = function () {
+    document.getElementById('lz').innerHTML = '<div class="f">Kon index.html niet laden. Ben je online?</div>';
+  };
+  x.send();
+})();
+</script>
+</body>
+</html>
