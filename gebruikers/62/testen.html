@@ -112,6 +112,25 @@
       <button type="button" class="pill" data-act="testreset" data-r="vol" style="margin-top:6px" title="Vinkjes van de Volledige check wissen">↺ Opnieuw beginnen</button><button type="button" class="pill" data-act="testwis" style="margin-top:6px;margin-left:6px" title="ALLE testuitslagen wissen (beide rondes, alle versies)">✗ alles weg</button>
       <button class="btn" type="button" data-act="testeind" data-r="vol" style="width:100%;margin-top:10px">📋 Eindrapport maken</button>
      </details>
+     <details class="per" id="deelMeld">
+      <summary>🐞 Iets gevonden dat niet werkt?</summary>
+      <p class="hint" style="margin:6px 0 0">Heb je bij de checks of in de app iets gevonden dat niet goed werkt? Laat het weten, dan wordt het gemaakt. Je kunt het rapport hieronder kopiëren en meesturen.</p>
+      <button class="btn" type="button" onclick="window.open('https://github.com/MrSMimE/eetboek-dev/issues/new','_blank','noopener')" style="width:100%;margin-top:8px">💬 Melding maken op GitHub (Issues)</button>
+      <button class="btn" type="button" data-mail="1" style="width:100%;margin-top:8px;background:#5b5a52">✉️ Liever een mailtje? Tik hier = adres kopiëren</button>
+      <script>
+  (function(){
+    var b = document.querySelector('[data-mail]');
+    if (!b) return;
+    var A = 'mrsmime' + '1' + String.fromCharCode(64) + 'gmail' + '.com';
+    function klaar() { b.textContent = '✓ Gekopieerd: plak het in je mail-app'; setTimeout(function(){ b.textContent = '✉️ Liever een mailtje? Tik hier = adres kopiëren'; }, 4000); }
+    b.addEventListener('click', function() {
+      var done = false;
+      try { navigator.clipboard.writeText(A).then(klaar, function(){}); done = true; } catch (e) {}
+      if (!done) { var i = document.createElement('input'); i.value = A; document.body.appendChild(i); i.select(); try { document.execCommand('copy'); klaar(); } catch (e2) {} i.remove(); }
+    });
+  })();
+</script>
+     </details>
      <p class="hint stat" id="testverbergregel" hidden><button type="button" class="pill" data-act="testtoon">▸ Toon testbalkje</button> verborgen — je opgeslagen uitslagen blijven bewaard</p>
 </div>
 
