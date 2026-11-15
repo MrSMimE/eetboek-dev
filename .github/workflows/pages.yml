@@ -1,9 +1,7 @@
 name: Deploy static content to Pages
 
 on:
-  push:
-    branches: ["Test"]
-  workflow_dispatch:
+  workflow_dispatch: # handmatig — de publieke site komt vanaf de Gebruikers-branch
 
 permissions:
   contents: read
