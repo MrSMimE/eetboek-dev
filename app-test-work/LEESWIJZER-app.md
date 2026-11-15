@@ -37,7 +37,7 @@ De app is één groot bestand (12.665 regels):
 ## Werk-deuren die hierop rekenen
 
 - app-test-work/app.js (v60.0): laadt versies/opdeling-test/app.js, remapt opslag, vervangt momentsFor/optButtons.
-- index-zelftest-work.html (v60.0): laadt de echte index.html en patcht die (zelfde brokken, plus regels-sleutel eetweek.regels.zelftestwork.v1).
+- app.html (v61.2): laadt de echte index.html en patcht die (zelfde brokken, plus regels-sleutel eetweek.regels.zelftestwork.v1).
 
 ## Onderhoud
 
