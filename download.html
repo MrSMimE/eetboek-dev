@@ -35,6 +35,13 @@
 </div>
 
 <div class="dl-kaart">
+  <b>Als echte app (html-to-app)</b>
+  <p class="hint" style="margin:6px 0 0">Voor het omzetten naar een echte app met een html-to-app-omzetter. Deze zip bevat alléén index.html, met daarin de hele app in één bestand. Daarmee werkt de omzetter meteen, zonder de andere bestanden te missen.</p>
+  <button class="dl-knop" type="button" id="knopApp">⬇️ Download de app-zip (index.html)</button>
+  <p class="hint dl-status" id="stApp"></p>
+</div>
+
+<div class="dl-kaart">
   <b>Eerst even kijken?</b>
   <p class="hint" style="margin:6px 0 0">Je kunt de app ook direct in je browser proberen, zonder downloaden:</p>
   <a class="dl-knop plat" style="display:block;text-align:center;text-decoration:none;line-height:52px" href="mijn-eetboek-alles-in-1.html">Open de alles-in-1 in de browser</a>
@@ -149,7 +156,7 @@
     ['checkjebon-js.js', 'checkjebon-js.js'],
     ['app.js', 'app.js']
   ];
-  var stMap = document.getElementById('stMap'), stSingle = document.getElementById('stSingle');
+  var stMap = document.getElementById('stMap'), stSingle = document.getElementById('stSingle'), stApp = document.getElementById('stApp');
   document.getElementById('knopMap').addEventListener('click', function () {
     haalOp(MAP, stMap, function (uit) {
       stMap.textContent = 'Zip maken…';
@@ -164,6 +171,14 @@
       uit.unshift({ naam: 'LEESMIJ.txt', bytes: new TextEncoder().encode(LEESMIJ) });
       download(maakZip(uit), 'mijn-eetboek-alles-in-1.zip');
       stSingle.textContent = 'Klaar! De zip staat in je downloads-mapje. 🍀';
+    });
+  });
+
+  document.getElementById('knopApp').addEventListener('click', function () {
+    haalOp([['index.html', 'mijn-eetboek-alles-in-1.html']], stApp, function (uit) {
+      stApp.textContent = 'Zip maken…';
+      download(maakZip(uit), 'mijn-eetboek-app.zip');
+      stApp.textContent = 'Klaar! De zip staat in je downloads-mapje. Daarmee kan de html-to-app-omzetter direct aan de slag. 🍀';
     });
   });
 })();
