@@ -33,9 +33,9 @@
 
     // ---- 1. versie mee naar v61.0 ----
     ok.push(t.indexOf("var VERSION = 'v58.9 - 14 nov 20u55';") !== -1);
-    t = t.replace("var VERSION = 'v58.9 - 14 nov 20u55';", "var VERSION = 'Mijn Eetboek • v61.2';
+        t = t.replace("var VERSION = 'v58.9 - 14 nov 20u55';", "var VERSION = 'Mijn Eetboek • v61.2';");
     ok.push(t.indexOf("'Mijn Eetboek — versie ' + VERSION") !== -1);
-    t = t.replace("'Mijn Eetboek — versie ' + VERSION", "VERSION"); // v61.3 werk: bovenaan Instellingen alleen de versieregel");
+    t = t.replace("'Mijn Eetboek — versie ' + VERSION", "VERSION"); // v61.3 werk: bovenaan Instellingen alleen de versieregel
     ok.push(t.indexOf("VERSION = 'v58.9 - 14 nov 20u55 (testbuild 14 nov 20u55)';") !== -1);
     t = t.replace("VERSION = 'v58.9 - 14 nov 20u55 (testbuild 14 nov 20u55)';", "VERSION = 'Mijn Eetboek • v61.2';");
 
@@ -378,8 +378,8 @@
     d.innerHTML = '<summary><span class="ci">🧪</span><span>Testen</span></summary>' +
       '<div class="pgin">' +
       '<div class="card"><details class="per" open><summary>📋 Test-rondje</summary>' +
-      '<p class="hint" style="margin:6px 0 0">Hiermee controleer je of alles in de app nog goed werkt — de punten van deze versie staan bij elkaar in een rustig rondje.</p>' +
-      '<button class="btn main" style="width:100%" type="button" id="testOpenKnop">▶ Open het test-rondje (testen.html)</button>' +
+      '<p class="hint" style="margin:6px 0 0">Hiermee kun je controleren of alle onderdelen van Mijn Eetboek goed werken op jouw apparaat — de punten van deze versie staan bij elkaar in een rustig rondje.</p>' +
+      '<button class="btn main" style="width:100%" type="button" id="testOpenKnop">▶ Open het test-rondje</button>' +
       '<button class="btn" style="width:100%" type="button" id="testBalkKnop">▸ Toon het testbalkje onderaan</button>' +
       '</details></div>' +
       '<div id="testMeethulpPlek"></div>' +
