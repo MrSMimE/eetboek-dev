@@ -1,10 +1,9 @@
-# Kliktest-work (publieke repo) - v2 (15 nov 2026, Vibe Work)
-# Handmatig te starten kliktest die ALLÉÉN de werk-set pakt.
-# ZONDER AI/Mistral-stuff: geen live-opzoek, geen Mistral-aanroepen, geen AI-jury.
-# Kern-ronde (tabbalk, recepten, ⋮-menu, kookhulp, producten, instellingen, breedte)
-# + Ronde W: alle nieuwe aanpassingen (v58.10 Regels + aparte opslag, v59.0 rustige
-#   testpagina + permanente vinkjes + Archief + Regels-kaartje permanent).
-# De echte index.html wordt nooit gewijzigd.
+# Kliktest-work (publieke repo) - v3 (15 nov 2026, Vibe Work)
+# Handmatig te starten kliktest: de VOLLEDIGE echte kliktest op de werk-set,
+# ZONDER AI/Mistral-stuff (Ronde 3 en Ronde 8 zijn bewust weg) + Ronde W
+# (v58.10 Regels + aparte opslag, v59.0 rustige testpagina + permanente
+# vinkjes + Archief + Regels-kaartje permanent).
+# Duurt +/- 10-25 min (de volledige ronde). De echte index.html wordt niet gewijzigd.
 name: Kliktest-work
 
 on:
@@ -43,9 +42,9 @@ jobs:
             fi
           done
 
-      - name: Vinger-kliktest werk-set (+/- 1-3 min)
+      - name: Volledige vinger-kliktest werk-set (10-25 min)
         shell: bash
-        timeout-minutes: 30
+        timeout-minutes: 50
         run: |
           cd versies/tests
           node kliktest-work.js
