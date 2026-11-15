@@ -1,4 +1,4 @@
-// Kliktest-dev voor MrSMimE/eetboek-dev — test de losse map app-test/ (index-zelftest.html).
+// Kliktest-dev voor MrSMimE/eetboek-dev — test de losse opdeling in versies/ (opdeling-test/index-zelftest.html).
 // ZONDER AI/Mistral-stuff: geen live-opzoek, geen Mistral-aanroepen, geen AI-jury.
 // Gebruik: node versies/tests/kliktest-dev.js [pad-naar-testbestand]
 //   (zonder argument: app-test/index-zelftest.html; anders nieuwste *single-file.html in versies/)
@@ -9,7 +9,7 @@ const http = require('http');
 const { execSync } = require('child_process');
 
 const ROOT = path.join(__dirname, '..', '..'); // repo-root (script woont in versies/tests/)
-const APPTEST = path.join(ROOT, 'app-test');
+const APPTEST = path.join(ROOT, 'versies', 'opdeling-test');
 const VERSIES = path.join(ROOT, 'versies');
 const RAPPORT_DIR = path.join(__dirname, 'rapport-laatste-dev');
 const POORT = parseInt(process.env.POORT || '8137', 10);
@@ -19,7 +19,7 @@ function versieNum(f) {
   return m ? (+m[1]) * 1000 + (+m[2]) : -1;
 }
 function kiesDoel() {
-  // v58.9+ (14 nov 21u3x): losse opdeling — app-test/index-zelftest.html is de single-file testbuild
+  // v58.9+ (14 nov 21u3x): losse opdeling — versies/opdeling-test/index-zelftest.html is de single-file testbuild
   const los = path.join(APPTEST, 'index-zelftest.html');
   if (fs.existsSync(los)) return los;
   // oude situatie: nieuwste *single-file.html in versies/

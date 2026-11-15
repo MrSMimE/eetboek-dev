@@ -77,20 +77,20 @@ jobs:
             exit 1
           fi
 
-      - name: Controleer bronmap app-test/ (losse bestanden)
+      - name: Controleer bronmap versies/ (opdeling-test als losse bestanden)
         if: steps.check.outputs.should_sync == 'true'
         run: |
-          if [ ! -f "${{ env.SOURCE_DIR }}/app-test/index-zelftest.html" ]; then
-            echo "Map 'app-test' (losse bestanden) niet compleet in ${SOURCE_REPO}" >&2
+          if [ ! -f "${{ env.SOURCE_DIR }}/versies/opdeling-test/index-zelftest.html" ]; then
+            echo "versies/opdeling-test (losse bestanden) niet gevonden in ${{ env.SOURCE_REPO }}" >&2
             exit 1
           fi
 
       - name: Verwijder oude kopieen
         if: steps.check.outputs.should_sync == 'true'
         run: |
-          rm -rf ./app-test ./versies
+          rm -rf ./versies ./app-test ./tests
 
-      - name: Kopieer app-test/ (los, zonder zips) + kliktest-bot + README (strikte uitsluitingen)
+      - name: Kopieer versies/ (opdeling-test los, zonder zips) + README (strikte uitsluitingen)
         if: steps.check.outputs.should_sync == 'true'
         run: |
           EXCLUDES=(
@@ -101,14 +101,7 @@ jobs:
             --exclude='*.zip'
             --exclude='node_modules/'
           )
-          rsync -a "${EXCLUDES[@]}" "${{ env.SOURCE_DIR }}/app-test/" ./app-test/
-          if [ -d "${{ env.SOURCE_DIR }}/versies/tests" ]; then
-            rsync -a "${EXCLUDES[@]}" "${{ env.SOURCE_DIR }}/versies/tests/" ./versies/tests/
-          fi
-          if [ -f "${{ env.SOURCE_DIR }}/versies/README.md" ]; then
-            mkdir -p ./versies
-            rsync -a "${{ env.SOURCE_DIR }}/versies/README.md" ./versies/README.md
-          fi
+          rsync -a "${EXCLUDES[@]}" "${{ env.SOURCE_DIR }}/versies/" ./versies/
           if [ -f "${{ env.SOURCE_DIR }}/README.md" ]; then
             rsync -a --exclude='.git' --exclude='.env*' "${{ env.SOURCE_DIR }}/README.md" ./README.md
           fi
@@ -126,7 +119,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "Geen wijzigingen, niets te pushen."
           else
-            git commit -m "Sync dev: app-test/ (los) + versies/tests @ ${{ steps.check.outputs.new_sha }}"
+            git commit -m "Sync dev: versies/ (opdeling-test los) @ ${{ steps.check.outputs.new_sha }}"
             git push origin "HEAD:${{ env.TARGET_BRANCH }}"
           fi
 

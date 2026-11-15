@@ -30,11 +30,11 @@ jobs:
           npm i playwright --no-fund --no-audit
           npx playwright install chromium
 
-      - name: Controleer app-test/index-zelftest.html
+      - name: Controleer versies/opdeling-test/index-zelftest.html
         shell: bash
         run: |
-          if [ ! -f app-test/index-zelftest.html ]; then
-            echo "STORING: geen app-test/index-zelftest.html op de Test-branch."
+          if [ ! -f versies/opdeling-test/index-zelftest.html ]; then
+            echo "STORING: geen versies/opdeling-test/index-zelftest.html op de Test-branch."
             exit 1
           fi
 
