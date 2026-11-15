@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mijn Eetboek — downloaden</title>
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="eetboek/style.css">
 <style>
   .dl-kaart { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; margin-top: 12px; padding: 14px; }
   .dl-knop { display: block; width: 100%; box-sizing: border-box; min-height: 52px; margin-top: 10px; border: none; border-radius: 12px; padding: 0 16px; font: inherit; font-weight: 800; font-size: 17px; cursor: pointer; background: var(--accent); color: var(--on-accent); }
@@ -21,15 +21,15 @@
 </div>
 
 <div class="dl-kaart">
-  <b>Hele map (13 bestanden + leeswijzer)</b>
-  <p class="hint" style="margin:6px 0 0">Alle losse pagina's plus de app-code, de stijl en een leeswijzer (LEESMIJ.txt) die uitlegt hoe het werkt. Uitpakken, daarna <b>index.html</b> openen — werkt ook zonder internet. Jouw gegevens blijven op je eigen apparaat.</p>
-  <button class="dl-knop" type="button" id="knopMap">⬇️ Download de map-versie (zip)</button>
+  <b>Mapje eetboek (13 bestanden + leeswijzer)</b>
+  <p class="hint" style="margin:6px 0 0">Alle losse pagina's plus de app-code, de stijl en een leeswijzer (LEESMIJ.txt) die uitlegt hoe het werkt. Uitpakken geeft meteen een mapje "eetboek" — daarna <b>index.html</b> openen. Werkt ook zonder internet. Jouw gegevens blijven op je eigen apparaat.</p>
+  <button class="dl-knop" type="button" id="knopMap">⬇️ Download eetboek.zip (map-versie)</button>
   <p class="hint dl-status" id="stMap"></p>
 </div>
 
 <div class="dl-kaart">
   <b>Alles-in-1 (één bestand)</b>
-  <p class="hint" style="margin:6px 0 0">De hele app in één bestand, met dezelfde leeswijzer erbij. Werkt ook zonder internet. Handig als je maar één bestand wilt bewaren — of als je van het eetboek een echte app wilt maken (html-naar-app): gebruik dan dit bestandje, er zit alles in.</p>
+  <p class="hint" style="margin:6px 0 0">De hele app in één bestand (index.html), met dezelfde leeswijzer erbij. Werkt ook zonder internet. Handig als je maar één bestand wilt bewaren.</p>
   <button class="dl-knop" type="button" id="knopSingle">⬇️ Download de alles-in-1 (zip)</button>
   <p class="hint dl-status" id="stSingle"></p>
 </div>
@@ -44,8 +44,8 @@
 <div class="dl-kaart">
   <b>Eerst even kijken?</b>
   <p class="hint" style="margin:6px 0 0">Je kunt de app ook direct in je browser proberen, zonder downloaden:</p>
-  <a class="dl-knop plat" style="display:block;text-align:center;text-decoration:none;line-height:52px" href="mijn-eetboek-alles-in-1.html">Open de alles-in-1 in de browser</a>
-  <a class="dl-knop plat" style="display:block;text-align:center;text-decoration:none;line-height:52px" href="index.html">Open de map-versie in de browser</a>
+  <a class="dl-knop plat" style="display:block;text-align:center;text-decoration:none;line-height:52px" href="index.html">Open de app in de browser (alles-in-1)</a>
+  <a class="dl-knop plat" style="display:block;text-align:center;text-decoration:none;line-height:52px" href="eetboek/index.html">Open de map-versie in de browser</a>
 </div>
 
 <p class="hint" style="margin:16px 0 0">Mijn Eetboek</p>
@@ -134,48 +134,68 @@
     '\r\n' +
     'EEN APP VAN MAKEN?\r\n'
     'Wil je het eetboek als echte app op je telefoon zetten (met een html-naar-app omzetter),\r\n'
-    'gebruik dan het alles-in-1-bestand uit de andere zip: dat ene bestandje bevat de hele app.\r\n'
+    'gebruik dan het alles-in-1-bestand (index.html uit de andere zip op de downloadpagina):\r\n'
+    'dat ene bestandje bevat de hele app.\r\n'
     'Het mapje hierin is voor in de browser; alleen index.html meenemen is niet genoeg,\r\n'
     'want de pagina\'s hebben app.js en style.css nodig.\r\n'
     '\r\n'
-    'Liever één bestand in plaats van een mapje? Op de downloadpagina staat ook de alles-in-1-versie.\r\n'
+    'Veel plezier met Mijn Eetboek!\r\n';
+
+  var LEESMIJ_SINGLE =
+    'MIJN EETBOEK — alles-in-1\r\n' +
+    '=========================\r\n' +
+    '\r\n' +
+    'AAN DE SLAG\r\n' +
+    '1. Pak dit zipje uit (of houd index.html vast en kies "Uitpakken").\r\n' +
+    '2. Open daarna index.html — het eetboek start in je browser. Werkt ook zonder internet.\r\n' +
+    '3. Dit ene bestandje bevat de hele app: geen andere bestanden nodig.\r\n' +
+    '\r\n' +
+    'GOED OM TE WETEN\r\n' +
+    '- Jouw gegevens (eten, recepten, prijzen, instellingen) blijven op je eigen apparaat, in de opslag van je browser. Er gaat niets naar internet.\r\n' +
+    '- Bijna alles werkt zonder internet; alleen de AI-hulpjes en de feedback-mail hebben internet nodig.\r\n' +
+    '- Reservekopie maken of alles leegmaken kan via Instellingen → Bewaren & terugzetten.\r\n' +
+    '\r\n' +
+    'EEN APP VAN MAKEN?\r\n'
+    'Dit bestand is ook geschikt voor een html-to-app-omzetter:\r\n'
+    'laad index.html in de omzetter en de hele app zit erin.\r\n'
+    '\r\n'
     'Veel plezier met Mijn Eetboek!\r\n';
 
   var MAP = [
-    ['index.html', 'index.html'],
-    ['recepten.html', 'recepten.html'],
-    ['producten.html', 'producten.html'],
-    ['kookhulp.html', 'kookhulp.html'],
-    ['boodschappen.html', 'boodschappen.html'],
-    ['instellingen.html', 'instellingen.html'],
-    ['regels.html', 'regels.html'],
-    ['testen.html', 'testen.html'],
-    ['over.html', 'over.html'],
-    ['overzicht.html', 'overzicht.html'],
-    ['style.css', 'style.css'],
-    ['checkjebon-js.js', 'checkjebon-js.js'],
-    ['app.js', 'app.js']
+    ['eetboek/index.html', 'eetboek/index.html'],
+    ['eetboek/recepten.html', 'eetboek/recepten.html'],
+    ['eetboek/producten.html', 'eetboek/producten.html'],
+    ['eetboek/kookhulp.html', 'eetboek/kookhulp.html'],
+    ['eetboek/boodschappen.html', 'eetboek/boodschappen.html'],
+    ['eetboek/instellingen.html', 'eetboek/instellingen.html'],
+    ['eetboek/regels.html', 'eetboek/regels.html'],
+    ['eetboek/testen.html', 'eetboek/testen.html'],
+    ['eetboek/over.html', 'eetboek/over.html'],
+    ['eetboek/overzicht.html', 'eetboek/overzicht.html'],
+    ['eetboek/style.css', 'eetboek/style.css'],
+    ['eetboek/checkjebon-js.js', 'eetboek/checkjebon-js.js'],
+    ['eetboek/app.js', 'eetboek/app.js']
   ];
   var stMap = document.getElementById('stMap'), stSingle = document.getElementById('stSingle'), stApp = document.getElementById('stApp');
   document.getElementById('knopMap').addEventListener('click', function () {
     haalOp(MAP, stMap, function (uit) {
       stMap.textContent = 'Zip maken…';
-      uit.unshift({ naam: 'LEESMIJ.txt', bytes: new TextEncoder().encode(LEESMIJ) });
-      download(maakZip(uit), 'mijn-eetboek-map.zip');
+      uit.unshift({ naam: 'eetboek/LEESMIJ.txt', bytes: new TextEncoder().encode(LEESMIJ) });
+      download(maakZip(uit), 'eetboek.zip');
       stMap.textContent = 'Klaar! De zip staat in je downloads-mapje. 🍀';
     });
   });
   document.getElementById('knopSingle').addEventListener('click', function () {
-    haalOp([['mijn-eetboek-alles-in-1.html', 'mijn-eetboek-alles-in-1.html']], stSingle, function (uit) {
+    haalOp([['index.html', 'index.html']], stSingle, function (uit) {
       stSingle.textContent = 'Zip maken…';
-      uit.unshift({ naam: 'LEESMIJ.txt', bytes: new TextEncoder().encode(LEESMIJ) });
+      uit.unshift({ naam: 'LEESMIJ.txt', bytes: new TextEncoder().encode(LEESMIJ_SINGLE) });
       download(maakZip(uit), 'mijn-eetboek-alles-in-1.zip');
       stSingle.textContent = 'Klaar! De zip staat in je downloads-mapje. 🍀';
     });
   });
 
   document.getElementById('knopApp').addEventListener('click', function () {
-    haalOp([['index.html', 'mijn-eetboek-alles-in-1.html']], stApp, function (uit) {
+    haalOp([['index.html', 'index.html']], stApp, function (uit) {
       stApp.textContent = 'Zip maken…';
       download(maakZip(uit), 'mijn-eetboek-app.zip');
       stApp.textContent = 'Klaar! De zip staat in je downloads-mapje. Daarmee kan de html-to-app-omzetter direct aan de slag. 🍀';
