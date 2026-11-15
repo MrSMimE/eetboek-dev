@@ -11,7 +11,7 @@
   // Zelftest-work v58.10: laadt de echte index.html en past meteen aan:
   // - test-modus aan (schrijft alleen naar eetweek.v1.testversie)
   // - Regels-knop in de footer (linkt naar regels-zelftest-work.html)
-  // - versie + datum + tijd naar v58.10 - 15 nov 10u10
+  // - versie + datum + tijd naar v58.10 - 15 nov 11u11
   // - eigen testpunten (Deel 6) voor de nieuwe werk-onderdelen
   // Jouw echte eetboek blijft volledig onaangeraakt.
   var x = new XMLHttpRequest();
@@ -29,9 +29,9 @@
     t = t.replace(OUD, NIEUW);
     // 3. versie + datum + tijd naar v58.10
     ok.push(t.indexOf("var VERSION = 'v58.9 - 14 nov 20u55';") !== -1);
-    t = t.replace("var VERSION = 'v58.9 - 14 nov 20u55';", "var VERSION = 'v58.10 - 15 nov 10u10';");
+    t = t.replace("var VERSION = 'v58.9 - 14 nov 20u55';", "var VERSION = 'v58.10 - 15 nov 11u11';");
     ok.push(t.indexOf("VERSION = 'v58.9 - 14 nov 20u55 (testbuild 14 nov 20u55)';") !== -1);
-    t = t.replace("VERSION = 'v58.9 - 14 nov 20u55 (testbuild 14 nov 20u55)';", "VERSION = 'v58.10 - 15 nov 10u10 (testbuild 15 nov 10u10)';");
+    t = t.replace("VERSION = 'v58.9 - 14 nov 20u55 (testbuild 14 nov 20u55)';", "VERSION = 'v58.10 - 15 nov 11u11 (testbuild 15 nov 11u11)';");
     // 4. eigen testpunten voor v58.10 toevoegen (Deel 6)
     var OPEN = 'var VERS_TESTEN = [';
     var PUNTEN =
