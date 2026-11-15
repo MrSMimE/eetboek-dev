@@ -75,7 +75,7 @@
       "  var KEY = 'eetweek.testronde', DAG = '15 nov', IDX = 0, KAART = 'eetweek.regels.kaartje';" +
       "  var weergave = null; /* 'kaart' | 'pil' | 'weg' — null = nog niet berekend */" +
       "  function $(id) { return document.getElementById(id); }" +
-      "  function lees() { try { var v = JSON.parse(localStorage.getItem(KEY) || 'null'); if (v && typeof v === 'object' && v.v === DAG) return v; } catch (e) {} return { v: DAG, klein: {}, vol: {}, laatste: '' }; }" +
+      "  function lees() { try { var v = JSON.parse(localStorage.getItem(KEY) || 'null'); if (v && typeof v === 'object') return v; } catch (e) {} return { v: DAG, klein: {}, vol: {}, laatste: '' }; }" +
       "  function vink() { var st = lees(); var g = st.klein && st.klein[IDX]; return g === 'goed' || g === 'fout' ? g : null; }" +
       "  function zet(g) { var st = lees(); st.klein = st.klein || {}; st.klein[IDX] = g ? 'goed' : 'fout'; st.laatste = 'klein'; try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} try { localStorage.setItem(KAART, 'weg'); } catch (e) {} weergave = 'pil'; pasWeergave(); }" +
       "  function toon() { var g = vink(); var s = $('rglstatus'); if (s) s.textContent = g === 'goed' ? '✓ nagekeken goed' : (g === 'fout' ? '✗ gaat fout' : 'nog niet nagekeken'); var d = $('rgltest'); if (d) { if (g) d.className = 'klaar'; else d.removeAttribute('class'); } var p = $('rglpill'); if (p) p.textContent = (g ? 1 : 0) + ' van 1 ▸'; }" +

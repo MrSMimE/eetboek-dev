@@ -2,44 +2,97 @@
 <html lang="nl">
 <head>
 <meta charset="utf-8">
-<title>Mijn Eetboek — Zelftest work v58.10</title>
+<title>Mijn Eetboek — Zelftest work v59.0</title>
 </head>
 <body>
 <p>Zelftest work-versie laden…</p>
 <script>
 (function () {
-  // Zelftest-work v58.10: laadt de echte index.html en past meteen aan:
+  // Zelftest-work v59.0: laadt de echte index.html en past meteen aan:
   // - test-modus aan (schrijft alleen naar eetweek.v1.testversie)
   // - Regels-knop in de footer (linkt naar regels-zelftest-work.html)
-  // - versie + datum + tijd naar v58.10 - 15 nov 12u41 (Amsterdam)
-  // - eigen testpunten (Deel 6) voor de nieuwe werk-onderdelen
+  // - versie + datum + tijd naar v59.0 - 15 nov 13u20 (Amsterdam)
+  // - eigen testpunten (Deel 6) voor de werk-onderdelen
   // - komt de pagina aan met #testen, dan start de app meteen op het Testen-tab
-  // Jouw echte eetboek blijft volledig onaangeraakt.
+  // - RUSTIGE TESTPAGINA (v59.0): vinkjes permanent (geen dag-reset), bovenaan
+  //   alleen open punten per deel (zonder tellers), alle afgevinkte punten
+  //   achter één Archief-regel onderaan (per versie, ↺ weer open zet terug),
+  //   reset-knoppen verhuisd naar het Archief
+  // Jouw echte eetboek en de echte index.html blijven volledig onaangeraakt.
   var x = new XMLHttpRequest();
-  x.open('GET', 'index.html', true);
   x.onload = function () {
     var t = x.responseText;
     var ok = [];
     ok.push(t.indexOf('var TESTVERSIE = false;') !== -1);
-    t = t.replace('var TESTVERSIE = false;', 'var TESTVERSIE = true; // zelftest-work v58.10: schrijft alleen naar test-opslag');
+    t = t.replace('var TESTVERSIE = false;', 'var TESTVERSIE = true; // zelftest-work v59.0: schrijft alleen naar test-opslag');
     var OUD = '<footer class="appfoot"><button type="button" data-act="tab" data-t="test" id="tabtest">🧪 Testen</button></footer>';
     var NIEUW = '<footer class="appfoot"><a href="regels-zelftest-work.html">📋 Regels</a> <button type="button" data-act="tab" data-t="test" id="tabtest">🧪 Testen</button></footer>';
     ok.push(t.indexOf(OUD) !== -1);
     t = t.replace(OUD, NIEUW);
     ok.push(t.indexOf("var VERSION = 'v58.9 - 14 nov 20u55';") !== -1);
-    t = t.replace("var VERSION = 'v58.9 - 14 nov 20u55';", "var VERSION = 'v58.10 - 15 nov 12u41';");
+    t = t.replace("var VERSION = 'v58.9 - 14 nov 20u55';", "var VERSION = 'v59.0 - 15 nov 13u20';");
     ok.push(t.indexOf("VERSION = 'v58.9 - 14 nov 20u55 (testbuild 14 nov 20u55)';") !== -1);
-    t = t.replace("VERSION = 'v58.9 - 14 nov 20u55 (testbuild 14 nov 20u55)';", "VERSION = 'v58.10 - 15 nov 12u41 (testbuild 15 nov 12u41)';");
+    t = t.replace("VERSION = 'v58.9 - 14 nov 20u55 (testbuild 14 nov 20u55)';", "VERSION = 'v59.0 - 15 nov 13u20 (testbuild 15 nov 13u20)';");
     var OPEN = 'var VERS_TESTEN = [';
     var PUNTEN =
       '    {"versie":"v58.10","deel":6,"t":"Eigen Regels-pagina (v58.10)","sub":"knop 📋 Regels onderaan, vóór 🧪 Testen; opent de eigen Regels-work-pagina; ← Terug naar de app komt hier terug","doen":"Tik onderaan op 📋 Regels. Opent de Regels-pagina met dag-chips ma t/m zo? Voeg op een dag een eigen moment toe, hernoem het, vul kcal in en kijk of de totaalregel meetelt. Tik ← Terug naar de app: ben je terug in de werk-app?"},' +
       '    {"versie":"v58.10","deel":6,"t":"Aparte opslag voor de werk-versies","sub":"alles wat je in de werk-app en in Regels-work invult gaat naar aparte opslag (eetweek.v1.testversie en eetweek.regels.zelftestwork.v1); je echte eetboek blijft buiten schot","doen":"Vul iets in de werk-app. Open daarna je gewone app: staat de verandering daar níet? Dat is de bedoeling."},' +
-      '    {"versie":"v58.10","deel":6,"t":"Versie-regel toont v58.10","sub":"testpagina begint met v58.10 · 6 delen · punten · nagekeken-teller","doen":"Open het Testen-blokje: begint de samenvattingsregel bovenaan met v58.10 en telt hij 6 delen?"},' +
+      '    {"versie":"v59.0","deel":6,"t":"Rustige testpagina: permanente vinkjes + Te doen + Archief","sub":"geen dag-reset meer: afgevinkte punten blijven voorgoed afgevinkt; bovenaan alleen open punten per deel (zonder tellers); alles afgevinkte achter één Archief-regel onderaan (per versie, ↺ weer open zet terug); reset-knoppen verhuisd naar het Archief","ga":"test","doen":"Staat er bovenaan alleen wat open is, zonder (x/y)-tellers? Vink een punt af en herlaad de pagina — blijft het afgevinkt en staat het daarna in het Archief onderaan? Tik in het Archief op ↺ weer open: staat het punt weer bovenaan? Is het Te doen-blok leeg met \'Alles is nagekeken 🎉\' als alles af is?"},' +
       '\n';
     ok.push(t.indexOf(OPEN) !== -1);
     t = t.replace(OPEN, OPEN + '\n' + PUNTEN);
     ok.push(t.indexOf('Math.min(5, Math.max(1, VERS_TESTEN[i].deel || 1))') !== -1);
     t = t.split('Math.min(5, Math.max(1, VERS_TESTEN[i].deel || 1))').join('Math.min(9, Math.max(1, VERS_TESTEN[i].deel || 1))');
+    // ---- v59.0: rustige testpagina (alle aanpassingen met ok-check) ----
+    // 1. vinkjes permanent: de dag-check eruit (testState)
+    ok.push(t.indexOf("if (v && typeof v === 'object' && v.v === TESTDAG) {") !== -1);
+    t = t.replace("if (v && typeof v === 'object' && v.v === TESTDAG) {", "if (v && typeof v === 'object') {");
+    // 2. tellers bovenaan weg; feestje als alles af is
+    ok.push(t.indexOf("td.textContent = String(VERSION).split(' ')[0] + ' · ' + Object.keys(dn).length + ' delen · ' + n + ' punten · ' + k + ' van ' + n + ' nagekeken';") !== -1);
+    t = t.replace("td.textContent = String(VERSION).split(' ')[0] + ' · ' + Object.keys(dn).length + ' delen · ' + n + ' punten · ' + k + ' van ' + n + ' nagekeken';", "td.textContent = (n - k > 0) ? '' : 'Alles is nagekeken 🎉'; // v59.0 werk: geen tellers in het gezichtsveld");
+    // 3. Te doen: alleen open punten per deel (klaar-delen weg, geen range/teller in de kop)
+    var LUS = "      for (var i = 0; i < VERS_TESTEN.length; i++) {\n        var d = Math.min(9, Math.max(1, VERS_TESTEN[i].deel || 1));\n        (delen[d] = delen[d] || []).push(i);\n      }";
+    ok.push(t.indexOf(LUS) !== -1);
+    t = t.replace(LUS, "      for (var i = 0; i < VERS_TESTEN.length; i++) {\n        if (st.klein[i]) continue; // v59.0 werk: afgevinkte punten horen niet meer in Te doen\n        var d = Math.min(9, Math.max(1, VERS_TESTEN[i].deel || 1));\n        (delen[d] = delen[d] || []).push(i);\n      }");
+    ok.push(t.indexOf("h += '<details class=\"per\" id=\"deelK' + d + '\"><summary>Deel ' + d + (range ? ' · ' + range : '') + ' <span class=\"hint stat\">(' + k + '/' + items.length + ')</span></summary>';") !== -1);
+    t = t.replace("h += '<details class=\"per\" id=\"deelK' + d + '\"><summary>Deel ' + d + (range ? ' · ' + range : '') + ' <span class=\"hint stat\">(' + k + '/' + items.length + ')</span></summary>';", "h += '<details class=\"per\" id=\"deelK' + d + '\"><summary>Deel ' + d + '</summary>'; // v59.0 werk: rustige kop zonder teller");
+    // 4. Archief-functie + meegeven aan de lijst
+    var FN = "  function testArchiefHtml(st) { // v59.0 werk: één Archief-regel onderaan met alle afgevinkte punten, gegroepeerd op versie\n" +
+      "    var openN = 0, klaar = [];\n" +
+      "    for (var i = 0; i < VERS_TESTEN.length; i++) { if (st.klein[i]) klaar.push(i); else openN++; }\n" +
+      "    var h = openN ? '' : '<p class=\"hint stat\" style=\"margin:6px 0 0\">Alles is nagekeken 🎉</p>';\n" +
+      "    if (!klaar.length) return h;\n" +
+      "    var pv = {};\n" +
+      "    klaar.forEach(function (i) { var vv = VERS_TESTEN[i].versie || 'eerder'; (pv[vv] = pv[vv] || []).push(i); });\n" +
+      "    h += '<details class=\"per\" id=\"testarchief\" style=\"margin-top:10px\"><summary>Archief — afgevinkte punten</summary>';\n" +
+      "    Object.keys(pv).sort().forEach(function (vv) {\n" +
+      "      h += '<p class=\"hint stat\" style=\"margin:8px 0 0\">' + esc(vv) + '</p>';\n" +
+      "      pv[vv].forEach(function (i) {\n" +
+      "        var it = VERS_TESTEN[i];\n" +
+      "        h += '<div class=\"testitem klaar\"><span class=\"tnm\">' + esc(it.t) + '<small>✓ ' + esc(it.versie || '') + '</small></span><button type=\"button\" class=\"ga\" data-act=\"testunvink\" data-r=\"klein\" data-i=\"' + i + '\" title=\"Punt weer open zetten\">↺ weer open</button></div>';\n" +
+      "      });\n" +
+      "    });\n" +
+      "    h += '<div style=\"margin-top:10px\"><button type=\"button\" class=\"pill\" data-act=\"testreset\" data-r=\"klein\" title=\"Vinkjes van dit rondje wissen\">↺ Opnieuw beginnen</button><button type=\"button\" class=\"pill\" data-act=\"testwis\" style=\"margin-left:6px\" title=\"ALLE testuitslagen wissen (beide rondes, alle versies)\">✗ alles weg</button></div>';\n" +
+      "    h += '</details>';\n" +
+      "    return h;\n" +
+      "  }\n";
+    ok.push(t.indexOf('  function renderTesten() {') !== -1);
+    t = t.replace('  function renderTesten() {', FN + '  function renderTesten() {');
+    ok.push(t.indexOf('vl.innerHTML = h;') !== -1);
+    t = t.replace('vl.innerHTML = h;', 'vl.innerHTML = h + testArchiefHtml(st); // v59.0 werk: Te doen + Archief');
+    // 5. "↺ weer open": punt uit het Archief terug naar Te doen
+    ok.push(t.indexOf("    else if (act === 'testreset') { var st2 = testState();") !== -1);
+    t = t.replace("    else if (act === 'testreset') { var st2 = testState();",
+      "    else if (act === 'testunvink') { var r2 = el.getAttribute('data-r'), i2 = +el.getAttribute('data-i'); var st3 = testState(); if (st3[r2]) delete st3[r2][i2]; st3.laatste = r2; testStateSave(st3); renderTesten(); testPillTekst(); toast('Punt weer open — staat bovenaan in Te doen'); } // v59.0 werk: ↺ weer open (Archief → Te doen)\n" +
+      "    else if (act === 'testreset') { var st2 = testState();");
+    // 6. vaste HTML: "Te doen" i.p.v. "Nieuw in deze versie", rustige hint, reset-knoppen naar het Archief
+    ok.push(t.indexOf('<summary>🆕 Nieuw in deze versie</summary>') !== -1);
+    t = t.replace('<summary>🆕 Nieuw in deze versie</summary>', '<summary>🆕 Te doen</summary>');
+    ok.push(t.indexOf('<p class="hint" style="margin:6px 0 0">Wat er in deze versie is veranderd. Tik op "Ga" — de app springt naar de plek en het balkje onderaan zegt wat je moet doen.</p>') !== -1);
+    t = t.replace('<p class="hint" style="margin:6px 0 0">Wat er in deze versie is veranderd. Tik op "Ga" — de app springt naar de plek en het balkje onderaan zegt wat je moet doen.</p>', '<p class="hint" style="margin:6px 0 0">Alles wat nog openstaat, per deel. Tik op "Ga" — de app springt naar de plek en het balkje onderaan zegt wat je moet doen. Afgevinkte punten vind je onderaan in het Archief.</p>');
+    var KNOppen = '<button type="button" class="pill" data-act="testreset" data-r="klein" style="margin-top:6px" title="Vinkjes van \'Nieuw in deze versie\' wissen">↺ Opnieuw beginnen</button><button type="button" class="pill" data-act="testwis" style="margin-top:6px;margin-left:6px" title="ALLE testuitslagen wissen (beide rondes, alle versies)">✗ alles weg</button>';
+    ok.push(t.indexOf(KNOppen) !== -1);
+    t = t.replace(KNOppen, '<!-- v59.0 werk: reset-knoppen verhuisd naar het Archief -->');
     // #testen: meteen op het Testen-tab starten (komt van de Regels-work-pagina)
     var HASH =
       '<scr' + 'ipt>' +
@@ -52,11 +105,12 @@
     document.open();
     document.write(t);
     document.close();
-    if (ok.indexOf(false) !== -1) { try { console.warn('zelftest-work: niet alle v58.10-aanpassingen gelukt — controleer de code'); } catch (e) {} }
+    if (ok.indexOf(false) !== -1) { try { console.warn('zelftest-work: niet alle v59.0-aanpassingen gelukt — controleer de code'); } catch (e) {} }
   };
   x.onerror = function () {
     document.body.innerHTML = '<p>Kon index.html niet laden. Kijk even of je internetverbinding het doet en probeer opnieuw.</p>';
   };
+  x.open('GET', 'index.html', true);
   x.send();
 })();
 </script>
