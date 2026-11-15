@@ -9,7 +9,7 @@ const http = require('http');
 const { execSync } = require('child_process');
 
 const ROOT = path.join(__dirname, '..', '..'); // repo-root (script woont in versies/tests/)
-const APPTEST = path.join(ROOT, 'app-test');
+const APPTEST = path.join(ROOT, 'versies', 'opdeling-test');
 const VERSIES = path.join(ROOT, 'versies');
 const RAPPORT_DIR = path.join(__dirname, 'rapport-laatste-dev');
 const POORT = parseInt(process.env.POORT || '8137', 10);
@@ -193,11 +193,11 @@ function serve(dir) {
     if (sw > 390 + 1) throw new Error('app is ' + sw + ' px breed op 390 px scherm');
   });
 
-  await stap(pagina, 'Alle 7 losse pagina\u2019s (opdeling) laden zonder JS-fouten', async () => {
+  await stap(pagina, 'Alle 6 losse pagina\u2019s (opdeling) laden zonder JS-fouten', async () => {
     if (!fs.existsSync(path.join(APPTEST, 'index.html'))) return; // oude zip-only situatie: overslaan
-    const paginas = ['index.html', 'boodschappen.html', 'instellingen.html', 'kookhulp.html', 'producten.html', 'recepten.html', 'testen.html'];
+    const paginas = ['index.html', 'boodschappen.html', 'instellingen.html', 'kookhulp.html', 'producten.html', 'recepten.html'];
     for (const p of paginas) {
-      if (!fs.existsSync(path.join(APPTEST, p))) throw new Error('ontbreekt in app-test/: ' + p);
+      if (!fs.existsSync(path.join(APPTEST, p))) throw new Error('ontbreekt in versies/opdeling-test/: ' + p);
     }
     for (const p of paginas) {
       await pagina.goto('http://localhost:' + POORT + '/' + p, { waitUntil: 'load' });

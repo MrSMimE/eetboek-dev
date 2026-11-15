@@ -5,8 +5,8 @@
 // v3.27.1 (13 nov): BUGFIX Ronde 8 — de nep-Mistral wordt nu in de R8-openingsstap ZELF weer aangezet
 // (Ronde 3 zet hem aan het eind van zijn ronde uit; zonder deze regel zouden de bon-scenario's op de
 // laptop échte Mistral-aanroepen doen: echte centen + een nep-foto die niet gelezen kan worden).
-// v3.27 (13 nov, wens Marlijn): RONDE 8 (PUNT 8) — bon-korting lezen, per supermarkt, alles in stille modus,
-// gekalibreerd op de 6 echte voorbeeldbonnen van Marlijn (foto's 28700-28707, 13 nov):
+// v3.27 (13 nov, wens van de gebruiker): RONDE 8 (PUNT 8) — bon-korting lezen, per supermarkt, alles in stille modus,
+// gekalibreerd op de 6 echte voorbeeldbonnen van de gebruiker (foto's 28700-28707, 13 nov):
 // AH 28700 ((B)-markeertje = géén korting; stuksprijs 0,49 is géén -€ 0,49-korting; echte korting = losse regel
 // 'AH ITALIAANSE -0,09' onderaan bij Bonus:), AH-BB 28705 (BBOX TYRRELLS150 -0,45 koppelt op naam,
 // +STATIEGELD 0,15 apart), Lidl 28703/28707 (negatief regeltje DIRECT ONDER het product = korting van dat
@@ -14,28 +14,28 @@
 // naamloze 'Lidl Plus korting' = persoonlijke korting, nooit automatisch gekoppeld), Jumbo 28704
 // (ACTIE ROZIJNENBOLLEN -1,26 koppelt op naam, 'Totaal korting' als som-controle).
 // HOOFDREGEL (voor Vibe Code, bot checkt hem): een negatief bedrag is een korting, geen product.
-// v3.26 (13 nov, wens Marlijn): RONDE 7 erbij — de complete v55.2-doorgeef, alles in stille modus:
+// v3.26 (13 nov, wens van de gebruiker): RONDE 7 erbij — de complete v55.2-doorgeef, alles in stille modus:
 // (0) recKcal-rekenbug (rij toont kcal maar kaart zegt nog te schatten), (1) buffer-flow in de gewone
 // Toevoegen-popup (DIT EETMOMENT eerst, GEEN "Jouw notitie"-blokje in de gewone popup, niks direct in de dag),
 // (2) briefje ook zichtbaar bij een GEVULD moment, (3) één recept-uitklap tegelijk (popup + Recepten-tab),
 // (4) Recept plakken = hele lijst met rapport, (5) zoekbalkje weg in "Zelf iets toevoegen" + "meer ▾"-flip,
 // (6) zeg-knopjes zichtbaar zolang er tekst staat, (7) bron-labels (NEVO)/(OFF)/(AI) + supermarkt bij de prijs.
-// v3.25 (12 nov, wens Marlijn): KALIBRATIE OP v55 — (1) moment-flow: eerst in #isearch zoeken vóór het
+// v3.25 (12 nov, wens van de gebruiker): KALIBRATIE OP v55 — (1) moment-flow: eerst in #isearch zoeken vóór het
 // product-kaartje (pkask) verschijnt; Toevoegen zet het blokje direct in de week (gotoprod-chip);
 // (2) NIEUW: positie-checks — popup, moment-scherm, scanner en uitwerk-scherm horen BOVENIN te openen
-// (wens Marlijn 12 nov; groter worden en het hele scherm vullen mag gewoon); (3) R6-briefjes omgebouwd
+// (wens van de gebruiker 12 nov; groter worden en het hele scherm vullen mag gewoon); (3) R6-briefjes omgebouwd
 // naar de echte v55-bouw (.notewrap/.notebrief/.notedel + uitwerk-scherm met "Jouw notitie"-blokje,
 // DIT EETMOMENT en "Toevoegen (n)"); (4) kopjes-↓-meting wordt een zachte notitie (bekend gedrag);
 // (5) openBlokGroep opent twee keer (de "één uitklapper tegelijk"-re-render vangt de bot niet meer);
 // (6) Nieuw recept/Lijst plakken/Recept plakken openen via een DOM-tikje.
-// v3.23 (12 nov, wens Marlijn): RONDE 6 erbij — een STILLE ronde voor de nieuwe functies: foetjes-check
+// v3.23 (12 nov, wens van de gebruiker): RONDE 6 erbij — een STILLE ronde voor de nieuwe functies: foetjes-check
 // (GEKOZEN-typo, Vervang dit, Laatst gekozen, Alles-van-dit-moment), Recepten-tab-regressie v53.9 (lege lijst
 // zonder hint = fout), brood-zoeken zonder dode kaartjes ("nog geen kcal" mag, kaartje zonder alles = dood),
 // eenheden-check (geen "1 g · 3750 kcal"-regels), zeg-kaartje BOVEN de dag-chips (canvas v12-correctie),
 // briefjes-flow (✕ haalt briefje weg, + Toevoegen komt terug), uitwerk-flow ("Toevoegen (n)"-teller klopt,
 // "Laat ma"-knop aanwezig), huismaten (snee/plakje/eetlepel/handje/bakje/bol, stille detectie), stil NEVO
 // STIL = bestaat een functie nog niet in de build, dan komt er een nette notitie in het rapport, géén rode ✗.
-// v3.22 (9 nov, wens Marlijn): screenshots zijn VETVRIJ — lukt een fotootje niet (bv. page.screenshot-timeout
+// v3.22 (9 nov, wens van de gebruiker): screenshots zijn VETVRIJ — lukt een fotootje niet (bv. page.screenshot-timeout
 // in de ServerKit-werkplaats), dan duurt het max 5 tellen, komt er een nette "screenshot overgeslagen"-melding
 // in het rapport en klikt de bot gewoon DOOR. De klik-test zelf blijft 100% intact.
 // v3.21 (6 nov, kalibratie n.a.v. 13:03-rapport 150/168): (1) openBlokGroep opent nu ÉLKE voorouder-details
@@ -43,15 +43,15 @@
 // Terugzetten-rij en Oude data omzetten verdwijnen zo); (2) "Blokjes weer netjes dicht" sluit nu óók open
 // schermpjes (het open pjsheet-gordijntje gooide eerst de hele Recepten/Thema-ronde als dominostenen om);
 // (3) de bot tikt niet meer op rijen die al open staan (Kassabon-scanner, Lijst plakken, Producten plakken).
-// v3.20 (6 nov, wens Marlijn): per klik-stap nu 4 seconden rust (in stap()), zodat alle schermpjes en
+// v3.20 (6 nov, wens van de gebruiker): per klik-stap nu 4 seconden rust (in stap()), zodat alle schermpjes en
 // gordijntjes (sheets/scrims) écht dicht kunnen vóór de volgende tik — de "knop bedekt"-domino verdwijnt zo.
-// v3.19 (2 nov, wens Marlijn): de bot is geduldig geworden voor toasts. De app-toast verdwijnt
+// v3.19 (2 nov, wens van de gebruiker): de bot is geduldig geworden voor toasts. De app-toast verdwijnt
 // vanzelf na 1,6 s (setTimeout 1600 in 02-basis.js), dus voor de gebruiker is er niets mis.
 // Elke stap wacht nu vóór het tikken max 3 s tot de toast weg is (wachtToastWeg) — de 
 // "knop bedekt door toast"-domino verdwijnt zo zonder iets aan de app te veranderen.
 // Dubbel-tik-stappen blijven snel: beide tikken zitten binnen één stap, na één keer wachten.
-// v3.18 (1 nov, wens Marlijn): het Moment in de rapporten voortaan in NEDERLANDSE TIJD (Europe/Amsterdam)
-// i.p.v. UTC — nlTijd() zet het moment op de klok van Marlijn, met het label "Nederlandse tijd" erachter.
+// v3.18 (1 nov, wens van de gebruiker): het Moment in de rapporten voortaan in NEDERLANDSE TIJD (Europe/Amsterdam)
+// i.p.v. UTC — nlTijd() zet het moment op de klok van de gebruiker, met het label "Nederlandse tijd" erachter.
 // Git zelf blijft UTC (serverklok), maar in de rapporten hoeft ze niet meer +1 te rekenen.
 // v3.17.3 (1 nov): laatste twee R5-stappen verklaard uit de v3.17.2-diagnostiek (176/178) —
 // (1) de 31 dec-keuze kreeg slot "lun", maar op een donderdag heeft het dag-schema geen Lunch-moment
@@ -110,7 +110,7 @@
 // blokje wordt een product-blokje (gotoprod); een blokje-zonder-product (weekaddprod) bestaat alleen bij entries
 // met een niet-P:-key (oude data) — de bot zet zo'n blokje nu zelf klaar zoals oude data eruitziet.
 // R3 opent na de herstart nu ook het moment (v48: de blokjes zitten bínnen het open moment) en geeft een
-// diagnostic als het blokje dan nog ontbreekt. Nieuw: recept-ronde naar aanleiding van Marlijns screenshots —
+// diagnostic als het blokje dan nog ontbreekt. Nieuw: recept-ronde naar aanleiding van de screenshots van de gebruiker —
 // één tik op een recept-kaartje (zoals "Smeerkaas en hartig beleg") zet de losse ingrediënten bij Gekozen.
 // v3.15.2 (1 nov): kalibratie — open/dicht-kliken op dag en moment kijken eerst naar de huidige stand
 // (een klik is een wisselknop: een dag die al open stond klapte door de bot-klik juist dicht, waardoor
@@ -152,11 +152,13 @@
 const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
+// Dev-vangrail: in eetboek-dev wonen de losse bestanden in versies/opdeling-test i.p.v. app-test
+const APPTEST = ['app-test', 'versies/opdeling-test'].map(m => path.join(__dirname, '..', m)).filter(p => fs.existsSync(p));
 
 const outDir = path.join(__dirname, 'rapport');
 fs.mkdirSync(outDir, { recursive: true });
 
-// v3.18: het Moment in Nederlandse tijd (Europe/Amsterdam) — Marlijn hoeft niet meer +1 te rekenen.
+// v3.18: het Moment in Nederlandse tijd (Europe/Amsterdam) — de gebruiker hoeft niet meer +1 te rekenen.
 function nlTijd() {
   try {
     return new Date().toLocaleString('nl-NL', { timeZone: 'Europe/Amsterdam', day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
@@ -174,7 +176,7 @@ const nieuwste = kandidaten.sort((a, b) => {
 
 const url = process.argv[2] || ('http://localhost:8080/backup/' + encodeURIComponent(nieuwste));
 let huidigeStap = '(start)';
-const WATCHDOG_MS = 2700000; // v3.24 (12 nov, wens Marlijn): waakhond 30 -> 45 min - langere rondes (o.a. kijk-run met AI erbij) passen erin, en bij een hangende stap blijft de bot nog steeds niet eeuvig wachten
+const WATCHDOG_MS = 2700000; // v3.24 (12 nov, wens van de gebruiker): waakhond 30 -> 45 min - langere rondes (o.a. kijk-run met AI erbij) passen erin, en bij een hangende stap blijft de bot nog steeds niet eeuvig wachten
 const watchdog = setTimeout(() => {
   console.error('WAAKHOND: test bleef hangen bij: ' + huidigeStap);
   try {
@@ -263,7 +265,7 @@ async function openBlokGroep(p, sel) {
   }
 }
 
-// v3.25 (12 nov, wens Marlijn): meet of een schermpje netjes BOVENIN opent (bovenrand binnen de bovenste 15%).
+// v3.25 (12 nov, wens van de gebruiker): meet of een schermpje netjes BOVENIN opent (bovenrand binnen de bovenste 15%).
 // Groter worden en het hele scherm vullen mag gewoon — het gaat om de bovenrand.
 async function meetBovenin(p, naam, sel) {
   const pct = await p.evaluate((s3) => {
@@ -273,7 +275,7 @@ async function meetBovenin(p, naam, sel) {
     return Math.round(100 * r.top / window.innerHeight);
   }, sel);
   if (pct === null) throw new Error(naam + ': geen element gevonden om de positie te meten (' + sel + ')');
-  if (pct > 15) throw new Error(naam + ' opent op ' + pct + '% van de schermhoogte — wens Marlijn (12 nov): bovenin. Groter worden en het hele scherm vullen mag gewoon.');
+  if (pct > 15) throw new Error(naam + ' opent op ' + pct + '% van de schermhoogte — wens van de gebruiker (12 nov): bovenin. Groter worden en het hele scherm vullen mag gewoon.');
   return pct;
 }
 
@@ -466,7 +468,7 @@ async function openTerugzetten(p) {
     const hidden = await pagina.getAttribute('#sheet', 'hidden');
     if (hidden !== null) throw new Error('moment-scherm bleef dicht');
   }, '#days .day.open .moment.open .toevoegknop >> nth=0');
-  await stap(pagina, 'Moment-scherm opent bovenin (wens Marlijn 12 nov)', async () => {
+  await stap(pagina, 'Moment-scherm opent bovenin (wens van de gebruiker 12 nov)', async () => {
     await meetBovenin(pagina, 'het moment-scherm', '#sheet .panel');
   }, '#sheet .panel');
   await stap(pagina, 'Testproduct zoeken vraagt om hoeveelheid (v55: eerst Zoeken)', async () => {
@@ -507,7 +509,7 @@ async function openTerugzetten(p) {
     const tekst = await pagina.textContent('#choiceov');
     if (tekst.indexOf('Test Broodje') === -1) throw new Error('het voorstel (Test Broodje) staat niet in de popup');
   });
-  await stap(pagina, 'Popup opent bovenin (wens Marlijn 12 nov)', async () => {
+  await stap(pagina, 'Popup opent bovenin (wens van de gebruiker 12 nov)', async () => {
     await meetBovenin(pagina, 'de voorstellen-popup', '#choiceov .choice-popup');
   }, '#choiceov .choice-popup');
   await stap(pagina, 'Popup: "Iets anders…" dicht, Annuleren zichtbaar', async () => {
@@ -624,7 +626,7 @@ async function openTerugzetten(p) {
     if (n > 0) throw new Error('de popup stond nog open na Annuleren');
   }, '#choiceov #choicecancel');
 
-  // Recept-ronde (1 nov, v3.15.3, naar aanleiding van Marlijns screenshots 26558/26559):
+  // Recept-ronde (1 nov, v3.15.3, naar aanleiding van de screenshots van de gebruiker 26558/26559):
   // één tik op een recept-kaartje bij "IN ÉÉN TIK" zet de losse ingrediënten in het moment.
   let recSlot = '';
   await stap(pagina, 'Recept-ronde: tweede moment open (v48: één tegelijk open)', async () => {
@@ -767,7 +769,7 @@ async function openTerugzetten(p) {
       if (hidden !== null) throw new Error('scsheet bleef dicht');
     }, 'button[data-act="addgo"][data-v="kbon"]');
     await schot(pagina, 'scanner-open');
-    await stap(pagina, 'Scanner-schermpje opent bovenin (wens Marlijn 12 nov)', async () => {
+    await stap(pagina, 'Scanner-schermpje opent bovenin (wens van de gebruiker 12 nov)', async () => {
     await meetBovenin(pagina, 'de scanner', '#scsheet .panel');
   }, '#scsheet .panel');
   await stap(pagina, '✕ sluit scanner', async () => {
@@ -795,7 +797,7 @@ async function openTerugzetten(p) {
   }
 
   // 4c. Producten-tests (31 okt, deel 2). De test-app is leeg, dus eerst één testproduct zetten
-  // (alléén in de localStorage van de test-browser — nooit in echte data van Marlijn).
+  // (alléén in de localStorage van de test-browser — nooit in echte data van de gebruiker).
   await stap(pagina, 'Testproduct in de test-app zetten', async () => {
     await pagina.evaluate(() => {
       try {
@@ -1280,7 +1282,7 @@ async function openTerugzetten(p) {
   // Claude vond op index.html "S is not defined" — de vier andere pagina's zijn in v47.4.6
   // gerepareerd naar APP.S.tab/APP.render(), index.html nog niet. De bot testte voorheen
   // alléén de single-file, dus deze fout kon hij nooit zien.
-  const basis = url.replace(/\/(tests|backup|app-test)\/.*$/, ''); // v50: app-test ook afrekenen, anders 404t de losse-pagina-check
+  const basis = url.replace(/\/(tests|backup|app-test|opdeling-test)\/.*$/, ''); // v50: app-test ook afrekenen, anders 404t de losse-pagina-check
   const appPad = path.join(__dirname, '..', 'actueel', 'app', 'app.js');
   if (fs.existsSync(appPad)) {
     for (const pg of ['index.html', 'recepten.html', 'producten.html', 'instellingen.html', 'kookhulp.html']) {
@@ -2067,7 +2069,7 @@ async function openTerugzetten(p) {
   });
 
 
-  // ===== R6 (v3.23, 12 nov, wens Marlijn): notitie-flow + nieuwe functies — STILLEN ronde =====
+  // ===== R6 (v3.23, 12 nov, wens van de gebruiker): notitie-flow + nieuwe functies — STILLEN ronde =====
   // Bestaat een functie nog niet in deze build, dan komt er een notitie in het rapport i.p.v. een rode ✗.
   // Bestaat hij wél, dan wordt hij écht gecontroleerd. Leidraad: Voorbeelden/voorbeeld-zoek-popups-v2 + logboek 12 nov.
 
@@ -2669,15 +2671,15 @@ async function openTerugzetten(p) {
     await pagina.waitForTimeout(300);
   });
   await stap(pagina, 'v58.4: bron-checks — PUUR_STRENG sap/moes/jam, kcalFor eigen woord, pasteSave dubbel geweerd, APP.gem-blok, contrast-kleuren', async () => {
-    const them = fs.readFileSync(path.join(__dirname, '..', 'app-test', 'js', '15-start-en-thema.js'), 'utf8');
+    const them = fs.readFileSync(path.join(APPTEST[0] || path.join(__dirname, '..', 'app-test'), 'js', '15-start-en-thema.js'), 'utf8');
     const m = them.match(/PUUR_STRENG = (\/[^;]+;)/);
     if (!m || !/sap/.test(m[1]) || !/moes/.test(m[1]) || !/jam/.test(m[1])) throw new Error('PUUR_STRENG zonder sap/moes/jam');
     if (!/recNaamBestaat\(rec\.name, S\.recipes\)/.test(them)) throw new Error('pasteSave checkt geen dubbele naam');
-    const kc = fs.readFileSync(path.join(__dirname, '..', 'app-test', 'js', '16-mistral-sleutel.js'), 'utf8');
+    const kc = fs.readFileSync(path.join(APPTEST[0] || path.join(__dirname, '..', 'app-test'), 'js', '16-mistral-sleutel.js'), 'utf8');
     if (!/antlU && uu === antlU/.test(kc)) throw new Error('kcalFor zonder eigen-woord-branch');
-    const s17 = fs.readFileSync(path.join(__dirname, '..', 'app-test', 'js', '17-snel-invullen.js'), 'utf8');
+    const s17 = fs.readFileSync(path.join(APPTEST[0] || path.join(__dirname, '..', 'app-test'), 'js', '17-snel-invullen.js'), 'utf8');
     if (!/if \(!APP\.gem\)/.test(s17)) throw new Error('APP.gem all-pages blok ontbreekt');
-    const css = fs.readFileSync(path.join(__dirname, '..', 'app-test', 'style.css'), 'utf8');
+    const css = fs.readFileSync(path.join(APPTEST[0] || path.join(__dirname, '..', 'app-test'), 'style.css'), 'utf8');
     for (const hex of ['#675E53', '#556459', '#A04638', '#C79A7E']) if (css.indexOf(hex) < 0) throw new Error('contrast-kleur ontbreekt in style.css: ' + hex);
   });
 
@@ -2702,7 +2704,7 @@ async function openTerugzetten(p) {
     }
   });
   await stap(pagina, 'v58.5/v58.6: app-test én app losse pagina\'s laden zonder JS-fouten (incl. boodschappen.html)', async () => {
-    const basis = url.replace(/\/(tests|backup|app-test)\/.*$/, '');
+    const basis = url.replace(/\/(tests|backup|app-test|opdeling-test)\/.*$/, '');
     for (const map of ['app-test', 'app'].filter(m => fs.existsSync(path.join(__dirname, '..', m)))) for (const pg of ['index.html', 'recepten.html', 'producten.html', 'kookhulp.html', 'instellingen.html', 'boodschappen.html']) {
       const pgFouten = [];
       const peh = e => pgFouten.push('PAGEERROR: ' + String(e).slice(0, 200));
@@ -2865,9 +2867,26 @@ async function openTerugzetten(p) {
     if (foot2 !== false) throw new Error('footer bleef verborgen ná terug naar week');
   });
   await stap(pagina, 'v58.5: Mistral-prompt stuurt supermarkten-filter (S.supers) mee + bron-URL regel', async () => {
-    const s17 = fs.readFileSync(path.join(__dirname, '..', 'app-test', 'js', '17-snel-invullen.js'), 'utf8');
+    const s17 = fs.readFileSync(path.join(APPTEST[0] || path.join(__dirname, '..', 'app-test'), 'js', '17-snel-invullen.js'), 'utf8');
     if (!/superLijst/.test(s17) || !/Gebruik NOOIT een supermarkt buiten deze lijst/.test(s17)) throw new Error('supermarkten-filter ontbreekt in mistralProductZoek');
     if (!/nooit een verzonnen link/.test(s17)) throw new Error('bron-URL regel ontbreekt in mistralProductZoek');
+  });
+
+  await stap(pagina, 'Losse pagina\u2019s van de opdeling (versies/opdeling-test) laden zonder JS-fouten', async () => {
+    const od = path.join(__dirname, '..', 'versies', 'opdeling-test');
+    if (!fs.existsSync(path.join(od, 'index.html'))) return; // map niet aanwezig: netjes overslaan
+    const basis2 = url.replace(/\/(tests|backup|app-test|opdeling-test)\/.*$/, '');
+    for (const pg of ['index.html', 'recepten.html', 'producten.html', 'kookhulp.html', 'instellingen.html', 'boodschappen.html']) {
+      const pf = [];
+      const peh = e => pf.push('PAGEERROR: ' + String(e).slice(0, 200));
+      const ceh = m => { if (m.type() === 'error' && !/favicon/i.test(m.text())) pf.push('CONSOLE: ' + m.text().slice(0, 200)); };
+      pagina.on('pageerror', peh); pagina.on('console', ceh);
+      try {
+        await pagina.goto(basis2 + '/versies/opdeling-test/' + pg, { waitUntil: 'load' });
+        await pagina.waitForTimeout(700);
+      } finally { pagina.off('pageerror', peh); pagina.off('console', ceh); }
+      if (pf.length) throw new Error('opdeling-test/' + pg + ': ' + pf.join(' | '));
+    }
   });
 
 const okCount = stappen.filter(s => s.ok).length;
