@@ -9,18 +9,24 @@
 <script>
 (function () {
   // Zelftest-work: laadt de echte index.html, maar zet vóór het starten de
-  // test-modus aan. Alles wat je hier invult komt in de aparte test-opslag
+  // test-modus aan en zet een Regels-knop in de footer.
+  // Alles wat je hier invult komt in de aparte test-opslag
   // (eetweek.v1.testversie). Je echte eetboek blijft volledig onaangeraakt.
   var x = new XMLHttpRequest();
   x.open('GET', 'index.html', true);
   x.onload = function () {
     var t = x.responseText;
-    var vond = t.indexOf('var TESTVERSIE = false;') !== -1;
+    var vondVlag = t.indexOf('var TESTVERSIE = false;') !== -1;
     t = t.replace('var TESTVERSIE = false;', 'var TESTVERSIE = true; // zelftest-work: schrijft alleen naar test-opslag');
+    // Regels-knop in de footer, vóór Testen (zelfde plek als in het proef-mapje)
+    var OUD = '<footer class="appfoot"><button type="button" data-act="tab" data-t="test" id="tabtest">🧪 Testen</button></footer>';
+    var NIEUW = '<footer class="appfoot"><a href="app-test-work/regels.html">📋 Regels</a> <button type="button" data-act="tab" data-t="test" id="tabtest">🧪 Testen</button></footer>';
+    var vondFooter = t.indexOf(OUD) !== -1;
+    t = t.replace(OUD, NIEUW);
     document.open();
     document.write(t);
     document.close();
-    if (!vond) { try { console.warn('zelftest-work: TESTVERSIE-vlag niet gevonden — controleer de code'); } catch (e) {} }
+    if (!vondVlag || !vondFooter) { try { console.warn('zelftest-work: kon ' + (!vondVlag ? 'TESTVERSIE-vlag' : 'footer') + ' niet vinden — controleer de code'); } catch (e) {} }
   };
   x.onerror = function () {
     document.body.innerHTML = '<p>Kon index.html niet laden. Kijk even of je internetverbinding het doet en probeer opnieuw.</p>';
