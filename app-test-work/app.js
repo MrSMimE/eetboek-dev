@@ -1,5 +1,5 @@
 (function () {
-  // WERK-DEURTJE app-test-work — v61.1 - 15 nov 18u40 (Amsterdam)
+  // WERK-DEURTJE app-test-work — v61.2 (Amsterdam)
   // Laadt de echte app.js uit versies/opdeling-test en past de werk-set aan
   // (canvas "weekweergave-eigen-regels v2" + "recepten-eigen-momenten v1" + "ai-instellingen v1", gekeurd 15 nov):
   // 1. opslag afgeschermd: 'eetweek.v1' -> 'eetweek.v1.testversie' (je echte eetboek blijft onaangeraakt)
@@ -13,6 +13,7 @@
   //    OpenAI-compatibele aanbieders (webadres + sleutel + model, lege velden);
   //    laatst gebruikt = de actieve aanbieder; alle AI-aanroepen volgen die keuze
   // 8. versie naar v61.0 + eigen testpunten (Deel 6) op de testpagina
+  // 9. v61.2: 🧪 Testen-blokje tussen Mijn data en Bewaren & terugzetten (link naar testen.html + Measure-helper), geen testbuild-naam meer
   try {
     var echt = window.localStorage;
     var map = function (k) { return k === 'eetweek.v1' ? 'eetweek.v1.testversie' : k; };
@@ -32,9 +33,9 @@
 
     // ---- 1. versie mee naar v61.0 ----
     ok.push(t.indexOf("var VERSION = 'v58.9 - 14 nov 20u55';") !== -1);
-    t = t.replace("var VERSION = 'v58.9 - 14 nov 20u55';", "var VERSION = 'v61.1 - 15 nov 18u40';");
+    t = t.replace("var VERSION = 'v58.9 - 14 nov 20u55';", "var VERSION = 'Mijn Eetboek • v61.2';");
     ok.push(t.indexOf("VERSION = 'v58.9 - 14 nov 20u55 (testbuild 14 nov 20u55)';") !== -1);
-    t = t.replace("VERSION = 'v58.9 - 14 nov 20u55 (testbuild 14 nov 20u55)';", "VERSION = 'v61.1 - 15 nov 18u40 (testbuild 15 nov 18u40)';");
+    t = t.replace("VERSION = 'v58.9 - 14 nov 20u55 (testbuild 14 nov 20u55)';", "VERSION = 'Mijn Eetboek • v61.2';");
 
     // ---- 2. WERK-BRUG (v60.0): regelsMomenten + nieuwe momentsFor ----
     var OUD_MOM = `  function momentsFor(dow, d, force) {
@@ -367,17 +368,24 @@
     }, true);
     aiNuZet();
   })();
-  (function () { // v61.1 werk: 🛠️ App-functies testen — eigen blokje in Instellingen; testbalkje onderaan standaard weg
+  (function () { // v61.2 werk: 🧪 Testen — eigen blokje tussen Mijn data en Bewaren & terugzetten; testbalkje onderaan standaard weg
     try { sessionStorage.setItem('eetweek.testverberg', '1'); } catch (e) {}
     var iv = $('instview'); if (!iv) return;
     var d = document.createElement('details');
-    d.className = 'instgrp';
-    d.innerHTML = '<summary><span class="ci">🛠️</span><span>App-functies testen</span></summary><div style="padding:0 14px 14px">' +
+    d.className = 'pgrp instgrp'; d.id = 'grpTesten';
+    d.innerHTML = '<summary><span class="ci">🧪</span><span>Testen</span></summary>' +
+      '<div class="pgin">' +
+      '<div class="card"><details class="per" open><summary>📋 Test-rondje</summary>' +
       '<p class="hint" style="margin:6px 0 0">Hiermee controleer je of alles in de app nog goed werkt — de punten van deze versie staan bij elkaar in een rustig rondje.</p>' +
-      '<button class="btn main" style="width:100%" type="button" id="testOpenKnop">▶ Open het test-rondje</button>' +
+      '<button class="btn main" style="width:100%" type="button" id="testOpenKnop">▶ Open het test-rondje (testen.html)</button>' +
       '<button class="btn" style="width:100%" type="button" id="testBalkKnop">▸ Toon het testbalkje onderaan</button>' +
+      '</details></div>' +
+      '<div id="testMeethulpPlek"></div>' +
       '</div>';
-    iv.appendChild(d);
+    var bew = $('grpBewaren');
+    if (bew && bew.parentNode === iv) iv.insertBefore(d, bew); else iv.appendChild(d);
+    var mh = $('meethulp'); // v61.2 werk: het Measure-helper verhuist van Bewaren & terugzetten naar Testen
+    if (mh && mh.closest) { var mc = mh.closest('.card'); if (mc && $('testMeethulpPlek')) $('testMeethulpPlek').appendChild(mc); }
     $('testOpenKnop').addEventListener('click', function () {
       if ($('testview')) { S.tab = 'test'; render(); if (window.scrollTo) window.scrollTo(0, 0); }
       else location.assign('testen.html');
@@ -403,7 +411,7 @@
       '    {"versie":"v61.0","deel":7,"t":"Recepten: prullenbak","sub":"verwijderen is omkeerbaar: het recept gaat naar de prullenbak onderaan Recepten, per stuk of alles terug te zetten; blijft bewaard na herladen","ga":"test","doen":"Verwijder een recept (twee keer tikken). Staat het daarna in de prullenbak onderaan Recepten? Zet het terug. Herlaad de pagina: is de prullenbak nog zoals je hem achterliet?"},' + '\n' +
       '    {"versie":"v61.0","deel":7,"t":"AI: andere aanbieder (OpenAI-compatibel)","sub":"achter het Mistral-blok een extra scherm: lege velden (webadres, sleutel, model, geen placeholders), test-knop en modellen-knop; hint dat het voor alles met AI geldt","ga":"test","doen":"Open het Mistral-blok bij Instellingen: staat daaronder het scherm Andere AI-aanbieder met de hint over alles met AI? Zijn de velden leeg?"},' + '\n' +
       '    {"versie":"v61.0","deel":7,"t":"AI: laatst gebruikt = actief","sub":"iets invullen of testen bij de andere aanbieder schakelt de app over; bij Mistral testen schakelt de app terug; het Nu in gebruik-plaatje volgt op beide schermen","ga":"test","doen":"Typ iets in het webadres-veld van de andere aanbieder: springt Nu in gebruik naar de andere aanbieder? Ga terug naar het Mistral-blok en tik daar op Test de verbinding: springt het plaatje terug naar Mistral?"},' + '\n' +
-      '    {"versie":"v61.1","deel":7,"t":"Test-rondje in Instellingen","sub":"🛠️ App-functies testen staat als eigen blokje in Instellingen; het balkje onderaan de pagina is standaard weg en via dat blokje terug te halen","ga":"test","doen":"Open Instellingen: staat onderaan het blokje App-functies testen met het test-rondje? Is het testbalkje onderaan de Week-pagina weg, en komt het terug via het blokje?"},' + '\n';
+      '    {"versie":"v61.2","deel":7,"t":"Testen-blokje in Instellingen","sub":"🧪 Testen staat tussen Mijn data en Bewaren & terugzetten, met daarin het test-rondje (link naar testen.html) en het Measure-helper; het balkje onderaan de pagina is standaard weg en via dat blokje terug te halen","ga":"test","doen":"Open Instellingen: staat tussen Mijn data en Bewaren & terugzetten het blokje Testen? Opent de knop het test-rondje (testen.html) en zit het Measure-helper erin? Is het testbalkje onderaan de Week-pagina weg, en komt het terug via het blokje?"}},' + '\n' +
 
     ok.push(t.indexOf('var VERS_TESTEN = [') !== -1);
     t = t.replace('var VERS_TESTEN = [', 'var VERS_TESTEN = [\n' + PUNTEN);
