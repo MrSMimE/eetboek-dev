@@ -11,7 +11,7 @@ zonder poespas.
 
 ## ❤️ De maker steunen
 
-Vind je de app leuk? Een klein bedankje mag via: *(steun-link volgt)*
+Vind je de app leuk? Een klein bedankje mag via: [github.com/sponsors/MrSMimE](https://github.com/sponsors/MrSMimE)
 
 Helemaal vrijblijvend, de app is en blijft gratis.
 
