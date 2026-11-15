@@ -27,7 +27,10 @@
   </ul>
   <p class="ov-tekst"><strong>💬 Vragen, ideeën of een foutje gezien?</strong><br>Laat een berichtje achter op de GitHub-pagina van Mijn Eetboek, of stuur gerust een mailtje. Wil je de verdere ontwikkeling steunen? Dat kan via GitHub Sponsors. 🙏</p>
   <a class="ov-btn" href="https://github.com/MrSMimE/eetboek-dev" target="_blank" rel="noopener">💬 Feedback achterlaten op GitHub</a>
-  <a class="ov-btn" style="background:#5b5a52" href="mailto:MrSMimE@gmail.com">✉️ Liever een mailtje? MrSMimE@gmail.com</a>
+  <button type="button" class="ov-btn" style="background:#5b5a52" data-mail="1">✉️ Liever een mailtje? Tik hier</button>
+<script>
+  (function(){var d=document.querySelector('[data-mail]');if(d)d.addEventListener('click',function(){location.href='mailto:'+'MrSMimE'+String.fromCharCode(64)+'gmail.com';});})();
+</script>
   <a class="ov-btn" style="background:#824f4d" href="https://github.com/sponsors/MrSMimE" target="_blank" rel="noopener">🙏 Steun de ontwikkeling (Sponsors)</a>
   <footer class="appfoot"><a href="index.html">← Terug naar de app</a></footer>
 </div>
