@@ -62,7 +62,7 @@ function serve(dir) {
 
   const { chromium } = require('playwright');
   const srv = await serve(doelMap); // de bot start zélf een server — geen apart server.js nodig (geen poort-conflict)
-  const pagina = await (await chromium.launch()).newPage({ viewport: { width: 390, height: 844 } });
+  const pagina = await (await chromium.launch()).newPage({ viewport: { width: 390, height: 844 }, hasTouch: true });
   const pageFouten = [];
   pagina.on('pageerror', e => pageFouten.push('PAGEERROR: ' + String(e).slice(0, 200)));
   pagina.on('console', m => { if (m.type() === 'error' && !/favicon/i.test(m.text())) pageFouten.push('CONSOLE: ' + m.text().slice(0, 200)); });
@@ -191,6 +191,21 @@ function serve(dir) {
   await stap(pagina, 'Breedte: geen zijwaartse scroll op 390px', async () => {
     const sw = await pagina.evaluate(() => document.documentElement.scrollWidth);
     if (sw > 390 + 1) throw new Error('app is ' + sw + ' px breed op 390 px scherm');
+  });
+
+  await stap(pagina, 'Alle 7 losse pagina\u2019s (opdeling) laden zonder JS-fouten', async () => {
+    if (!fs.existsSync(path.join(APPTEST, 'index.html'))) return; // oude zip-only situatie: overslaan
+    const paginas = ['index.html', 'boodschappen.html', 'instellingen.html', 'kookhulp.html', 'producten.html', 'recepten.html', 'testen.html'];
+    for (const p of paginas) {
+      if (!fs.existsSync(path.join(APPTEST, p))) throw new Error('ontbreekt in app-test/: ' + p);
+    }
+    for (const p of paginas) {
+      await pagina.goto('http://localhost:' + POORT + '/' + p, { waitUntil: 'load' });
+      await pagina.waitForTimeout(600);
+      const kop = await pagina.textContent('h1').catch(() => '');
+      if (!/Mijn Eetboek/i.test(kop || '')) throw new Error(p + ': geen kop Mijn Eetboek');
+      if (pageFouten.length) throw new Error(p + ': ' + pageFouten.join(' | '));
+    }
   });
 
   // rapport
