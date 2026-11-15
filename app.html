@@ -2,7 +2,7 @@
 <html lang="nl">
 <head>
 <meta charset="utf-8">
-<title>Mijn Eetboek • v61.2</title>
+<title>Mijn Eetboek • v62</title>
 </head>
 <body>
 <p>Zelftest work-versie laden…</p>
@@ -11,7 +11,7 @@
   // Zelftest-work v60.0 (15 nov): WERK-BRUG — Week, Zeg-blok en Mijn normale dag volgen Mijn regels. Zelftest-work v59.0: laadt de echte index.html en past meteen aan:
   // - test-modus aan (schrijft alleen naar eetweek.v1.testversie)
   // - Eetmomenten-knop + Over & Feedback-knop in de footer (regels-zelftest-work.html en app-test-work/over.html)
-  // - versie + datum + tijd naar Mijn Eetboek • v61.2 (Amsterdam)
+  // - versie + datum + tijd naar Mijn Eetboek • v62 (Amsterdam)
   // - eigen testpunten (Deel 6) voor de werk-onderdelen
   // - komt de pagina aan met #testen, dan start de app meteen op het Testen-tab
   // - RUSTIGE TESTPAGINA (v59.0): vinkjes permanent (geen dag-reset), bovenaan
@@ -31,11 +31,11 @@
     ok.push(t.indexOf(OUD) !== -1);
     t = t.replace(OUD, NIEUW);
     ok.push(t.indexOf("var VERSION = 'v58.9 - 14 nov 20u55';") !== -1);
-        t = t.replace("var VERSION = 'v58.9 - 14 nov 20u55';", "var VERSION = 'Mijn Eetboek • v61.2';");
+        t = t.replace("var VERSION = 'v58.9 - 14 nov 20u55';", "var VERSION = 'Mijn Eetboek • v62';");
     ok.push(t.indexOf("'Mijn Eetboek — versie ' + VERSION") !== -1);
     t = t.replace("'Mijn Eetboek — versie ' + VERSION", "VERSION"); // v61.3 werk: bovenaan Instellingen alleen de versieregel
     ok.push(t.indexOf("VERSION = 'v58.9 - 14 nov 20u55 (testbuild 14 nov 20u55)';") !== -1);
-    t = t.replace("VERSION = 'v58.9 - 14 nov 20u55 (testbuild 14 nov 20u55)';", "VERSION = 'Mijn Eetboek • v61.2';");
+    t = t.replace("VERSION = 'v58.9 - 14 nov 20u55 (testbuild 14 nov 20u55)';", "VERSION = 'Mijn Eetboek • v62';");
     var OPEN = 'var VERS_TESTEN = [';
     var PUNTEN =
       '    {"versie":"v58.10","deel":6,"t":"Eigen Regels-pagina (v58.10)","sub":"knop 🍽️ Eetmomenten onderaan, naast ℹ️ Over & Feedback; opent de eigen Eetmomenten-work-pagina; ← Terug naar de app komt hier terug","doen":"Tik onderaan op 🍽️ Eetmomenten. Opent de Eetmomenten-pagina met dag-chips ma t/m zo? Voeg op een dag een eigen moment toe, hernoem het, vul kcal in en kijk of de totaalregel meetelt. Tik ← Terug naar de app: ben je terug in de werk-app?"},' +
