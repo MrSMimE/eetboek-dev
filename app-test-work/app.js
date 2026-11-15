@@ -1,5 +1,5 @@
 (function () {
-  // WERK-DEURTJE app-test-work — v61.0 - 15 nov 18u34 (Amsterdam)
+  // WERK-DEURTJE app-test-work — v61.1 - 15 nov 18u40 (Amsterdam)
   // Laadt de echte app.js uit versies/opdeling-test en past de werk-set aan
   // (canvas "weekweergave-eigen-regels v2" + "recepten-eigen-momenten v1" + "ai-instellingen v1", gekeurd 15 nov):
   // 1. opslag afgeschermd: 'eetweek.v1' -> 'eetweek.v1.testversie' (je echte eetboek blijft onaangeraakt)
@@ -32,9 +32,9 @@
 
     // ---- 1. versie mee naar v61.0 ----
     ok.push(t.indexOf("var VERSION = 'v58.9 - 14 nov 20u55';") !== -1);
-    t = t.replace("var VERSION = 'v58.9 - 14 nov 20u55';", "var VERSION = 'v61.0 - 15 nov 18u34';");
+    t = t.replace("var VERSION = 'v58.9 - 14 nov 20u55';", "var VERSION = 'v61.1 - 15 nov 18u40';");
     ok.push(t.indexOf("VERSION = 'v58.9 - 14 nov 20u55 (testbuild 14 nov 20u55)';") !== -1);
-    t = t.replace("VERSION = 'v58.9 - 14 nov 20u55 (testbuild 14 nov 20u55)';", "VERSION = 'v61.0 - 15 nov 18u34 (testbuild 15 nov 18u34)';");
+    t = t.replace("VERSION = 'v58.9 - 14 nov 20u55 (testbuild 14 nov 20u55)';", "VERSION = 'v61.1 - 15 nov 18u40 (testbuild 15 nov 18u40)';");
 
     // ---- 2. WERK-BRUG (v60.0): regelsMomenten + nieuwe momentsFor ----
     var OUD_MOM = `  function momentsFor(dow, d, force) {
@@ -367,6 +367,26 @@
     }, true);
     aiNuZet();
   })();
+  (function () { // v61.1 werk: 🛠️ App-functies testen — eigen blokje in Instellingen; testbalkje onderaan standaard weg
+    try { sessionStorage.setItem('eetweek.testverberg', '1'); } catch (e) {}
+    var iv = $('instview'); if (!iv) return;
+    var d = document.createElement('details');
+    d.className = 'instgrp';
+    d.innerHTML = '<summary><span class="ci">🛠️</span><span>App-functies testen</span></summary><div style="padding:0 14px 14px">' +
+      '<p class="hint" style="margin:6px 0 0">Hiermee controleer je of alles in de app nog goed werkt — de punten van deze versie staan bij elkaar in een rustig rondje.</p>' +
+      '<button class="btn main" style="width:100%" type="button" id="testOpenKnop">▶ Open het test-rondje</button>' +
+      '<button class="btn" style="width:100%" type="button" id="testBalkKnop">▸ Toon het testbalkje onderaan</button>' +
+      '</div>';
+    iv.appendChild(d);
+    $('testOpenKnop').addEventListener('click', function () {
+      if ($('testview')) { S.tab = 'test'; render(); if (window.scrollTo) window.scrollTo(0, 0); }
+      else location.assign('testen.html');
+    });
+    $('testBalkKnop').addEventListener('click', function () {
+      try { sessionStorage.removeItem('eetweek.testverberg'); } catch (e) {}
+      toast('Testbalkje terug'); render();
+    });
+  })();
 
 `;
     var ANKER_ACC = "  // v58.9: accordion — binnen een lijst staat één deel/onderwerp-blokje tegelijk open";
@@ -382,7 +402,9 @@
       '    {"versie":"v61.0","deel":7,"t":"Recepten: je eigen momentnamen","sub":"recept-groepen volgen Mijn regels; oude keuzes (Ochtend, Lunch, Avondeten enz.) blijven werken als je moment zo heet","ga":"test","doen":"Maak op Mijn regels een moment dat Ochtend heet. Open Recepten: staat onder Per moment een groep Ochtend met je ochtend-recepten? Bewerk een recept en kies bij Waar een andere groep: verhuist het recept?"},' + '\n' +
       '    {"versie":"v61.0","deel":7,"t":"Recepten: prullenbak","sub":"verwijderen is omkeerbaar: het recept gaat naar de prullenbak onderaan Recepten, per stuk of alles terug te zetten; blijft bewaard na herladen","ga":"test","doen":"Verwijder een recept (twee keer tikken). Staat het daarna in de prullenbak onderaan Recepten? Zet het terug. Herlaad de pagina: is de prullenbak nog zoals je hem achterliet?"},' + '\n' +
       '    {"versie":"v61.0","deel":7,"t":"AI: andere aanbieder (OpenAI-compatibel)","sub":"achter het Mistral-blok een extra scherm: lege velden (webadres, sleutel, model, geen placeholders), test-knop en modellen-knop; hint dat het voor alles met AI geldt","ga":"test","doen":"Open het Mistral-blok bij Instellingen: staat daaronder het scherm Andere AI-aanbieder met de hint over alles met AI? Zijn de velden leeg?"},' + '\n' +
-      '    {"versie":"v61.0","deel":7,"t":"AI: laatst gebruikt = actief","sub":"iets invullen of testen bij de andere aanbieder schakelt de app over; bij Mistral testen schakelt de app terug; het Nu in gebruik-plaatje volgt op beide schermen","ga":"test","doen":"Typ iets in het webadres-veld van de andere aanbieder: springt Nu in gebruik naar de andere aanbieder? Ga terug naar het Mistral-blok en tik daar op Test de verbinding: springt het plaatje terug naar Mistral?"},' + '\n';
+      '    {"versie":"v61.0","deel":7,"t":"AI: laatst gebruikt = actief","sub":"iets invullen of testen bij de andere aanbieder schakelt de app over; bij Mistral testen schakelt de app terug; het Nu in gebruik-plaatje volgt op beide schermen","ga":"test","doen":"Typ iets in het webadres-veld van de andere aanbieder: springt Nu in gebruik naar de andere aanbieder? Ga terug naar het Mistral-blok en tik daar op Test de verbinding: springt het plaatje terug naar Mistral?"},),' + '\n' +
+      '    {"versie":"v61.1","deel":7,"t":"Test-rondje in Instellingen","sub":"🛠️ App-functies testen staat als eigen blokje in Instellingen; het balkje onderaan de pagina is standaard weg en via dat blokje terug te halen","ga":"test","doen":"Open Instellingen: staat onderaan het blokje App-functies testen met het test-rondje? Is het testbalkje onderaan de Week-pagina weg, en komt het terug via het blokje?"},' + '\n';
+
     ok.push(t.indexOf('var VERS_TESTEN = [') !== -1);
     t = t.replace('var VERS_TESTEN = [', 'var VERS_TESTEN = [\n' + PUNTEN);
     ok.push(t.indexOf('Math.min(5, Math.max(1, VERS_TESTEN[i].deel || 1))') !== -1);
@@ -393,7 +415,7 @@
     var s = document.createElement('script');
     s.text = t;
     document.head.appendChild(s);
-    if (ok.indexOf(false) !== -1) { try { console.warn('werk-deurtje v61.0: niet alle aanpassingen gelukt — controleer de code'); } catch (e) {} }
+    if (ok.indexOf(false) !== -1) { try { console.warn('werk-deurtje v61.1: niet alle aanpassingen gelukt — controleer de code'); } catch (e) {} }
   };
   x.onerror = function () {
     document.body.innerHTML = '<p>Kon de app-code niet laden. Kijk even of je internetverbinding het doet en probeer opnieuw.</p>';
