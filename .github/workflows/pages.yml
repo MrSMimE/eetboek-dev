@@ -1,8 +1,8 @@
-name: Deploy static content to Pages
+name: Deploy app naar Pages
 
 on:
   push:
-    branches: ["Test"]
+    branches: ["Gebruikers"]
   workflow_dispatch:
 
 permissions:
