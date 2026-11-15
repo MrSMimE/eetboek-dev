@@ -13,31 +13,59 @@
   // aangepast, zodat deze pagina volledig eigen is:
   // - eigen opslag-sleutel (eetweek.regels.zelftestwork.v1)
   // - navigatie terug naar de work-pagina, niet naar het proef-mapje
+  // - eigen test-kaartje voor het Regels-testpunt (Deel 6, v58.10)
   // Jouw echte eetboek en het proef-mapje blijven volledig onaangeraakt.
   var x = new XMLHttpRequest();
   x.open('GET', 'app-test-work/regels.html', true);
   x.onload = function () {
     var t = x.responseText;
     var ok = [];
-    // stijl uit de bestaande asset
     ok.push(t.indexOf('href="style.css"') !== -1);
     t = t.replace('href="style.css"', 'href="app-test-work/style.css"');
-    // eigen opslag-sleutel: volledig los van het mapje en van de echte app
     ok.push(t.indexOf("var KEY = 'eetweek.regels.v1';") !== -1);
     t = t.replace("var KEY = 'eetweek.regels.v1';", "var KEY = 'eetweek.regels.zelftestwork.v1';");
-    // navigatie: allebei de index-links wijzen naar de work-pagina
     ok.push(t.indexOf('href="index.html"') !== -1);
     t = t.split('href="index.html"').join('href="index-zelftest-work.html"');
-    // de tabbalk van het proef-mapje hoort hier niet: verbergen
     ok.push(t.indexOf('<nav class="bottomnav">') !== -1);
     t = t.replace('<nav class="bottomnav">', '<nav class="bottomnav" style="display:none">');
-    // footer: Testen-link gaat terug naar de work-pagina
     ok.push(t.indexOf('href="testen.html"') !== -1);
     t = t.replace('href="testen.html"', 'href="index-zelftest-work.html"');
+    // Eigen test-kaartje voor het Regels-testpunt (zelfde opslag als de werk-app)
+    var KAARTJE =
+      '<style>' +
+      '#rgltest { position: fixed; left: 8px; bottom: calc(8px + env(safe-area-inset-bottom, 0px)); z-index: 61; background: #111; color: #fff; border-radius: 12px; padding: 8px 10px; font-size: 12px; line-height: 1.35; max-width: 260px; box-shadow: 0 2px 10px rgba(0,0,0,.45); }' +
+      '#rgltest b { display: block; margin-bottom: 2px; }' +
+      '#rgltest .rknoppen { display: flex; gap: 6px; margin-top: 8px; align-items: center; flex-wrap: wrap; }' +
+      '#rgltest button { flex: none; border: none; border-radius: 10px; min-height: 34px; min-width: 34px; padding: 0 8px; font-weight: 800; font-size: 13px; cursor: pointer; background: #2e2e2e; color: #fff; }' +
+      '#rgltest button.ok { background: #3E6B4F; }' +
+      '#rgltest button.fout { background: #A95042; }' +
+      '#rgltest.klaar button.ok, #rgltest.klaar button.fout { opacity: .55; }' +
+      '</style>' +
+      '<div id="rgltest">' +
+      '<b>Regels-test · Deel 6 (v58.10)</b>' +
+      'Eigen Regels-pagina: moment toevoegen, hernoemen, kcal invullen, totaalregel en ← Terug naar de app.' +
+      '<div class="rknoppen">' +
+      '<button type="button" data-rglvt="goed" class="ok">✓</button>' +
+      '<button type="button" data-rglvt="fout" class="fout">✗</button>' +
+      '<span id="rglstatus">nog niet nagekeken</span>' +
+      '</div>' +
+      '</div>' +
+      '<scr' + 'ipt>' +
+      '(function () {' +
+      "  var KEY = 'eetweek.testronde', DAG = '15 nov', IDX = 0;" + // punt 1 van Deel 6: Eigen Regels-pagina
+      "  function lees() { try { var v = JSON.parse(localStorage.getItem(KEY) || 'null'); if (v && typeof v === 'object' && v.v === DAG) return v; } catch (e) {} return { v: DAG, klein: {}, vol: {}, laatste: '' }; }" +
+      "  function zet(g) { var st = lees(); st.klein = st.klein || {}; st.klein[IDX] = g ? 'goed' : 'fout'; st.laatste = 'klein'; try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} toon(); }" +
+      "  function toon() { var st = lees(); var g = st.klein && st.klein[IDX]; var s = document.getElementById('rglstatus'); if (s) s.textContent = g === 'goed' ? '✓ nagekeken goed' : (g === 'fout' ? '✗ gaat fout' : 'nog niet nagekeken'); var d = document.getElementById('rgltest'); if (d) { if (g) d.className = 'klaar'; else d.removeAttribute('class'); } }" +
+      "  document.addEventListener('click', function (ev) { var b = ev.target.closest ? ev.target.closest('[data-rglvt]') : null; if (b) zet(b.getAttribute('data-rglvt') === 'goed'); });" +
+      '  toon();' +
+      '})();' +
+      '</scr' + 'ipt>';
+    ok.push(t.indexOf('</body>') !== -1);
+    t = t.replace('</body>', KAARTJE + '</body>');
     document.open();
     document.write(t);
     document.close();
-    if (ok.indexOf(false) !== -1) { try { console.warn('regels-work: niet alle aanpassingen zijn gelukt — controleer de code'); } catch (e) {} }
+    if (ok.indexOf(false) !== -1) { try { console.warn('regels-work: niet alle aanpassingen gelukt — controleer de code'); } catch (e) {} }
   };
   x.onerror = function () {
     document.body.innerHTML = '<p>Kon de Regels-pagina niet laden. Kijk even of je internetverbinding het doet en probeer opnieuw.</p>';
