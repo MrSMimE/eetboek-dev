@@ -802,10 +802,28 @@ details:not(.pgrp):not(.instgrp):not(.khgrp), .card, .per, .opt, .instrow, .wkit
 /* v56.9: groepsblokken op de Producten-pagina (#prijsview .pgrp, incl. Label-blokken) houden hun zachte vlak + kader */
 #prijsview .pgrp, #prijsview .pgrp.lblblok { background: var(--surface) !important; border: 1px solid var(--line) !important; border-radius: 14px !important; box-shadow: none !important; }
 
+/* v62 werk: versieregel beter leesbaar in het Extreem-thema */
+:root[data-theme="contrast"] #appversie { color: #F7E4D0 !important; font-weight: 700; } /* v62: de app zet zelf donkere accent-kleur op de versieregel — die wint van gewone CSS, daarom !important */
 
-/* v62 gebruikers: leesbaar op kleinere telefoons */
-@media (max-width: 370px) { body { font-size: 15px; } .wrap { padding-inline: 10px; } .top h1 { font-size: 19px; margin: 0 0 10px; } .tabs { gap: 3px; } .hint { font-size: 13px; } .instrow { font-size: 16px; min-height: 52px; } }
-@media (max-width: 340px) { body { font-size: 14.5px; } .wrap { padding-inline: 8px; } .tabs { gap: 2px; } .tab { min-height: 48px; } .tabs .tab svg, .tab .ti { width: 20px; height: 20px; font-size: 17px; } .top h1 { font-size: 17px; } }
+
+/* ===== v62 gebruikers: leesbaar op kleinere telefoons ===== */
+@media (max-width: 370px) {
+  body { font-size: 15px; }
+  .wrap { padding-inline: 10px; }
+  .top h1 { font-size: 19px; margin: 0 0 10px; }
+  .tabs { gap: 3px; }
+  .hint { font-size: 13px; }
+  .instrow { font-size: 16px; min-height: 52px; }
+}
+@media (max-width: 340px) {
+  body { font-size: 14.5px; }
+  .wrap { padding-inline: 8px; }
+  .tabs { gap: 2px; }
+  .tab { min-height: 48px; }
+  .tabs .tab svg, .tab .ti { width: 20px; height: 20px; font-size: 17px; }
+  .top h1 { font-size: 17px; }
+}
+
 </style>
 </head>
 <body>
@@ -864,21 +882,6 @@ details:not(.pgrp):not(.instgrp):not(.khgrp), .card, .per, .opt, .instrow, .wkit
       <svg width="24" height="24" viewBox="0 0 64 64" fill="none" style="vertical-align: middle;">
       <path d="M18 36C13 36 10 31.5 10 27C10 22 14 18.5 18.5 18.5C20.5 13 26 10 32 10C38 10 43.5 13 45.5 18.5C50 18.5 54 22 54 27C54 31.5 51 36 46 36V48C46 50.2 44.2 52 42 52H22C19.8 52 18 50.2 18 48V36Z" fill="#FAF6EE" stroke="#B58969" stroke-width="3.5" stroke-linejoin="round"/>
       <line x1="18" y1="43" x2="46" y2="43" stroke="#C9A382" stroke-width="3"/>
-      </svg>
-      </span>
-      </button>
-      <!-- Boodschappen (klembord, lichte vulling) -->
-      <button class="tab" data-act="tab" data-t="bo" id="tabbo" aria-pressed="false" aria-label="Boodschappen">
-      <span class="ico">
-      <svg width="24" height="24" viewBox="0 0 64 64" fill="none" style="vertical-align: middle;">
-      <rect x="10" y="10" width="44" height="50" rx="8" fill="#FAF6EE" stroke="#B58969" stroke-width="3.5"/>
-      <rect x="23" y="6" width="18" height="9" rx="3" fill="#9A6F50"/>
-      <path d="M20 26L23 29L28 23" stroke="#85997E" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <line x1="33" y1="26" x2="43" y2="26" stroke="#B58969" stroke-width="3.5" stroke-linecap="round"/>
-      <path d="M20 36L23 39L28 33" stroke="#85997E" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <line x1="33" y1="36" x2="43" y2="36" stroke="#B58969" stroke-width="3.5" stroke-linecap="round"/>
-      <path d="M20 46L23 49L28 43" stroke="#85997E" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <line x1="33" y1="46" x2="40" y2="46" stroke="#B58969" stroke-width="3.5" stroke-linecap="round"/>
       </svg>
       </span>
       </button>
@@ -1325,16 +1328,23 @@ Bereiding: Knijp de tonijn goed uit. Snijd de augurken klein en roer ze erdoor. 
       <button class="btn" type="button" data-act="zelftest" style="width:100%;margin-top:8px">▶ Checks doen</button>
       <p class="hint stat" id="zelfteststatus" style="margin:8px 0 0"></p>
      </details>
+     <div class="card">
+      <details class="per">
+      <summary>📏 Meet-hulpje</summary>
+      <label class="vink"><input type="checkbox" id="meethulp"> Meet-hulpje aan (standaard UIT)</label>
+      <p class="hint small">AAN = klein zwart meet-blokje onderaan het scherm, zweeft boven alles (ook boven popup's). Tik erop = meetregels als platte tekst in het uitvoer-scherm met Kopiëren.</p>
+      </details>
+     </div>
           <details class="per" id="deelVol">
       <summary>☑️ Volledige check — 14 punten</summary>
-      <p class="hint" style="margin:6px 0 0">Alle 14 punten, rustig achter elkaar. Lees elk puntje, probeer het even uit en tik dan ✓ of ✗. Je antwoorden worden bewaard.</p>
+      <p class="hint" style="margin:6px 0 0">Alle 14 punten, rustig achter elkaar. Lees elk puntje, probeer het even uit en tik dan ✓ of ✗. Je antwoorden worden bewaard, ook als je de pagina tussentijds verlaat.</p>
       <div id="vollijst"></div>
       <button type="button" class="pill" data-act="testreset" data-r="vol" style="margin-top:6px" title="Vinkjes van de Volledige check wissen">↺ Opnieuw beginnen</button><button type="button" class="pill" data-act="testwis" style="margin-top:6px;margin-left:6px" title="ALLE testuitslagen wissen (beide rondes, alle versies)">✗ alles weg</button>
       <button class="btn" type="button" data-act="testeind" data-r="vol" style="width:100%;margin-top:10px">📋 Eindrapport maken</button>
      </details>
      <p class="hint stat" id="testverbergregel" hidden><button type="button" class="pill" data-act="testtoon">▸ Toon testbalkje</button> verborgen — je opgeslagen uitslagen blijven bewaard</p>
 </div>
-  <footer class="appfoot"><a href="regels-zelftest-work.html">🍽️ Eetmomenten</a> <a href="app-test-work/over.html">ℹ️ Over &amp; Feedback</a> <button type="button" data-act="tab" data-t="test" id="tabtest" style="display:none">🧪 Testen</button></footer>
+  <footer class="appfoot"><button type="button" data-act="tab" data-t="test" id="tabtest">🧪 Testen</button></footer>
 </div><!-- /wrap -->
 
 <div class="sheet" id="addsheet" hidden>
@@ -1665,7 +1675,7 @@ Bereiding: Knijp de tonijn goed uit. Snijd de augurken klein en roer ze erdoor. 
 (function () {
   // v45b.3: versienummer op één plek — bij een nieuwe versie alleen deze regel aanpassen
   var VERSION = 'Mijn Eetboek • v62';
-  var TESTVERSIE = false; // gebruikers-versie v62: gewone opslag (eetweek.v1) // testversie: leest eetweek.v1, schrijft alleen naar eetweek.v1.testversie
+  var TESTVERSIE = false; // testversie: leest eetweek.v1, schrijft alleen naar eetweek.v1.testversie
   var DOW = ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'];
   var MON = ['jan', 'feb', 'mrt', 'apr', 'mei', 'jun', 'jul', 'aug', 'sep', 'okt', 'nov', 'dec'];
 
@@ -1870,12 +1880,12 @@ Bereiding: Knijp de tonijn goed uit. Snijd de augurken klein en roer ze erdoor. 
     return (d.entries || []).some(function (e) { return e.slot === slot; }) || !!(d.notes && d.notes[slot]) ||
       whyOf(d, slot).length > 0 || !!whyTextOf(d, slot) || !!photoOf(d, slot);
   }
-  var RGLKEY60 = 'eetweek.regels.zelftestwork.v1'; // v60.0 werk: opslag van de Regels-work-pagina
-  var RGLDAG60 = ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za'];
+  var RGLKEY = 'eetweek.regels.v1'; // v60.0 werk: opslag van de Regels-pagina (Mijn regels)
+  var RGLDAG = ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za'];
   function regelsMomenten(dow) {
     try {
-      var o = JSON.parse(localStorage.getItem(RGLKEY60) || '{}');
-      var lijst = (o && typeof o === 'object' && !Array.isArray(o) && Array.isArray(o[RGLDAG60[dow]])) ? o[RGLDAG60[dow]] : null;
+      var o = JSON.parse(localStorage.getItem(RGLKEY) || '{}');
+      var lijst = (o && typeof o === 'object' && !Array.isArray(o) && Array.isArray(o[RGLDAG[dow]])) ? o[RGLDAG[dow]] : null;
       if (!lijst || !lijst.length) return null;
       var uit = [];
       lijst.forEach(function (m) {
@@ -1930,7 +1940,7 @@ Bereiding: Knijp de tonijn goed uit. Snijd de augurken klein en roer ze erdoor. 
   function optButtons(dow, list, id) {
     var rg = regelsMomenten(dow); // v60.0 werk
     if (rg) return ''; // dag mét eigen momenten: geen vaste extra-knoppen meer
-    return '<div class="optrow"><a class="optbtn" href="regels-zelftest-work.html">+ Eigen moment maken (Mijn regels)</a></div>'; // lege dag: door naar de Regels-work-pagina
+    return '<div class="optrow"><a class="optbtn" href="regels.html">+ Eigen moment maken (Mijn regels)</a></div>'; // lege dag: door naar Mijn regels
   }
   // Blok onderaan: automatisch voor vandaag, alleen als deze week open staat.
   function optBottom() {
@@ -12319,18 +12329,15 @@ VERSION = 'Mijn Eetboek • v62';
   var TESTDAG = (String(VERSION).match(/\d+ \w+/) || ['?'])[0]; // v58.9: vinkjes per DAG (bv. '14 nov', zonder tijdstip) — een volgende bouwronde van vandaag behoudt ze
   // VASTE REGEL (afspraak 14 nov): bij ELKE nieuwe versie dit lijstje aanvullen met wat er in die versie is veranderd
   var VERS_TESTEN = [
+    {"versie":"v60.0","deel":6,"t":"Week: alleen eigen momenten uit Mijn regels","sub":"dag mét eigen momenten toont alleen die; dag zonder eigen momenten is leeg, met alleen een linkje naar Mijn regels; geen kcal op de dagkaarten","ga":"week","doen":"Open Mijn regels en voeg op een dag twee momenten toe (naam + tijdje). Open daarna de Week: toont die dag alleen deze twee momenten? Is een dag zonder eigen momenten leeg en staat daar alleen het linkje naar Mijn regels?"},
+    {"versie":"v60.0","deel":6,"t":"Regels-pagina: het ⚡-vinkje","sub":"per eigen moment een vinkje: ⚡ in Mijn normale dag","ga":"test","doen":"Open Mijn regels en voeg een moment toe. Staat onder max kcal het ⚡-vinkje met uitleg? Vink het aan en herlaad de pagina: blijft het vinkje staan?"},
+    {"versie":"v60.0","deel":6,"t":"Mijn normale dag volgt het vinkje","sub":"Instellingen toont per weekdag alleen de aangevinkte eigen momenten; de ⚡-knop vult alleen die (ma t/m vr zoals altijd)","ga":"test","doen":"Vink op een weekdag één moment aan en vul er bij Instellingen een product in. Tik in de Week op ⚡: komt het product alleen in dat ene moment?"},
+    {"versie":"v60.0","deel":6,"t":"Zeg-blok volgt de eigen momenten","sub":"het uitklaplijstje toont alleen je eigen momenten van die dag; de knop kiest het moment met een leesbaar tijdje dichtst bij nu, anders het eerste nog-lege moment","ga":"week","doen":"Vul bij een eigen moment een tijdje in zoals rond 09:00. Open het zeg-blok op die dag: staan er alleen je eigen momenten in het lijstje en kiest de knop er een logische uit?"},
     {"versie":"v61.0","deel":7,"t":"Recepten: je eigen momentnamen","sub":"recept-groepen volgen Mijn regels; oude keuzes (Ochtend, Lunch, Avondeten enz.) blijven werken als je moment zo heet","ga":"test","doen":"Maak op Mijn regels een moment dat Ochtend heet. Open Recepten: staat onder Per moment een groep Ochtend met je ochtend-recepten? Bewerk een recept en kies bij Waar een andere groep: verhuist het recept?"},
     {"versie":"v61.0","deel":7,"t":"Recepten: prullenbak","sub":"verwijderen is omkeerbaar: het recept gaat naar de prullenbak onderaan Recepten, per stuk of alles terug te zetten; blijft bewaard na herladen","ga":"test","doen":"Verwijder een recept (twee keer tikken). Staat het daarna in de prullenbak onderaan Recepten? Zet het terug. Herlaad de pagina: is de prullenbak nog zoals je hem achterliet?"},
     {"versie":"v61.0","deel":7,"t":"AI: andere aanbieder (OpenAI-compatibel)","sub":"achter het Mistral-blok een extra scherm: lege velden (webadres, sleutel, model, geen placeholders), test-knop en modellen-knop; hint dat het voor alles met AI geldt","ga":"test","doen":"Open het Mistral-blok bij Instellingen: staat daaronder het scherm Andere AI-aanbieder met de hint over alles met AI? Zijn de velden leeg?"},
     {"versie":"v61.0","deel":7,"t":"AI: laatst gebruikt = actief","sub":"iets invullen of testen bij de andere aanbieder schakelt de app over; bij Mistral testen schakelt de app terug; het Nu in gebruik-plaatje volgt op beide schermen","ga":"test","doen":"Typ iets in het webadres-veld van de andere aanbieder: springt Nu in gebruik naar de andere aanbieder? Ga terug naar het Mistral-blok en tik daar op Test de verbinding: springt het plaatje terug naar Mistral?"},
     {"versie":"v61.2","deel":7,"t":"Testen-blokje in Instellingen","sub":"🧪 Testen staat tussen Mijn data en Bewaren & terugzetten, met daarin het test-rondje (link naar testen.html) en het Measure-helper; het balkje onderaan de pagina is standaard weg en via dat blokje terug te halen","ga":"test","doen":"Open Instellingen: staat tussen Mijn data en Bewaren & terugzetten het blokje Testen? Opent de knop het test-rondje (testen.html) en zit het Measure-helper erin? Is het testbalkje onderaan de Week-pagina weg, en komt het terug via het blokje?"},
-
-    {"versie":"v60.0","deel":6,"t":"Week: alleen eigen momenten uit Mijn regels","sub":"dag mét eigen momenten toont alleen die; dag zonder eigen momenten is leeg, met alleen een linkje naar Mijn regels; geen kcal op de dagkaarten","ga":"week","doen":"Open 📋 Regels en voeg op een dag twee momenten toe (naam + tijdje). Open daarna de Week: toont die dag alleen deze twee momenten? Is een dag zonder eigen momenten leeg en staat daar alleen het linkje naar Mijn regels?"},
-    {"versie":"v60.0","deel":6,"t":"Regels-pagina: het ⚡-vinkje","sub":"per eigen moment een vinkje: ⚡ in Mijn normale dag","ga":"test","doen":"Open 📋 Regels en voeg een moment toe. Staat onder max kcal het ⚡-vinkje met uitleg? Vink het aan en herlaad de pagina: blijft het vinkje staan?"},
-    {"versie":"v60.0","deel":6,"t":"Mijn normale dag volgt het vinkje","sub":"Instellingen toont per weekdag alleen de aangevinkte eigen momenten; de ⚡-knop vult alleen die (ma t/m vr zoals altijd)","ga":"test","doen":"Vink op een weekdag één moment aan en vul er bij Instellingen een product in. Tik in de Week op ⚡: komt het product alleen in dat ene moment?"},
-    {"versie":"v60.0","deel":6,"t":"Zeg-blok volgt de eigen momenten","sub":"het uitklaplijstje toont alleen je eigen momenten van die dag; de knop kiest het moment met een leesbaar tijdje dichtst bij nu, anders het eerste nog-lege moment","ga":"week","doen":"Vul bij een eigen moment een tijdje in zoals rond 09:00. Open het zeg-blok op die dag: staan er alleen je eigen momenten in het lijstje en kiest de knop er een logische uit?"},
-
-    {"versie":"v58.10","deel":6,"t":"Eigen Regels-pagina (v58.10)","sub":"knop 🍽️ Eetmomenten onderaan, naast ℹ️ Over & Feedback; opent de eigen Eetmomenten-work-pagina; ← Terug naar de app komt hier terug","doen":"Tik onderaan op 🍽️ Eetmomenten. Opent de Eetmomenten-pagina met dag-chips ma t/m zo? Voeg op een dag een eigen moment toe, hernoem het, vul kcal in en kijk of de totaalregel meetelt. Tik ← Terug naar de app: ben je terug in de werk-app?"},    {"versie":"v58.10","deel":6,"t":"Aparte opslag voor de werk-versies","sub":"alles wat je in de werk-app en in Regels-work invult gaat naar aparte opslag (eetweek.v1.testversie en eetweek.regels.zelftestwork.v1); je echte eetboek blijft buiten schot","doen":"Vul iets in de werk-app. Open daarna je gewone app: staat de verandering daar níet? Dat is de bedoeling."},    {"versie":"v59.0","deel":6,"t":"Rustige testpagina: permanente vinkjes + Te doen + Archief","sub":"geen dag-reset meer: afgevinkte punten blijven voorgoed afgevinkt; bovenaan alleen open punten per deel (zonder tellers); alles afgevinkte achter één Archief-regel onderaan (per versie, ↺ weer open zet terug); reset-knoppen verhuisd naar het Archief","ga":"test","doen":"Staat er bovenaan alleen wat open is, zonder (x/y)-tellers? Vink een punt af en herlaad de pagina — blijft het afgevinkt en staat het daarna in het Archief onderaan? Tik in het Archief op ↺ weer open: staat het punt weer bovenaan? Is het Te doen-blok leeg met 'Alles is nagekeken 🎉' als alles af is?"},
  // v58.9 - 14 nov 20u55 (opgehoopt v58.0 t/m v58.9, gegroepeerd in 5 delen)
     {"versie":"v58.0","deel":1,"t":"Kaal recept-kaartje met korte kernregel","sub":"alleen aantal + kcal per portie/stuk (bv. “12 muffins · ± 110 kcal per muffin” of “1 portie · ± 137 kcal”) — geen lange Totaal-zin, geen prijs en geen ingrediëntenlijst meer op het kaartje","ga":"rec","doen":"Kijk op de Recepten-tab: staat er bij elk recept alleen de korte kernregel?","hand":""},
     {"versie":"v58.0","deel":1,"t":"Drie gelijke knoppen + ⋮-menuutje op het kaartje","sub":"🍳 Start met koken breed bovenaan, daaronder 🧺 Voorbereiden en 📋 Kopiëren; rechtsboven het ⋮-menu met Bewerken / Aanpassen met Mistral / Emoji wijzigen / Verwijderen (geen Kopiëren in het menu)","ga":"rec","doen":"Tik op het ⋮-menuutje rechtsboven op een kaartje — opent het menu met precies die vier acties?","hand":""},
@@ -12379,7 +12386,7 @@ VERSION = 'Mijn Eetboek • v62';
   function testLijst(r) { return r === 'klein' ? VERS_TESTEN.concat(OCHTEND_ACTIES) : VOL_PUNTEN; }
   function testState() {
     var st = { v: VERSION, klein: {}, vol: {}, laatste: '' };
-    try { var v = JSON.parse(localStorage.getItem(TESTKEY) || 'null'); if (v && typeof v === 'object') { st.klein = v.klein || {}; st.vol = v.vol || {}; st.laatste = v.laatste || ''; } } catch (e) {} // v57.8 punt 7a: versie mismatch (nieuwe versie) = tellers beginnen automatisch op 0
+    try { var v = JSON.parse(localStorage.getItem(TESTKEY) || 'null'); if (v && typeof v === 'object' && v.v === TESTDAG) { st.klein = v.klein || {}; st.vol = v.vol || {}; st.laatste = v.laatste || ''; } } catch (e) {} // v57.8 punt 7a: versie mismatch (nieuwe versie) = tellers beginnen automatisch op 0
     return st;
   }
   function testStateSave(st) { st.v = TESTDAG; try { localStorage.setItem(TESTKEY, JSON.stringify(st)); } catch (e) {} }
@@ -12401,25 +12408,6 @@ VERSION = 'Mijn Eetboek • v62';
     return '<div class="testitem' + (done ? ' klaar' : '') + '" id="ti-' + r + '-' + i + '"><span class="tnm">' + esc(it.t) + (it.sub ? '<small>' + esc(it.sub) + '</small>' : '') + '</span>' +
       '<button type="button" class="ga" data-act="testga" data-r="' + r + '" data-i="' + i + '">' + (done ? '✓' : 'Ga ▶') + '</button></div>';
   }
-  function testArchiefHtml(st) { // v59.0 werk: één Archief-regel onderaan met alle afgevinkte punten, gegroepeerd op versie
-    var openN = 0, klaar = [];
-    for (var i = 0; i < VERS_TESTEN.length; i++) { if (st.klein[i]) klaar.push(i); else openN++; }
-    var h = openN ? '' : '<p class="hint stat" style="margin:6px 0 0">Alles is nagekeken 🎉</p>';
-    if (!klaar.length) return h;
-    var pv = {};
-    klaar.forEach(function (i) { var vv = VERS_TESTEN[i].versie || 'eerder'; (pv[vv] = pv[vv] || []).push(i); });
-    h += '<details class="per" id="testarchief" style="margin-top:10px"><summary>Archief — afgevinkte punten</summary>';
-    Object.keys(pv).sort().forEach(function (vv) {
-      h += '<p class="hint stat" style="margin:8px 0 0">' + esc(vv) + '</p>';
-      pv[vv].forEach(function (i) {
-        var it = VERS_TESTEN[i];
-        h += '<div class="testitem klaar"><span class="tnm">' + esc(it.t) + '<small>✓ ' + esc(it.versie || '') + '</small></span><button type="button" class="ga" data-act="testunvink" data-r="klein" data-i="' + i + '" title="Punt weer open zetten">↺ weer open</button></div>';
-      });
-    });
-    h += '<div style="margin-top:10px"><button type="button" class="pill" data-act="testreset" data-r="klein" title="Vinkjes van dit rondje wissen">↺ Opnieuw beginnen</button><button type="button" class="pill" data-act="testwis" style="margin-left:6px" title="ALLE testuitslagen wissen (beide rondes, alle versies)">✗ alles weg</button></div>';
-    h += '</details>';
-    return h;
-  }
   function renderTesten() {
     var vl = $('verslijst'), vol = $('vollijst');
     if (!vl && !vol) return;
@@ -12427,13 +12415,12 @@ VERSION = 'Mijn Eetboek • v62';
     var td = $('testdag'); if (td) { // v58.9 idee 1: één samenvattingsregel bovenaan de testpagina
       var n = VERS_TESTEN.length, k = 0, dn = {};
       for (var i = 0; i < n; i++) { if (st.klein[i]) k++; dn[Math.min(9, Math.max(1, VERS_TESTEN[i].deel || 1))] = 1; }
-      td.textContent = (n - k > 0) ? '' : 'Alles is nagekeken 🎉'; // v59.0 werk: geen tellers in het gezichtsveld
+      td.textContent = String(VERSION).split(' ')[0] + ' · ' + Object.keys(dn).length + ' delen · ' + n + ' punten · ' + k + ' van ' + n + ' nagekeken';
     }
     if (vl) {
       var h = ''; // v58.9: per deel een dicht uitklapblokje 'Deel d · vX–vY (k/n)' — teller alleen in de kop, één blokje tegelijk open (accordion onderaan)
       var delen = {};
       for (var i = 0; i < VERS_TESTEN.length; i++) {
-        if (st.klein[i]) continue; // v59.0 werk: afgevinkte punten horen niet meer in Te doen
         var d = Math.min(9, Math.max(1, VERS_TESTEN[i].deel || 1));
         (delen[d] = delen[d] || []).push(i);
       }
@@ -12442,11 +12429,11 @@ VERSION = 'Mijn Eetboek • v62';
         items.forEach(function (i) { if (st.klein[i]) k++; else open.push(i); });
         var vs = items.map(function (i) { return VERS_TESTEN[i].versie || ''; }).filter(Boolean).sort();
         var range = vs.length ? (vs[0] + (vs.length > 1 && vs[vs.length - 1] !== vs[0] ? '–' + vs[vs.length - 1] : '')) : '';
-        h += '<details class="per" id="deelK' + d + '"><summary>Deel ' + d + '</summary>'; // v59.0 werk: rustige kop zonder teller
+        h += '<details class="per" id="deelK' + d + '"><summary>Deel ' + d + (range ? ' · ' + range : '') + ' <span class="hint stat">(' + k + '/' + items.length + ')</span></summary>';
         open.forEach(function (i) { h += testItemHtml('klein', i, VERS_TESTEN[i], st); });
         h += '</details>';
       });
-      vl.innerHTML = h + testArchiefHtml(st); // v59.0 werk: Te doen + Archief
+      vl.innerHTML = h;
     }
     if (vol) {
       var h3 = ''; // v58.9: 14 vaste checks in 4 dichte blokjes per onderwerp, teller (k/n) alleen in de kop
@@ -12673,20 +12660,6 @@ VERSION = 'Mijn Eetboek • v62';
     }, 30);
   }
 
-  (function () { // v61.3 werk: Boodschappen-tab tijdelijk weg voor gebruikers; Eetmomenten + Over & Feedback alleen op Week en Instellingen
-    var bo = $('tabbo'); if (bo) bo.style.display = 'none';
-    var st = document.createElement('style'); st.textContent = '.tabs{grid-template-columns:repeat(5,1fr)}:root[data-theme="contrast"] #appversie{color:#F7E4D0 !important;font-weight:700}'; document.head.appendChild(st);
-    var foot = document.querySelector('.appfoot');
-    var pasVoet = function () {
-      if (!foot) return;
-      var tb = S.tab;
-      foot.hidden = (tb === 'test') || (tb !== 'week' && tb !== 'inst');
-    };
-    var oudRender = render;
-    render = function () { oudRender(); pasVoet(); };
-    pasVoet();
-  })();
-
 
   // ================= v61.0 werk: prullenbak + AI-aanbieder (andere, OpenAI-compatibel) =================
   document.addEventListener('click', function (ev) { // v61.0 werk: prullenbak terugzetten
@@ -12846,7 +12819,6 @@ VERSION = 'Mijn Eetboek • v62';
     else if (act === 'testmin' || act === 'testweg') testMin();
     else if (act === 'testpill') testPillOpen();
     else if (act === 'testeind') testEind(el.getAttribute('data-r'));
-    else if (act === 'testunvink') { var r2 = el.getAttribute('data-r'), i2 = +el.getAttribute('data-i'); var st3 = testState(); if (st3[r2]) delete st3[r2][i2]; st3.laatste = r2; testStateSave(st3); renderTesten(); testPillTekst(); toast('Punt weer open — staat bovenaan in Te doen'); } // v59.0 werk: ↺ weer open (Archief → Te doen)
     else if (act === 'testreset') { var st2 = testState(); var rr = el.getAttribute('data-r'); st2[rr] = {}; st2.laatste = rr; testStateSave(st2); renderTesten(); testPillTekst(); toast('Vinkjes van dit rondje gewist'); } // v57.8 punt 7: ↺ opnieuw beginnen
     else if (act === 'testwis') { // v58.4: \u2717 alles weg — ALLE testuitslagen wissen (beide rondes, alle versies), dubbele tik zoals 'Alles leegmaken'
       var WKEY = 'eetweek.testwis', nuW = Date.now(), oudW = +(sessionStorage.getItem(WKEY) || 0);
@@ -12899,5 +12871,5 @@ VERSION = 'Mijn Eetboek • v62';
   }
 })();
 </script>
-<script>(function () {  try { if (location.hash === '#testen') { var b = document.getElementById('tabtest'); if (b) b.click(); } } catch (e) {}})();</script></body>
+</body>
 </html>
