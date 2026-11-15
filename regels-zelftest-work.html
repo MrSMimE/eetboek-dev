@@ -34,29 +34,49 @@
     var KAARTJE =
       '<style>' +
       '#rgltest { position: fixed; left: 8px; bottom: calc(8px + env(safe-area-inset-bottom, 0px)); z-index: 61; background: #111; color: #fff; border-radius: 12px; padding: 8px 10px; font-size: 12px; line-height: 1.35; max-width: 260px; box-shadow: 0 2px 10px rgba(0,0,0,.45); }' +
+      '#rgltest[hidden] { display: none; }' +
+      '#rgltest .rglmain { max-height: 40dvh; overflow-y: auto; padding-right: 24px; }' +
       '#rgltest b { display: block; margin-bottom: 2px; }' +
       '#rgltest .rknoppen { display: flex; gap: 6px; margin-top: 8px; align-items: center; flex-wrap: wrap; }' +
-      '#rgltest button { flex: none; border: none; border-radius: 10px; min-height: 34px; min-width: 34px; padding: 0 8px; font-weight: 800; font-size: 13px; cursor: pointer; background: #2e2e2e; color: #fff; }' +
+      '#rgltest button { flex: none; width: auto; min-width: 34px; min-height: 34px; padding: 0 8px; border: none; border-radius: 10px; font-weight: 800; font-size: 13px; cursor: pointer; background: #2e2e2e; color: #fff; white-space: normal; }' +
       '#rgltest button.ok { background: #3E6B4F; }' +
       '#rgltest button.fout { background: #A95042; }' +
       '#rgltest.klaar button.ok, #rgltest.klaar button.fout { opacity: .55; }' +
+      '#rgltest #rglx { position: absolute; top: 4px; right: 6px; margin-left: 0; min-width: 28px; min-height: 28px; }' +
+      ':root[data-theme="dark"] #rgltest, :root[data-theme="contrast"] #rgltest { background: var(--surface); color: var(--fg); border: 1px solid var(--line); box-shadow: none; }' +
+      ':root[data-theme="dark"] #rgltest button, :root[data-theme="contrast"] #rgltest button { background: var(--soft); color: var(--fg); }' +
+      ':root[data-theme="dark"] #rgltest button.ok, :root[data-theme="contrast"] #rgltest button.ok { background: var(--accent); color: var(--on-accent); }' +
+      ':root[data-theme="dark"] #rgltest button.fout, :root[data-theme="contrast"] #rgltest button.fout { background: var(--weg); color: var(--bg); }' +
+      '#rglpill { position: fixed; left: 8px; bottom: calc(8px + env(safe-area-inset-bottom, 0px)); z-index: 61; background: #111; color: #fff; border: none; border-radius: 99px; padding: 6px 12px; font-size: 12px; font-weight: 700; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,.45); }' +
+      '#rglpill[hidden] { display: none; }' +
+      '#rglpillx { position: fixed; left: 44px; bottom: calc(8px + env(safe-area-inset-bottom, 0px)); z-index: 61; width: 30px; height: 30px; border-radius: 50%; border: none; background: #111; color: #fff; font-weight: 800; font-size: 13px; cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,.45); }' +
+      '#rglpillx[hidden] { display: none; }' +
+      ':root[data-theme="dark"] #rglpill, :root[data-theme="contrast"] #rglpill, :root[data-theme="dark"] #rglpillx, :root[data-theme="contrast"] #rglpillx { background: var(--surface); color: var(--fg); border: 1px solid var(--line); box-shadow: none; }' +
       '</style>' +
       '<div id="rgltest">' +
-      '<b>Regels-test · Deel 6 (v58.10)</b>' +
-      'Eigen Regels-pagina met bovenaan de tabbalk met 6 iconen (zoals op de andere pagina\'s): moment toevoegen, hernoemen, kcal invullen, totaalregel en ← Terug naar de app.' +
+      '<div class="rglmain"><b>Regels-test · Deel 6 (v58.10)</b>' +
+      'Eigen Regels-pagina met bovenaan de tabbalk met 6 iconen (zoals op de andere pagina\'s): moment toevoegen, hernoemen, kcal invullen, totaalregel en ← Terug naar de app.</div>' +
       '<div class="rknoppen">' +
-      '<button type="button" data-rglvt="goed" class="ok">✓</button>' +
-      '<button type="button" data-rglvt="fout" class="fout">✗</button>' +
+      '<button type="button" id="rglmin" data-rglvt="min" aria-label="Balktje inklappen" title="Inklappen naar pilletje">▾</button>' +
+      '<button type="button" id="rglgoed" data-rglvt="goed" class="ok" title="Doet het">✓</button>' +
+      '<button type="button" id="rglfout" data-rglvt="fout" class="fout" title="Gaat fout">✗</button>' +
       '<span id="rglstatus">nog niet nagekeken</span>' +
+      '<button type="button" id="rglterug" data-rglvt="terug" title="Terug naar het Testen-overzicht in de werk-app">Terug</button>' +
+      '<button type="button" id="rglx" data-rglvt="verberg" aria-label="Testbalkje helemaal verbergen" title="Helemaal verbergen — uitslagen blijven bewaard — pilletje onderin brengt het terug">✕</button>' +
       '</div>' +
       '</div>' +
+      '<button type="button" id="rglpill" data-rglvt="open" hidden>1 ▸</button>' +
+      '<button type="button" id="rglpillx" data-rglvt="verberg" aria-label="Testbalkje helemaal verbergen (uitslagen blijven bewaard)" title="Verberg balkje + pilletje — opgeslagen uitslagen blijven bewaard" hidden>✕</button>' +
       '<scr' + 'ipt>' +
       '(function () {' +
       "  var KEY = 'eetweek.testronde', DAG = '15 nov', IDX = 0;" + // punt 1 van Deel 6: Eigen Regels-pagina
       "  function lees() { try { var v = JSON.parse(localStorage.getItem(KEY) || 'null'); if (v && typeof v === 'object' && v.v === DAG) return v; } catch (e) {} return { v: DAG, klein: {}, vol: {}, laatste: '' }; }" +
       "  function zet(g) { var st = lees(); st.klein = st.klein || {}; st.klein[IDX] = g ? 'goed' : 'fout'; st.laatste = 'klein'; try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) {} toon(); }" +
-      "  function toon() { var st = lees(); var g = st.klein && st.klein[IDX]; var s = document.getElementById('rglstatus'); if (s) s.textContent = g === 'goed' ? '✓ nagekeken goed' : (g === 'fout' ? '✗ gaat fout' : 'nog niet nagekeken'); var d = document.getElementById('rgltest'); if (d) { if (g) d.className = 'klaar'; else d.removeAttribute('class'); } }" +
-      "  document.addEventListener('click', function (ev) { var b = ev.target.closest ? ev.target.closest('[data-rglvt]') : null; if (b) zet(b.getAttribute('data-rglvt') === 'goed'); });" +
+      "  function toon() { var st = lees(); var g = st.klein && st.klein[IDX]; var s = document.getElementById('rglstatus'); if (s) s.textContent = g === 'goed' ? '✓ nagekeken goed' : (g === 'fout' ? '✗ gaat fout' : 'nog niet nagekeken'); var d = document.getElementById('rgltest'); if (d) { if (g) d.className = 'klaar'; else d.removeAttribute('class'); } var p = document.getElementById('rglpill'); if (p && !d.hidden) p.textContent = (g === 'goed' || g === 'fout' ? 1 : 0) + ' van 1 ▸'; }" +
+      "  function min() { var d = document.getElementById('rgltest'); if (d) d.hidden = true; var p = document.getElementById('rglpill'); if (p) { p.hidden = false; toon(); } var px = document.getElementById('rglpillx'); if (px) px.hidden = false; }" +
+      "  function openBalk() { var d = document.getElementById('rgltest'); if (d) d.hidden = false; var p = document.getElementById('rglpill'); if (p) p.hidden = true; var px = document.getElementById('rglpillx'); if (px) px.hidden = true; }" +
+      "  function verberg() { min(); var d = document.getElementById('rgltest'); if (d) d.hidden = true; var p = document.getElementById('rglpill'); if (p) p.hidden = true; var px = document.getElementById('rglpillx'); if (px) px.hidden = true; }" +
+      "  document.addEventListener('click', function (ev) { var b = ev.target.closest ? ev.target.closest('[data-rglvt]') : null; if (!b) return; var a = b.getAttribute('data-rglvt'); if (a === 'goed' || a === 'fout') zet(a === 'goed'); else if (a === 'min') min(); else if (a === 'open') openBalk(); else if (a === 'verberg') verberg(); else if (a === 'terug') { try { location.assign('index-zelftest-work.html#testen'); } catch (e) {} } });" +
       '  toon();' +
       '})();' +
       '</scr' + 'ipt>';

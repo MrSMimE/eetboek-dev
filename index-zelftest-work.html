@@ -11,7 +11,7 @@
   // Zelftest-work v58.10: laadt de echte index.html en past meteen aan:
   // - test-modus aan (schrijft alleen naar eetweek.v1.testversie)
   // - Regels-knop in de footer (linkt naar regels-zelftest-work.html)
-  // - versie + datum + tijd naar v58.10 - 15 nov 12u21 (Amsterdam)
+  // - versie + datum + tijd naar v58.10 - 15 nov 12u24 (Amsterdam)
   // - eigen testpunten (Deel 6) voor de nieuwe werk-onderdelen
   // - komt de pagina aan met #testen, dan start de app meteen op het Testen-tab
   // Jouw echte eetboek blijft volledig onaangeraakt.
@@ -27,9 +27,9 @@
     ok.push(t.indexOf(OUD) !== -1);
     t = t.replace(OUD, NIEUW);
     ok.push(t.indexOf("var VERSION = 'v58.9 - 14 nov 20u55';") !== -1);
-    t = t.replace("var VERSION = 'v58.9 - 14 nov 20u55';", "var VERSION = 'v58.10 - 15 nov 12u21';");
+    t = t.replace("var VERSION = 'v58.9 - 14 nov 20u55';", "var VERSION = 'v58.10 - 15 nov 12u24';");
     ok.push(t.indexOf("VERSION = 'v58.9 - 14 nov 20u55 (testbuild 14 nov 20u55)';") !== -1);
-    t = t.replace("VERSION = 'v58.9 - 14 nov 20u55 (testbuild 14 nov 20u55)';", "VERSION = 'v58.10 - 15 nov 12u21 (testbuild 15 nov 12u21)';");
+    t = t.replace("VERSION = 'v58.9 - 14 nov 20u55 (testbuild 14 nov 20u55)';", "VERSION = 'v58.10 - 15 nov 12u24 (testbuild 15 nov 12u24)';");
     var OPEN = 'var VERS_TESTEN = [';
     var PUNTEN =
       '    {"versie":"v58.10","deel":6,"t":"Eigen Regels-pagina (v58.10)","sub":"eigen pagina met bovenaan dezelfde tabbalk met 6 iconen als de andere pagina\'s; opent via 📋 Regels onderaan, vóór 🧪 Testen; ← Terug naar de app komt hier terug","doen":"Tik onderaan op 📋 Regels. Opent de Regels-pagina met bovenaan de tabbalk met 6 iconen (net als op de andere pagina\'s)? Zie je de dag-chips ma t/m zo? Voeg op een dag een eigen moment toe, hernoem het, vul kcal in en kijk of de totaalregel meetelt. Tik ← Terug naar de app: ben je terug in de werk-app?"},' +
