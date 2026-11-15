@@ -1,16 +1,23 @@
 #!/usr/bin/env bash
-# Klikbot-dev — handmatig, ZONDER AI/Mistral-stuff. GEEN automatische/laptop-runner.
-# Gebruik (vanuit de repo-root van eetboek-dev): bash versies/tests/draai-klikbot-dev.sh
-# De bot start zélf een server op POORT (standaard 8137) — geen apart server.js nodig.
+# Klikbot-dev — de VOLLEDIGE klikbot (211 stappen), ZONDER AI/Mistral-stuff (ronde6/aitest draaien niet mee).
+# Gebruik (vanuit de repo-root van eetboek-dev): bash tests/draai-klikbot-dev.sh
 set -u
-SCRIPTDIR="$(cd "$(dirname "$0")" && pwd)"
-POORT="${POORT:-8137}"
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+POORT="${POORT:-8123}"
 
-if [ ! -d "$SCRIPTDIR/node_modules/playwright" ]; then
-  echo "== Playwright installeren (eerste keer) =="
-  (cd "$SCRIPTDIR" && npm init -y >/dev/null 2>&1 && npm i playwright --no-fund --no-audit && npx playwright install chromium)
+if [ ! -d "$ROOT/tests/node_modules/playwright" ]; then
+  echo "== Playwright installeren (eerste keer +/- 2-3 min) =="
+  (cd "$ROOT/tests" && npm init -y >/dev/null 2>&1 && npm i playwright --no-fund --no-audit && npx playwright install chromium)
 fi
 
-echo "== Kliktest-dev draaien (app-test/index-zelftest.html) =="
-POORT=$POORT node "$SCRIPTDIR/kliktest-dev.js"
-exit $?
+echo "== Server aan op poort $POORT =="
+cd "$ROOT"
+POORT=$POORT node tests/server.js &
+SRV=$!
+sleep 1
+
+echo "== Kliktest draaien (app-test/index-zelftest.html, +/- 15-20 min) =="
+node "$ROOT/tests/kliktest.js" "http://localhost:$POORT/app-test/index-zelftest.html"
+UIT=$?
+kill $SRV 2>/dev/null
+exit $UIT
