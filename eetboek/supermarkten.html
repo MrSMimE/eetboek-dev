@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mijn Eetboek — Supermarkten</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+<div class="top">
+    <div class="titlerij">
+      <h1>&#129514; Mijn Eetboek</h1>
+      <!-- v56.2: thema-schakelaar in de titelbalk op élke pagina -->
+      <div class="themabar" id="themabar">
+        <button type="button" data-theme-set="light" aria-pressed="false" aria-label="Licht">&#9728;&#65039;</button>
+        <button type="button" data-theme-set="dark" aria-pressed="false" aria-label="Donker">&#127769;</button>
+        <button type="button" data-theme-set="contrast" aria-pressed="false" aria-label="Extreem contrast">&#9680;</button>
+      </div>
+    </div>
+<!-- v58.6: tabbalk ín de kop (.top), onder de titelrij -->
+<nav class="bottomnav">
+  <!-- Week (agenda) -->
+  <a href="index.html" aria-label="Week">
+    <span class="ico">
+      <svg width="24" height="24" viewBox="0 0 64 64" fill="none" style="vertical-align: middle;">
+        <rect x="10" y="14" width="44" height="42" rx="8" fill="#FAF6EE" stroke="#B58969" stroke-width="3.5"/>
+        <path d="M10 22C10 17.5817 13.5817 14 18 14H46C50.4183 14 54 17.5817 54 22V26H10V22Z" fill="#C97B63"/>
+        <line x1="22" y1="9" x2="22" y2="18" stroke="#9A6F50" stroke-width="4" stroke-linecap="round"/>
+        <line x1="42" y1="9" x2="42" y2="18" stroke="#9A6F50" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="22" cy="36" r="2.8" fill="#B58969"/>
+        <circle cx="32" cy="36" r="2.8" fill="#85997E"/>
+        <circle cx="42" cy="36" r="2.8" fill="#B58969"/>
+        <circle cx="22" cy="46" r="2.8" fill="#B58969"/>
+        <circle cx="32" cy="46" r="2.8" fill="#B58969"/>
+      </svg>
+    </span>
+  </a>
+  <!-- Recepten (bord met bestek) -->
+  <a href="recepten.html" aria-label="Recepten">
+    <span class="ico">
+      <svg width="24" height="24" viewBox="0 0 64 64" fill="none" style="vertical-align: middle;">
+        <circle cx="32" cy="34" r="18" fill="#FAF6EE" stroke="#B58969" stroke-width="3.5"/>
+        <circle cx="32" cy="34" r="11" stroke="#D6C7B2" stroke-width="2.5"/>
+        <line x1="10" y1="18" x2="10" y2="48" stroke="#9A6F50" stroke-width="3.5" stroke-linecap="round"/>
+        <path d="M7 18V27C7 29 13 29 13 27V18" stroke="#9A6F50" stroke-width="3" stroke-linecap="round"/>
+        <path d="M54 18V48M54 18C57 21 57 28 54 31" stroke="#9A6F50" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </span>
+  </a>
+  <!-- Producten (voorraaddoosje) -->
+  <a href="producten.html" aria-label="Producten">
+    <span class="ico">
+      <svg width="24" height="24" viewBox="0 0 64 64" fill="none" style="vertical-align: middle;">
+        <rect x="12" y="20" width="40" height="34" rx="6" fill="#C9A382" stroke="#9A6F50" stroke-width="3.5"/>
+        <path d="M10 18C10 15.7909 11.7909 14 14 14H50C52.2091 14 54 15.7909 54 18V23H10V18Z" fill="#B58969" stroke="#9A6F50" stroke-width="3"/>
+        <rect x="25" y="30" width="14" height="6" rx="3" fill="#FAF6EE"/>
+      </svg>
+    </span>
+  </a>
+  <!-- Kookhulp (koksmuts) -->
+  <a href="kookhulp.html" aria-label="Kookhulp">
+    <span class="ico">
+      <svg width="24" height="24" viewBox="0 0 64 64" fill="none" style="vertical-align: middle;">
+        <path d="M18 36C13 36 10 31.5 10 27C10 22 14 18.5 18.5 18.5C20.5 13 26 10 32 10C38 10 43.5 13 45.5 18.5C50 18.5 54 22 54 27C54 31.5 51 36 46 36V48C46 50.2 44.2 52 42 52H22C19.8 52 18 50.2 18 48V36Z" fill="#FAF6EE" stroke="#B58969" stroke-width="3.5" stroke-linejoin="round"/>
+        <line x1="18" y1="43" x2="46" y2="43" stroke="#C9A382" stroke-width="3"/>
+      </svg>
+    </span>
+  </a>
+
+  <!-- Instellingen (tandwiel) -->
+  <a href="instellingen.html" aria-label="Instellingen">
+    <span class="ico">
+      <svg width="24" height="24" viewBox="0 0 64 64" fill="none" style="vertical-align: middle;">
+        <g stroke="#9A6F50" stroke-width="6">
+          <line x1="44" y1="32" x2="52" y2="32"/>
+          <line x1="40.5" y1="40.5" x2="46.2" y2="46.2"/>
+          <line x1="32" y1="44" x2="32" y2="52"/>
+          <line x1="23.5" y1="40.5" x2="17.8" y2="46.2"/>
+          <line x1="20" y1="32" x2="12" y2="32"/>
+          <line x1="23.5" y1="23.5" x2="17.8" y2="17.8"/>
+          <line x1="32" y1="20" x2="32" y2="12"/>
+          <line x1="40.5" y1="23.5" x2="46.2" y2="17.8"/>
+        </g>
+        <circle cx="32" cy="32" r="13" fill="#9A6F50"/>
+        <circle cx="32" cy="32" r="8" fill="#B58969"/>
+        <circle cx="32" cy="32" r="4" fill="#FAF6EE"/>
+      </svg>
+    </span>
+  </a>
+</nav>
+  </div>
+  <div id="banner"></div>
+<div id="supview">
+    <p style="margin:0 0 10px"><a class="pill" href="instellingen.html">&#8592; Terug naar Instellingen</a></p>
+    <h2>&#128722; Mijn supermarkten <span class="supcnt" data-supcnt></span></h2>
+    <p class="hint" style="margin:0 0 10px">De prijs-opzoeking (Checkjebon) gebruikt alleen aangevinkte winkels. Uitgevinkt of niet in de lijst = geen bron.</p>
+    <div id="supLijst"></div>
+    <div class="rowx" style="margin-top:12px">
+      <select id="supKies" aria-label="Supermarkt kiezen"></select>
+      <button class="pill" type="button" data-act="supadd">+</button>
+    </div>
+</div>
+</div><!-- /wrap -->
+
+<script src="checkjebon-js.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
