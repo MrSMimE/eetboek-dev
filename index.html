@@ -942,7 +942,7 @@ details:not(.pgrp):not(.instgrp):not(.khgrp), .card, .per, .opt, .instrow, .wkit
     <!-- Extra momenten onderaan -->
     <div id="optbottom"></div>
 
-    <!-- v50: Mijn regels staat alleen nog bij ⚙️ Instellingen -->
+    <!-- v50: Mijn eetmomenten staat alleen nog bij ⚙️ Instellingen -->
 
     <!-- Etiket-check -->
     <h2 class="sec">Iets anders gegeten?</h2>
@@ -1512,7 +1512,7 @@ Bereiding: Knijp de tonijn goed uit. Snijd de augurken klein en roer ze erdoor. 
   </div>
 </div>
 
-<!-- Sheet: Mijn regels -->
+<!-- Sheet: Mijn eetmomenten -->
 <div class="sheet" id="pastesheet" hidden>
   <div class="scrim" data-act="pasteclose"></div>
   <div class="panel" role="dialog" aria-modal="true" aria-labelledby="pt">
@@ -1594,7 +1594,7 @@ Bereiding: Knijp de tonijn goed uit. Snijd de augurken klein en roer ze erdoor. 
     <div class="phead">
       <button class="back xbtn" data-act="rgclose" aria-label="Sluiten">✕</button>
       <div>
-        <h2 id="rgt">Mijn regels</h2>
+        <h2 id="rgt">Mijn eetmomenten</h2>
         <p>Je schema van 7 oktober en je maxima per moment.</p>
       </div>
     </div>
@@ -1773,7 +1773,7 @@ Bereiding: Knijp de tonijn goed uit. Snijd de augurken klein en roer ze erdoor. 
   ];
   function groupOfSlot(slot) { for (var i = 0; i < RGROUPS.length; i++) if (RGROUPS[i].slots.indexOf(slot) >= 0) return RGROUPS[i].id; return ''; }
   function rWhere(r) { return (r.where || []).filter(function (w) { return RGROUPS.some(function (g) { return g.id === w; }); }); }
-  // Maxima per moment uit het schema van 7 oktober. Je kunt ze aanpassen bij Mijn regels (S.maxes).
+  // Maxima per moment uit het schema van 7 oktober. Je kunt ze aanpassen bij Mijn eetmomenten (S.maxes).
   var RG_DEF = {
     1: [['mid', 'Middag', 'tot', 250], ['av', 'Avondeten', 'gem', 675], ['ab', 'Avondblok', 'tot', 240]],
     2: [['lm', 'Lunch + middag samen', 'tot', 500], ['av', 'Avondeten', 'gem', 675], ['ab', 'Avondblok', 'tot', 240]],
@@ -8511,7 +8511,7 @@ document.addEventListener('input', function (ev) {
     b.innerHTML = h;
   }
 
-  // ---- Mijn regels
+  // ---- Mijn eetmomenten
   var RG_ORDER = [1, 2, 3, 4, 5, 6, 0];
   function rgOpen() {
     S.rg = true; S.rgConfirm = false; pushLayer(); document.documentElement.classList.add('lock');

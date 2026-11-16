@@ -90,4 +90,4 @@
   ];
   function groupOfSlot(slot) { for (var i = 0; i < RGROUPS.length; i++) if (RGROUPS[i].slots.indexOf(slot) >= 0) return RGROUPS[i].id; return ''; }
   function rWhere(r) { return (r.where || []).filter(function (w) { return RGROUPS.some(function (g) { return g.id === w; }); }); }
-  // Maxima per moment uit het schema van 7 oktober. Je kunt ze aanpassen bij Mijn regels (S.maxes).
+  // Maxima per moment uit het schema van 7 oktober. Je kunt ze aanpassen bij Mijn eetmomenten (S.maxes).

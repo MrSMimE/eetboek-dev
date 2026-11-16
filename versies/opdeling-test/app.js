@@ -91,7 +91,7 @@
   ];
   function groupOfSlot(slot) { for (var i = 0; i < RGROUPS.length; i++) if (RGROUPS[i].slots.indexOf(slot) >= 0) return RGROUPS[i].id; return ''; }
   function rWhere(r) { return (r.where || []).filter(function (w) { return RGROUPS.some(function (g) { return g.id === w; }); }); }
-  // Maxima per moment uit het schema van 7 oktober. Je kunt ze aanpassen bij Mijn regels (S.maxes).
+  // Maxima per moment uit het schema van 7 oktober. Je kunt ze aanpassen bij Mijn eetmomenten (S.maxes).
   var RG_DEF = {
     1: [['mid', 'Middag', 'tot', 250], ['av', 'Avondeten', 'gem', 675], ['ab', 'Avondblok', 'tot', 240]],
     2: [['lm', 'Lunch + middag samen', 'tot', 500], ['av', 'Avondeten', 'gem', 675], ['ab', 'Avondblok', 'tot', 240]],
@@ -6829,7 +6829,7 @@ document.addEventListener('input', function (ev) {
     b.innerHTML = h;
   }
 
-  // ---- Mijn regels
+  // ---- Mijn eetmomenten
   var RG_ORDER = [1, 2, 3, 4, 5, 6, 0];
   function rgOpen() {
     S.rg = true; S.rgConfirm = false; pushLayer(); document.documentElement.classList.add('lock');

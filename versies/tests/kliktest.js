@@ -147,8 +147,8 @@
 // de test opent nu het moment inline, tikt daarna op "+ Toevoegen" (.toevoegknop) om het moment-scherm te openen,
 // sluit met ✕ en klapt het moment weer dicht. v3.7 (31 okt, deel 3): Recepten (Nieuw recept + Recept plakken openen/✕), thema-wissel (donker/contrast/automatisch
 // met kleur-check), Producten plakken via Lijst plakken, Terugzetten-menu (niets terugzetten). (v3.6: Producten-tab start 'rustig' — hoofdgroepen verschijnen pas na de tik op 📁 Blader per categorie;
-// de test tikt die knop nu eerst en zet het scherm na afloop weer terug op rustig. (v3.5: selector-fixes + Mijn regels eruit.) Deel 2: + Producten-tests (hoofdgroep, subcategorie, productregel, zoeken — met één testproduct in de testomgeving),
-// Bewaren-menu (incl. Bewaren-alles + terugknop), Mijn regels en Lijst plakken. Deel 1: Iets-toevoegen via Instellingen + Week-tests.
+// de test tikt die knop nu eerst en zet het scherm na afloop weer terug op rustig. (v3.5: selector-fixes + Mijn eetmomenten eruit.) Deel 2: + Producten-tests (hoofdgroep, subcategorie, productregel, zoeken — met één testproduct in de testomgeving),
+// Bewaren-menu (incl. Bewaren-alles + terugknop), Mijn eetmomenten en Lijst plakken. Deel 1: Iets-toevoegen via Instellingen + Week-tests.
 const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
@@ -880,7 +880,7 @@ async function openTerugzetten(p) {
     if (ap !== 'false') throw new Error('het bladeren stond nog aan');
   }, 'button[data-act="prblader"]');
 
-  // 4d. Bewaren-menu, Mijn regels en Lijst plakken (31 okt, deel 2) — allemaal via Instellingen (tandwiel)
+  // 4d. Bewaren-menu, Mijn eetmomenten en Lijst plakken (31 okt, deel 2) — allemaal via Instellingen (tandwiel)
   await stap(pagina, 'Naar Tandwiel (2)', () => pagina.tap('#tabinst', { timeout: 8000 }), '#tabinst');
   await stap(pagina, '🔧 Bewaren & terugzetten klapt open', async () => {
     await openBlokGroep(pagina, 'button[data-act="addgo"][data-v="bestand"]');

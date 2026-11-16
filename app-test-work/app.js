@@ -3,10 +3,10 @@
   // Laadt de echte app.js uit versies/opdeling-test en past de werk-set aan
   // (canvas "weekweergave-eigen-regels v2" + "recepten-eigen-momenten v1" + "ai-instellingen v1", gekeurd 15 nov):
   // 1. opslag afgeschermd: 'eetweek.v1' -> 'eetweek.v1.testversie' (je echte eetboek blijft onaangeraakt)
-  // 2. WERK-BRUG (v60.0): dagen tonen alleen de eigen momenten uit Mijn regels; lege dag = linkje naar Mijn regels
+  // 2. WERK-BRUG (v60.0): dagen tonen alleen de eigen momenten uit Mijn eetmomenten; lege dag = linkje naar Mijn eetmomenten
   // 3. Mijn normale dag volgt de eigen momenten mét ⚡-vinkje (regels-pagina v60.0)
   // 4. Zeg-blok: alleen de eigen momenten van die dag; slim tijdje lezen (dichtst bij nu)
-  // 5. VAST (v61.0): recept-groepen volgen je eigen momentnamen uit Mijn regels
+  // 5. VAST (v61.0): recept-groepen volgen je eigen momentnamen uit Mijn eetmomenten
   //    (oude keuzes als Ochtend/Lunch/Avondeten blijven werken als je moment zo heet)
   // 6. VAST (v61.0): recept verwijderen gaat naar een prullenbak — per stuk of alles terugzetten
   // 7. VAST (v61.0): AI-instellingen — Mistral-blok blijft zoals het is; extra scherm voor
@@ -48,7 +48,7 @@
     list.push({ slot: 'eod', t: 'Einde van de dag', p: 'hoeveel trek nog', g: [] });
     return list;
   }`;
-    var NIEUW_MOM = `  var RGLKEY = 'eetweek.regels.v1'; // v60.0 werk: opslag van de Regels-pagina (Mijn regels)
+    var NIEUW_MOM = `  var RGLKEY = 'eetweek.regels.v1'; // v60.0 werk: opslag van de Eetmomenten-pagina (Mijn eetmomenten)
   var RGLDAG = ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za'];
   function regelsMomenten(dow) {
     try {
@@ -65,7 +65,7 @@
   }
   function momentsFor(dow, d, force) {
     var rg = regelsMomenten(dow);
-    if (rg) { // v60.0 werk: eigen momenten uit Mijn regels + Nacht; het vaste ritme vervalt
+    if (rg) { // v60.0 werk: eigen momenten uit Mijn eetmomenten + Nacht; het vaste ritme vervalt
       rg.push({ slot: 'nacht', t: 'Nacht', p: 'na het slapengaan of midden in de nacht', g: ['LU', 'NE', 'ND', 'NF', 'NA', 'NK'] });
       return rg;
     }
@@ -155,7 +155,7 @@
     ok.push(t.indexOf(OUD_ZEG) !== -1);
     t = t.replace(OUD_ZEG, NIEUW_ZEG);
 
-    // ---- 6. optButtons: geen vaste extra's; lege dag krijgt linkje naar Mijn regels ----
+    // ---- 6. optButtons: geen vaste extra's; lege dag krijgt linkje naar Mijn eetmomenten ----
     var OUD_OPT = `  function optButtons(dow, list, id) {
     var h = '';
     OPTL.forEach(function (o) {
@@ -168,12 +168,12 @@
     var NIEUW_OPT = `  function optButtons(dow, list, id) {
     var rg = regelsMomenten(dow); // v60.0 werk
     if (rg) return ''; // dag mét eigen momenten: geen vaste extra-knoppen meer
-    return '<div class="optrow"><a class="optbtn" href="regels.html">+ Eigen moment maken (Mijn regels)</a></div>'; // lege dag: door naar Mijn regels
+    return '<div class="optrow"><a class="optbtn" href="regels.html">+ Eigen moment maken (Mijn eetmomenten)</a></div>'; // lege dag: door naar Mijn eetmomenten
   }`;
     ok.push(t.indexOf(OUD_OPT) !== -1);
     t = t.replace(OUD_OPT, NIEUW_OPT);
 
-    // ---- 7. VAST (v61.0): recept-groepen = je eigen momentnamen uit Mijn regels ----
+    // ---- 7. VAST (v61.0): recept-groepen = je eigen momentnamen uit Mijn eetmomenten ----
     var OUD_RG = `  var RGROUPS = [
     { id: 'ochtend', t: 'Ochtend', slots: ['opst', 'ont', 'pz', 'wont', 'wtus', 'och', 'okb'] },
     { id: 'lunch', t: 'Lunch', slots: ['lun', 'kl', 'lm'] },
@@ -184,9 +184,9 @@
   ];
   function groupOfSlot(slot) { for (var i = 0; i < RGROUPS.length; i++) if (RGROUPS[i].slots.indexOf(slot) >= 0) return RGROUPS[i].id; return ''; }
   function rWhere(r) { return (r.where || []).filter(function (w) { return RGROUPS.some(function (g) { return g.id === w; }); }); }`;
-    var NIEUW_RG = `  var RGROUPS = [ { id: 'extra', t: 'Extra en nacht', slots: ['extra', 'nacht'] } ]; // v61.0 werk: gevuld vanuit Mijn regels
+    var NIEUW_RG = `  var RGROUPS = [ { id: 'extra', t: 'Extra en nacht', slots: ['extra', 'nacht'] } ]; // v61.0 werk: gevuld vanuit Mijn eetmomenten
   var RGL_LEGACY = { ochtend: 'ochtend', lunch: 'lunch', middag: 'middag', avondeten: 'avondeten', avondblok: 'avondblok', extra: 'extra en nacht' }; // v61.0 werk: oude recept-keuzes blijven werken als je moment zo heet
-  function eigenRgroups() { // v61.0 werk: recept-groepen = je eigen momentnamen uit Mijn regels (alle dagen bij elkaar)
+  function eigenRgroups() { // v61.0 werk: recept-groepen = je eigen momentnamen uit Mijn eetmomenten (alle dagen bij elkaar)
     var perNaam = {}, uit = [];
     for (var dw = 0; dw <= 6; dw++) {
       var lijst = regelsMomenten(dw);
@@ -405,11 +405,11 @@
 
     // ---- 11. testpunten Deel 6 (v60.0 + v61.0) + deelgrens 5 -> 9 ----
     var PUNTEN =
-      '    {"versie":"v60.0","deel":6,"t":"Week: alleen eigen momenten uit Mijn regels","sub":"dag mét eigen momenten toont alleen die; dag zonder eigen momenten is leeg, met alleen een linkje naar Mijn regels; geen kcal op de dagkaarten","ga":"week","doen":"Open Mijn regels en voeg op een dag twee momenten toe (naam + tijdje). Open daarna de Week: toont die dag alleen deze twee momenten? Is een dag zonder eigen momenten leeg en staat daar alleen het linkje naar Mijn regels?"},' + '\n' +
-      '    {"versie":"v60.0","deel":6,"t":"Regels-pagina: het ⚡-vinkje","sub":"per eigen moment een vinkje: ⚡ in Mijn normale dag","ga":"test","doen":"Open Mijn regels en voeg een moment toe. Staat onder max kcal het ⚡-vinkje met uitleg? Vink het aan en herlaad de pagina: blijft het vinkje staan?"},' + '\n' +
+      '    {"versie":"v60.0","deel":6,"t":"Week: alleen eigen momenten uit Mijn eetmomenten","sub":"dag mét eigen momenten toont alleen die; dag zonder eigen momenten is leeg, met alleen een linkje naar Mijn eetmomenten; geen kcal op de dagkaarten","ga":"week","doen":"Open Mijn eetmomenten en voeg op een dag twee momenten toe (naam + tijdje). Open daarna de Week: toont die dag alleen deze twee momenten? Is een dag zonder eigen momenten leeg en staat daar alleen het linkje naar Mijn eetmomenten?"},' + '\n' +
+      '    {"versie":"v60.0","deel":6,"t":"Eetmomenten-pagina: het ⚡-vinkje","sub":"per eigen moment een vinkje: ⚡ in Mijn normale dag","ga":"test","doen":"Open Mijn eetmomenten en voeg een moment toe. Staat onder max kcal het ⚡-vinkje met uitleg? Vink het aan en herlaad de pagina: blijft het vinkje staan?"},' + '\n' +
       '    {"versie":"v60.0","deel":6,"t":"Mijn normale dag volgt het vinkje","sub":"Instellingen toont per weekdag alleen de aangevinkte eigen momenten; de ⚡-knop vult alleen die (ma t/m vr zoals altijd)","ga":"test","doen":"Vink op een weekdag één moment aan en vul er bij Instellingen een product in. Tik in de Week op ⚡: komt het product alleen in dat ene moment?"},' + '\n' +
       '    {"versie":"v60.0","deel":6,"t":"Zeg-blok volgt de eigen momenten","sub":"het uitklaplijstje toont alleen je eigen momenten van die dag; de knop kiest het moment met een leesbaar tijdje dichtst bij nu, anders het eerste nog-lege moment","ga":"week","doen":"Vul bij een eigen moment een tijdje in zoals rond 09:00. Open het zeg-blok op die dag: staan er alleen je eigen momenten in het lijstje en kiest de knop er een logische uit?"},' + '\n' +
-      '    {"versie":"v61.0","deel":7,"t":"Recepten: je eigen momentnamen","sub":"recept-groepen volgen Mijn regels; oude keuzes (Ochtend, Lunch, Avondeten enz.) blijven werken als je moment zo heet","ga":"test","doen":"Maak op Mijn regels een moment dat Ochtend heet. Open Recepten: staat onder Per moment een groep Ochtend met je ochtend-recepten? Bewerk een recept en kies bij Waar een andere groep: verhuist het recept?"},' + '\n' +
+      '    {"versie":"v61.0","deel":7,"t":"Recepten: je eigen momentnamen","sub":"recept-groepen volgen Mijn eetmomenten; oude keuzes (Ochtend, Lunch, Avondeten enz.) blijven werken als je moment zo heet","ga":"test","doen":"Maak op Mijn eetmomenten een moment dat Ochtend heet. Open Recepten: staat onder Per moment een groep Ochtend met je ochtend-recepten? Bewerk een recept en kies bij Waar een andere groep: verhuist het recept?"},' + '\n' +
       '    {"versie":"v61.0","deel":7,"t":"Recepten: prullenbak","sub":"verwijderen is omkeerbaar: het recept gaat naar de prullenbak onderaan Recepten, per stuk of alles terug te zetten; blijft bewaard na herladen","ga":"test","doen":"Verwijder een recept (twee keer tikken). Staat het daarna in de prullenbak onderaan Recepten? Zet het terug. Herlaad de pagina: is de prullenbak nog zoals je hem achterliet?"},' + '\n' +
       '    {"versie":"v61.0","deel":7,"t":"AI: andere aanbieder (OpenAI-compatibel)","sub":"achter het Mistral-blok een extra scherm: lege velden (webadres, sleutel, model, geen placeholders), test-knop en modellen-knop; hint dat het voor alles met AI geldt","ga":"test","doen":"Open het Mistral-blok bij Instellingen: staat daaronder het scherm Andere AI-aanbieder met de hint over alles met AI? Zijn de velden leeg?"},' + '\n' +
       '    {"versie":"v61.0","deel":7,"t":"AI: laatst gebruikt = actief","sub":"iets invullen of testen bij de andere aanbieder schakelt de app over; bij Mistral testen schakelt de app terug; het Nu in gebruik-plaatje volgt op beide schermen","ga":"test","doen":"Typ iets in het webadres-veld van de andere aanbieder: springt Nu in gebruik naar de andere aanbieder? Ga terug naar het Mistral-blok en tik daar op Test de verbinding: springt het plaatje terug naar Mistral?"},' + '\n' +

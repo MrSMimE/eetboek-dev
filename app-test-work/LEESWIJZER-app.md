@@ -27,7 +27,7 @@ De app is één groot bestand (12.665 regels):
 | 6558-7242 | lade, eigen producten in Week, Vervang dit, combi-tips | Meest gekozen |
 | 7243-7922 | foto's | foto |
 | 7923-8477 | opslag, kopiëren, terugzetten, oude data omzetten | 'eetweek.v1', uitbestand |
-| 8478-8535 | Mijn regels | 'eetweek.regels.v1' |
+| 8478-8535 | Mijn eetmomenten | 'eetweek.regels.v1' |
 | 8536-8661 | kookmodus | Kookmodus |
 | 8662-10727 | Mistral-kok (schema, ideeën, porties, prijs, bewaren) | jouw schema, Mistral aanroepen |
 | 10728-10908 | meet-hulpje | meet-hulpje |

@@ -2747,7 +2747,7 @@ document.addEventListener('input', function (ev) {
     b.innerHTML = h;
   }
 
-  // ---- Mijn regels
+  // ---- Mijn eetmomenten
   var RG_ORDER = [1, 2, 3, 4, 5, 6, 0];
   function rgOpen() {
     S.rg = true; S.rgConfirm = false; pushLayer(); document.documentElement.classList.add('lock');

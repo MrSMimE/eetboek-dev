@@ -16,7 +16,7 @@ De delen horen bij één grote app en delen variabelen en functies, dus de volgo
 | 07-week | lade, eigen producten in de week, vervang dit, combi-suggestie |
 | 08-foto | foto |
 | 09-opslag | opslag, kopiëren, reservekopie terugzetten |
-| 10-uitbreidingen | exportknoppen, oude dagen omzetten, Mijn regels, Kookmodus |
+| 10-uitbreidingen | exportknoppen, oude dagen omzetten, Mijn eetmomenten, Kookmodus |
 | 11 t/m 14 | het Mistral-tabblad (Kookhulp): schema, recept aanpassen, uitleg en kaarten, sub-tabbladen |
 | 15-start-en-thema | recept openen, thema, en het opstarten van de app |
 | 16-mistral-sleutel | Mistral API-sleutel + model (tandwiel) |
