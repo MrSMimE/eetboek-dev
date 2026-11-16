@@ -328,7 +328,7 @@
   // ---- staat
   var todayId = fmtId(new Date());
   function vandaagId() { return fmtId(new Date()); } // v47.4.1: todayId is een string; als functie heet het vandaagId()
-  var S = { start: startOfWeek(new Date()), days: {}, weights: {}, fav: [], lastBackup: null, outKind: '', open: {}, sheet: null, status: 'wachten', recipes: [], seeded: false, mig: [], tab: 'week', rec: null, paste: null, confirmDel: null, confirmClear: false, saveRec: false, recOpen: {}, othOpen: false, ingOpen: {}, grpOpen: {}, prijzen: [], prod: null, pp: null, fotoFor: '', zoom: {}, confirmProd: null, prq: '', plab: [], icat: {}, prSub: 'mijn', icatOpen: '', favAsk: '', fixedAsk: '', lijst: [], confirmLijst: false, freeCats: [], confirmFavDel: null, maxes: {}, rare: {}, rareD: {}, rg: false, rgConfirm: false, rgOpen: {}, cook: null, emoOpen: '', recMenu: '', vrRec: '', vrChecks: {}, oud: null, oudConfirm: false, verw: null, normaal: {} }; // v58: recMenu = ⋮-menuutje op het kaartje open; vrRec/vrChecks = Voorbereiden-blok in Kookhulp (sessie, niet bewaard) // v50.6: S.normaal = 5 weekdag-patronen { '1'..'5': [{slot,pid,amt,u}] } (zie 17-snel-invullen.js)
+  var S = { start: startOfWeek(new Date()), days: {}, weights: {}, fav: [], lastBackup: null, outKind: '', open: {}, sheet: null, status: 'wachten', recipes: [], seeded: false, mig: [], tab: 'week', rec: null, paste: null, confirmDel: null, confirmClear: false, saveRec: false, recOpen: {}, othOpen: false, ingOpen: {}, grpOpen: {}, prijzen: [], prod: null, pp: null, fotoFor: '', zoom: {}, confirmProd: null, prq: '', plab: [], icat: {}, prSub: 'mijn', icatOpen: '', favAsk: '', fixedAsk: '', lijst: [], confirmLijst: false, freeCats: [], confirmFavDel: null, maxes: {}, rare: {}, rareD: {}, rg: false, rgConfirm: false, rgOpen: {}, cook: null, emoOpen: '', recMenu: '', vrRec: '', vrChecks: {}, oud: null, oudConfirm: false, verw: null, normaal: {}, supers: null, supersEigen: [] }; // v63: supermarkten (S.supers) + eigen winkels (S.supersEigen) // v58: recMenu = ⋮-menuutje op het kaartje open; vrRec/vrChecks = Voorbereiden-blok in Kookhulp (sessie, niet bewaard) // v50.6: S.normaal = 5 weekdag-patronen { '1'..'5': [{slot,pid,amt,u}] } (zie 17-snel-invullen.js)
   // v48 Week-ronde: alles begint dicht (S.open/S.mopen worden niet gepersisteerd)
   S.freeU = 'g'; S.prodAsk = ''; S.pkUnit = '';
   var toastTimer = null;
@@ -350,7 +350,7 @@
   }
   function tryStore() {
     try {
-      localStorage.setItem(TESTVERSIE ? 'eetweek.v1.testversie' : 'eetweek.v1', JSON.stringify({ days: stripTmpVelden(S.days), weights: S.weights, fav: S.fav, lastBackup: S.lastBackup, hidePlan: true, recipes: stripTmpVelden(S.recipes), seeded: S.seeded, mig: S.mig, prijzen: S.prijzen, icat: S.icat, lijst: S.lijst, maxes: S.maxes, rare: S.rare, rareD: S.rareD || {}, normaal: S.normaal, cat: S.cat || {} })); // TESTVERSIE: nooit naar de echte eetweek.v1 schrijven
+      localStorage.setItem(TESTVERSIE ? 'eetweek.v1.testversie' : 'eetweek.v1', JSON.stringify({ days: stripTmpVelden(S.days), weights: S.weights, fav: S.fav, lastBackup: S.lastBackup, hidePlan: true, recipes: stripTmpVelden(S.recipes), seeded: S.seeded, mig: S.mig, prijzen: S.prijzen, icat: S.icat, lijst: S.lijst, maxes: S.maxes, rare: S.rare, rareD: S.rareD || {}, normaal: S.normaal, cat: S.cat || {}, supers: S.supers || {}, supersEigen: S.supersEigen || [] })); // v63: supermarkten mee in opslag // TESTVERSIE: nooit naar de echte eetweek.v1 schrijven
       stuurNaarAndroid();
       return true;
     } catch (e) { return false; }
@@ -1344,6 +1344,14 @@ R.ing.forEach(function (i, idx) {
   }
   // ---- v45a: supermarktnamen filteren + bijna-dubbele namen (basisregel 3+4)
   var SUPERMARKT = ['albert heijn', 'ah', 'jumbo', 'lidl', 'aldi', 'dirk', 'vomar', 'vomer', 'plus', 'coop', 'spar', 'deen', 'marqt', 'ekoplaza', 'hoogvliet', 'terra', 'boni', '1 de beste', 'ja!', 'gwoon', "g'woon", 'daily', 'schar', 'korenveld'];
+  // v63: vinkjeslijst "Mijn supermarkten" — actuele NL supermarkten (zonder failliete ketens Deen/Coop/Marqt); AH, Jumbo, Lidl standaard aan
+  var SUPUI = [ ['ah', 'Albert Heijn'], ['jumbo', 'Jumbo'], ['lidl', 'Lidl'], ['aldi', 'Aldi'], ['hoogvliet', 'Hoogvliet'], ['dirk', 'Dirk'], ['vomar', 'Vomar'], ['plus', 'Plus'], ['spar', 'Spar'], ['ekoplaza', 'Ekoplaza'], ['boni', 'Boni'], ['terra', 'Terra'], ['gwoon', "G'woon"], ['daily', 'Daily'], ['schar', 'Schar'], ['korenveld', 'Korenveld'], ['1debeste', '1 De Beste'], ['ja', 'Ja!'] ];
+  var SUPDEF = { ah: true, jumbo: true, lidl: true };
+  function supAan(c) { return S.supers ? S.supers[c] !== false : !!SUPDEF[c]; }
+  function supEigenNamen() { return (S.supersEigen || []).map(function (x) { return x.n; }); }
+  function supSlug(naam) { return 'eigen-' + String(naam).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40); }
+  function supTel() { var cnt = $('supCnt'); if (!cnt) return; var n = document.querySelectorAll('#supLijst input:checked').length; cnt.textContent = n + '/' + (SUPUI.length + (S.supersEigen || []).length); }
+  function renderSupers() { var lijst = $('supLijst'); if (!lijst) return; var h = ''; SUPUI.forEach(function (s) { h += '<label class="vink"><input type="checkbox" data-sup="' + s[0] + '"' + (supAan(s[0]) ? ' checked' : '') + '> ' + esc(s[1]) + '</label>'; }); (S.supersEigen || []).forEach(function (x) { h += '<label class="vink eigen"><input type="checkbox" data-sup="' + x.k + '"' + (supAan(x.k) ? ' checked' : '') + '> ' + esc(x.n) + ' <button type="button" class="verw" data-act="supdel" data-k="' + esc(x.k) + '" title="Winkel weghalen" aria-label="' + esc(x.n) + ' weghalen">✕</button></label>'; }); lijst.innerHTML = h; supTel(); }
   function stripSupermarkt(naam) {
     var s = ' ' + String(naam || '').toLowerCase() + ' ';
     SUPERMARKT.forEach(function (w) {
@@ -6255,7 +6263,7 @@ document.addEventListener('input', function (ev) {
     try { S.zegIn = String(localStorage.getItem('eetweek.zegIn') || '').slice(0, 400); S.zegTik = !!S.zegIn.trim(); } catch (e) {} // v55.2 (13 nov) PUNT 6: zeg-veld + knopjes blijven na herstart
     try {
       var raw = localStorage.getItem('eetweek.v1');
-      if (raw) { var o = JSON.parse(raw); S.days = o.days || {}; S.weights = o.weights || {}; S.fav = o.fav || []; S.lastBackup = o.lastBackup || null; S.recipes = o.recipes || []; S.seeded = !!o.seeded || S.recipes.length > 0; S.mig = o.mig || []; S.prijzen = (Array.isArray(o.prijzen) ? o.prijzen : []).map(cleanProd).filter(Boolean); S.icat = cleanIcat(o.icat); S.lijst = cleanLijst(o.lijst); S.maxes = cleanMaxes(o.maxes); S.rare = (o.rare && typeof o.rare === 'object' && !Array.isArray(o.rare)) ? o.rare : {}; S.rareD = (o.rareD && typeof o.rareD === 'object' && !Array.isArray(o.rareD)) ? o.rareD : {}; S.normaal = cleanNormaal(o.normaal); S.cat = cleanCat(o.cat); } // v49 + v49-fix: cat geladen
+      if (raw) { var o = JSON.parse(raw); S.days = o.days || {}; S.weights = o.weights || {}; S.fav = o.fav || []; S.lastBackup = o.lastBackup || null; S.recipes = o.recipes || []; S.seeded = !!o.seeded || S.recipes.length > 0; S.mig = o.mig || []; S.prijzen = (Array.isArray(o.prijzen) ? o.prijzen : []).map(cleanProd).filter(Boolean); S.icat = cleanIcat(o.icat); S.lijst = cleanLijst(o.lijst); S.maxes = cleanMaxes(o.maxes); S.rare = (o.rare && typeof o.rare === 'object' && !Array.isArray(o.rare)) ? o.rare : {}; S.rareD = (o.rareD && typeof o.rareD === 'object' && !Array.isArray(o.rareD)) ? o.rareD : {}; S.normaal = cleanNormaal(o.normaal); S.cat = cleanCat(o.cat); S.supers = (o.supers && typeof o.supers === 'object' && !Array.isArray(o.supers)) ? o.supers : null; S.supersEigen = Array.isArray(o.supersEigen) ? o.supersEigen.filter(function (x) { return x && x.k && x.n; }) : []; } // v49 + v49-fix: cat geladen + v63: supermarkten laden
     } catch (e) { S.status = 'geen'; }
     if (!S.seeded) { S.recipes = starterRecipes(); S.seeded = true; S.mig = ['pizza', 'muffin', 'kwarkfris', 'v12', 'v13']; }
     migrate();
@@ -6399,11 +6407,13 @@ document.addEventListener('input', function (ev) {
     else fallback();
   }
   function backupJson(withPhotos) {
-    return JSON.stringify({ v: 1, days: S.days, weights: S.weights, fav: S.fav, recipes: S.recipes, mig: S.mig, prijzen: S.prijzen, icat: S.icat, lijst: S.lijst, maxes: S.maxes, rare: S.rare, rareD: S.rareD || {}, normaal: S.normaal, cat: S.cat || {} }, withPhotos ? null : function (k, v) { return (k === 'photos' || k === 'foto') ? undefined : v; }); // v49: normaal mee in reservekopie; v49-fix: cat mee
+    return JSON.stringify({ v: 1, days: S.days, weights: S.weights, fav: S.fav, recipes: S.recipes, mig: S.mig, prijzen: S.prijzen, icat: S.icat, lijst: S.lijst, maxes: S.maxes, rare: S.rare, rareD: S.rareD || {}, normaal: S.normaal, cat: S.cat || {}, supers: S.supers || {}, supersEigen: S.supersEigen || [] }, withPhotos ? null : function (k, v) { return (k === 'photos' || k === 'foto') ? undefined : v; }); // v49: normaal mee in reservekopie; v49-fix: cat mee
   }
   document.addEventListener('click', function (ev) {
     var el = ev.target.closest('[data-act]'); if (!el) return;
     var act = el.getAttribute('data-act');
+    if (act === 'supadd') { var ns = $('nieuweSuper'); var naam = ns ? String(ns.value).trim() : ''; if (naam) { S.supersEigen = S.supersEigen || []; var k = supSlug(naam); if (!S.supersEigen.some(function (x) { return x.k === k; }) && !SUPUI.some(function (s) { return s[0] === k; })) { S.supersEigen.push({ k: k, n: naam.slice(0, 40) }); persist(); } if (ns) ns.value = ''; renderSupers(); toast('Winkel toegevoegd'); } return; } // v63: eigen supermarkt toevoegen
+    else if (act === 'supdel') { var kk = el.getAttribute('data-k'); S.supersEigen = (S.supersEigen || []).filter(function (x) { return x.k !== kk; }); persist(); renderSupers(); toast('Winkel weggehaald'); return; } // v63: eigen supermarkt verwijderen
     if (act === 'weektext') copyDirect(weekText(), 'week', 'Week kopiëren', 'Houd de tekst ingedrukt en kies Kopiëren.');
     else if (act === 'backup') copyDirect(backupJson(false), 'backup', 'Reservekopie', 'Bewaar deze tekst op een veilige plek, bijvoorbeeld in een notitie.');
     else if (act === 'restore') showOut('Reservekopie terugzetten', 'Plak hier de tekst van je reservekopie.', '', true);
@@ -6440,7 +6450,7 @@ document.addEventListener('input', function (ev) {
       S.maxes = cleanMaxes(o.maxes);
       S.rare = (o.rare && typeof o.rare === 'object' && !Array.isArray(o.rare)) ? o.rare : {};
       S.rareD = (o.rareD && typeof o.rareD === 'object' && !Array.isArray(o.rareD)) ? o.rareD : {};
-      S.normaal = cleanNormaal(o.normaal); S.cat = cleanCat(o.cat); // v49 + v49-fix
+      S.normaal = cleanNormaal(o.normaal); S.cat = cleanCat(o.cat); S.supers = (o.supers && typeof o.supers === 'object' && !Array.isArray(o.supers)) ? o.supers : null; S.supersEigen = Array.isArray(o.supersEigen) ? o.supersEigen.filter(function (x) { return x && x.k && x.n; }) : []; // v49 + v49-fix + v63: supermarkten uit reservekopie
       persist(); render(); toast('Teruggezet');
       return true;
     } catch (e) { toast('Dit is geen reservekopie'); return false; }
@@ -9227,7 +9237,8 @@ document.addEventListener('input', function (ev) {
     $('keyOnthoud').addEventListener('change', bewaarSleutel);
     var bn = document.getElementById('bewaarNieuw'); if (bn) bn.checked = S.bewaarNieuw !== false; // v51.13: bewaar-schakelaar uit instellingen
     var mh = document.getElementById('meethulp'); if (mh) mh.checked = meetAan(); // v57.6: meet-hulpje-schakelaar
-    (function () { ['ah', 'lidl', 'jumbo', 'aldi', 'hoogvliet'].forEach(function (c) { var el = document.querySelector('input[data-sup="' + c + '"]'); if (el) el.checked = !S.supers || S.supers[c] !== false; }); })(); // v51.13: mijn supermarkten uit instellingen
+    renderSupers(); // v63: mijn supermarkten — grid uit SUPUI + eigen winkels, teller in de kop
+    var nsVeld = $('nieuweSuper'); if (nsVeld) nsVeld.addEventListener('keydown', function (ev) { if (ev.key === 'Enter') { ev.preventDefault(); var b = document.querySelector('[data-act="supadd"]'); if (b) b.click(); } });
     $('btnSleutelWeg').addEventListener('click', function () {
       try { localStorage.removeItem(SLEUTELKEY); } catch (e) { /* geen opslag */ }
       $('key').value = ''; toast('Sleutel verwijderd');
@@ -9947,7 +9958,7 @@ document.addEventListener('input', function (ev) {
     try {
       if (!window.checkjebon || typeof window.checkjebon.getPricesForProducts !== 'function') return null;
       var res = await window.checkjebon.getPricesForProducts([String(naam || '')]);
-      var mine = ['ah', 'lidl', 'jumbo', 'aldi', 'hoogvliet'].filter(function (c) { return !S.supers || S.supers[c] !== false; });
+      var mine = SUPUI.map(function (s) { return s[0]; }).filter(supAan).concat((S.supersEigen || []).map(function (x) { return x.k; })); // v63: alle aangevinkte winkels incl. eigen
       var rang = { ah: 0, lidl: 1 };
       function rangVan(code) { var c = String(code || '').toLowerCase(); return rang[c] != null ? rang[c] : 2; }
       var best = null, bestBuiten = null;
@@ -9968,9 +9979,8 @@ document.addEventListener('input', function (ev) {
   // Mistral live web search per product (batch) — gedeelde kern voor pjLiveZoek en opzoekRoute
   async function mistralProductZoek(namen) {
     // v58.5: supermarkten-filter (S.supers, 'Mijn supermarkten') mee naar de AI — AH uitgevinkt = nooit AH als bron
-    var SUPN = { ah: 'Albert Heijn', lidl: 'Lidl', jumbo: 'Jumbo', aldi: 'Aldi', hoogvliet: 'Hoogvliet' };
-    var mijnSup = Object.keys(SUPN).filter(function (c) { return !S.supers || S.supers[c] !== false; }).map(function (c) { return SUPN[c]; });
-    var superLijst = mijnSup.length ? mijnSup.join(', ') : 'AH, Jumbo, Lidl, Aldi, Hoogvliet';
+    var mijnSup = SUPUI.filter(function (s) { return supAan(s[0]); }).map(function (s) { return s[1]; }).concat(supEigenNamen()); // v63: uit de volledige lijst + eigen winkels
+    var superLijst = mijnSup.length ? mijnSup.join(', ') : 'Albert Heijn, Jumbo, Lidl';
     var sys = 'Je bent een live supermarkt-checker. Per product in de lijst: zoek met je live web search de actuele voedingswaarden per 100 g (kcal_per_100g, eiwit, suiker, verzadigd_vet, zout, vezels) en de prijs in euro op de website van de Nederlandse supermarkt: ' + superLijst + '. Gebruik NOOIT een supermarkt buiten deze lijst (bv. Albert Heijn als die bij Mijn supermarkten uitgevinkt staat). Vind je écht geen bron, zet "opgezocht" op false en "bron" leeg — de waarden zijn dan een schatting uit je eigen kennis. Vul "prijs" ALLEEN in bij een échte bron — nooit een gok, anders leeg. Zet "bron" ALLEEN op een echte productpagina-URL (https://...) die je écht in de zoekresultaten zag — nooit een verzonnen link (zoals wi100000000); bij twijfel bron leeg. Antwoord ALLEEN met JSON: { producten: [{ naam, kcal_per_100g, prijs, voedingswaarden_per_100g: { eiwit, suiker, verzadigd_vet, zout, vezels }, opgezocht, bron }] }';
     var body = { model: mistralModel(), messages: [{ role: 'system', content: sys }, { role: 'user', content: 'Producten:\n' + namen.join('\n') }], tools: [{ type: 'web_search' }], tool_choice: 'auto', response_format: { type: 'json_object' } };
     function stuur() { return fetch('https://api.mistral.ai/v1/chat/completions', { method: 'POST', headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + mistralSleutel() }, body: JSON.stringify(body) }); }
@@ -10513,7 +10523,7 @@ document.addEventListener('input', function (ev) {
   });
   document.addEventListener('change', function (ev) {
     var t = ev.target; if (!t || !t.getAttribute) return;
-    if (t.hasAttribute && t.hasAttribute('data-sup')) { S.supers = S.supers || {}; S.supers[t.getAttribute('data-sup')] = t.checked; persist(); return; } // v51.13: mijn supermarkten
+    if (t.hasAttribute && t.hasAttribute('data-sup')) { S.supers = S.supers || {}; S.supers[t.getAttribute('data-sup')] = t.checked; persist(); supTel(); return; } // v51.13 + v63: mijn supermarkten + teller
     if (t.classList && t.classList.contains('zegamt')) {
       var i = +t.getAttribute('data-i'), pr = S.zegVoorstel && S.zegVoorstel.producten[i]; if (!pr) return;
       var n = num(t.value);
