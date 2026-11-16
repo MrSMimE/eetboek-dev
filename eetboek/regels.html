@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mijn Eetboek — Regels</title>
+<title>Mijn Eetboek — Eetmomenten</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -93,7 +93,7 @@
   <div id="banner"></div>
 <div id="regelsview">
     <p style="margin:0 0 10px"><a class="pill" href="index.html">&#8592; Terug naar de app</a></p>
-    <h2>Mijn regels</h2>
+    <h2>Mijn eetmomenten</h2>
     <p class="hint" style="margin:0 0 10px">Bepaal zelf welke eetmomenten een dag heeft: wat je hier invult, staat op de dagkaart in de Week. Een dag zonder eigen momenten blijft leeg. Zet bij een moment het ⚡-vinkje als de ⚡-knop het moet vullen met je vaste producten.</p>
     <div class="rgl-dagen" id="rglDagen"></div>
     <div id="rglDag"></div>
@@ -124,7 +124,7 @@
 </style>
 <script>
 (function () {
-  // Regels-pagina (proef, app-test-work) — v60.0 - 15 nov 17u57: eigen eetmomenten per dag + ⚡-vinkje voor Mijn normale dag.
+  // Eetmomenten-pagina (proef, app-test-work) — v60.0 - 15 nov 17u57: eigen eetmomenten per dag + ⚡-vinkje voor Mijn normale dag.
   // Opslag in eigen sleutel 'eetweek.regels.v1': raakt nooit de echte app-data.
   var KEY = 'eetweek.regels.v1';
   var DAGEN = ['ma', 'di', 'wo', 'do', 'vr', 'za', 'zo'];
